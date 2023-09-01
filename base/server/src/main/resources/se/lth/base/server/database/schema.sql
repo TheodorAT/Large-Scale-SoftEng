@@ -7,7 +7,7 @@ CREATE TABLE user_role(role_id TINYINT,
                        role VARCHAR(10) NOT NULL UNIQUE,
                        PRIMARY KEY (role_id));
 
-CREATE TABLE user(user_id INT AUTO_INCREMENT NOT NULL,
+CREATE TABLE users(user_id INT AUTO_INCREMENT NOT NULL,
                   role_id TINYINT NOT NULL,
                   username VARCHAR_IGNORECASE NOT NULL UNIQUE, -- username should be unique
                   salt BIGINT NOT NULL,
@@ -22,10 +22,10 @@ CREATE TABLE session(session_uuid UUID DEFAULT RANDOM_UUID(),
                      user_id INT NOT NULL,
                      last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
                      PRIMARY KEY(session_uuid),
-                     FOREIGN KEY(user_id) REFERENCES user(user_id) ON DELETE CASCADE);
+                     FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE);
 
 INSERT INTO user_role VALUES (1, 'ADMIN'), (2, 'USER');
-INSERT INTO user (role_id, username, salt, password_hash)
+INSERT INTO users(role_id, username, salt, password_hash)
     VALUES (1, 'Admin', -2883142073796788660, '8dc0e2ab-4bf1-7671-c0c4-d22ffb55ee59'),
            (2, 'Test', 5336889820313124494, '144141f3-c868-85e8-0243-805ca28cdabd');
 -- Example table containing some data per user, you are expected to remove this table in your project.
@@ -57,7 +57,7 @@ CREATE TABLE foo(
     -- This defines foo_id as the unique identifier of the table. It adds NOT NULL to the column and
     -- enforces that the values rows all have a unique identifier.
 
-    FOREIGN KEY(user_id) REFERENCES user(user_id) ON DELETE CASCADE
+    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
     -- This informs that the column user_id is a relation to another table's primary key. In combination
     -- with the NOT NULL constraint above it is not possible to enter data that is not connected to a user.
     -- Note that there can be multiple rows with the same user_id (but the foo_id is unique for each row).
