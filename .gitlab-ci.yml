@@ -1,0 +1,50 @@
+stages:
+  - test
+  - package
+  - deploy
+
+test:
+  stage: test
+  image: maven:3.9.4-eclipse-temurin-17-focal
+  script:
+   - cd base/server
+   - pwd
+   - mvn compile
+   - mvn test
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - base/server/target/surefire-reports/TEST-*.xml
+        - base/server/target/failsafe-reports/TEST-*.xml
+
+package:
+  stage: package
+  image: maven:3.9.4-eclipse-temurin-17-focal
+  script:
+   - cd base/server
+   - mvn package
+   - mvn javadoc:javadoc
+  artifacts:
+    when: always
+    paths:
+      - base/server/target/base-server-jar-with-dependencies.jar
+      - base/server/target/site/apidocs
+
+deploy:
+  variables:
+     DOCKER_TLS_CERTDIR: ''
+  image: docker:stable
+  stage: deploy
+  dependencies:
+    - package
+  services:
+    - docker:dind-rootless
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --force-rm --pull -t "$CI_REGISTRY_IMAGE" -f Dockerfile .
+    - docker push "$CI_REGISTRY_IMAGE"
+  #rules:
+  #  - changes:
+  #     - base/server/src/main/**/*
