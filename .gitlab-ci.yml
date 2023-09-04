@@ -1,7 +1,25 @@
 stages:
+  - check-js-format
+  - check-java-format
   - test
   - package
   - deploy
+
+check-js-format:
+  stage: check-js-format
+  image: node:18.17.1
+  script:
+    - cd base/server
+    - npm install
+    - npm run prettier-check
+    # this step cannot be done with maven without a container having both maven and node.
+
+check-java-format:
+  stage: check-java-format
+  image: maven:3.9.4-eclipse-temurin-17-focal
+  script:
+    - cd base/server
+    - mvn validate -P check-java-format
 
 test:
   stage: test

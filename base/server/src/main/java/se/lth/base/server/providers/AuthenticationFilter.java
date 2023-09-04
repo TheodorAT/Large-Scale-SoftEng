@@ -17,8 +17,8 @@ import javax.ws.rs.ext.Provider;
 import java.util.UUID;
 
 /**
- * Adds the Session to the current request. This is done by extracting the token in the users cookie and
- * checking the database for the cookie.
+ * Adds the Session to the current request. This is done by extracting the token in the users cookie and checking the
+ * database for the cookie.
  *
  * @author Rasmus Ros, rasmus.ros@cs.lth.se
  */

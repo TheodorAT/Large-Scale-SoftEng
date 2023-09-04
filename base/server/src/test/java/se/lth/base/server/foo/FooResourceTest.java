@@ -39,8 +39,7 @@ public class FooResourceTest extends BaseResourceTest {
 
     @Test
     public void addFoo() {
-        Foo foo = target("foo").request()
-                .post(Entity.json(Collections.singletonMap("payload", "asdf")), Foo.class);
+        Foo foo = target("foo").request().post(Entity.json(Collections.singletonMap("payload", "asdf")), Foo.class);
         assertEquals(TEST.getId(), foo.getUserId());
         assertEquals("asdf", foo.getPayload());
         assertNotEquals(0, foo.getId());
@@ -50,8 +49,7 @@ public class FooResourceTest extends BaseResourceTest {
     @Test
     public void addManyFoo() {
         for (int i = 0; i < 10; i++) {
-            target("foo").request()
-                    .post(Entity.json(Collections.singletonMap("payload", "asdf")));
+            target("foo").request().post(Entity.json(Collections.singletonMap("payload", "asdf")));
         }
         List<Foo> list = target("foo").request().get(FOO_LIST);
         assertEquals(10, list.size());
@@ -70,8 +68,7 @@ public class FooResourceTest extends BaseResourceTest {
     @Test
     public void getAllDataAsAdmin() {
         // Post data as Test user
-        target("foo").request()
-                .post(Entity.json(Collections.singletonMap("payload", "tests")));
+        target("foo").request().post(Entity.json(Collections.singletonMap("payload", "tests")));
 
         // Post data as Admin user
         login(ADMIN_CREDENTIALS);
@@ -79,10 +76,7 @@ public class FooResourceTest extends BaseResourceTest {
 
         // There should be data from two users
         List<Foo> foos = target("foo").path("all").request().get(FOO_LIST);
-        assertEquals(2, foos.stream()
-                .mapToInt(Foo::getUserId)
-                .distinct()
-                .count());
+        assertEquals(2, foos.stream().mapToInt(Foo::getUserId).distinct().count());
     }
 
     @Test
@@ -92,11 +86,7 @@ public class FooResourceTest extends BaseResourceTest {
 
         // Get Test's data as Admin
         login(ADMIN_CREDENTIALS);
-        List<Foo> testsFoos = target("foo")
-                .path("user")
-                .path(Integer.toString(TEST.getId()))
-                .request()
-                .get(FOO_LIST);
+        List<Foo> testsFoos = target("foo").path("user").path(Integer.toString(TEST.getId())).request().get(FOO_LIST);
         assertEquals("tests", testsFoos.get(0).getPayload());
     }
 }
