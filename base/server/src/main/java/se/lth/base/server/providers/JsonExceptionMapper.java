@@ -42,9 +42,7 @@ public class JsonExceptionMapper implements ExceptionMapper<Exception> {
         if (errorType.getLevel() == Level.SEVERE) {
             StdErrLog.getLogger(BaseServer.class).warn(exception.getMessage(), exception);
         }
-        return Response.status(status)
-                .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=utf-8")
-                .entity(jsonObject)
-                .build();
+        return Response.status(status).header("Content-Type", MediaType.APPLICATION_JSON + ";charset=utf-8")
+                .entity(jsonObject).build();
     }
 }

@@ -8,8 +8,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Contains helpers for creating the database schema. Each time the server starts the @{@link #createSchemaIfNotExists()}
- * method is called.
+ * Contains helpers for creating the database schema. Each time the server starts
+ * the @{@link #createSchemaIfNotExists()} method is called.
  *
  * @author Rasmus Ros, rasmus.ros@cs.lth.se
  */
@@ -41,7 +41,8 @@ public class CreateSchema {
 
     public boolean createSchemaIfNotExists() {
         DataAccess<Long> counter = new DataAccess<>(driverUrl, (rs) -> rs.getLong(1));
-        boolean tableExists = counter.queryFirst("SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'USER_ROLE'") > 0L;
+        boolean tableExists = counter
+                .queryFirst("SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'USER_ROLE'") > 0L;
         if (!tableExists) {
             createSchema();
             return true;

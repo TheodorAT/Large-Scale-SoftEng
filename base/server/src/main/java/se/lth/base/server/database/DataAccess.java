@@ -12,11 +12,12 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * Base class for H2 database connections. Contains helper methods for common JDBC use cases
- * Also contains a method for setting up the database schema.
- * To use this class, extend this class with a target data type parameter and provide a mapper for said type.
+ * Base class for H2 database connections. Contains helper methods for common JDBC use cases Also contains a method for
+ * setting up the database schema. To use this class, extend this class with a target data type parameter and provide a
+ * mapper for said type.
  *
  * @author Rasmus Ros, rasmus.ros@cs.lth.se
+ * 
  * @see Mapper
  */
 public class DataAccess<T> {
@@ -43,8 +44,7 @@ public class DataAccess<T> {
      * @return number of rows affected.
      */
     public int execute(String sql, Object... objects) {
-        try (Connection conn = getConnection();
-             PreparedStatement statement = conn.prepareStatement(sql);) {
+        try (Connection conn = getConnection(); PreparedStatement statement = conn.prepareStatement(sql);) {
             for (int i = 0; i < objects.length; i++) {
                 statement.setObject(i + 1, objects[i]);
             }
@@ -61,7 +61,7 @@ public class DataAccess<T> {
      */
     public <S> S insert(String sql, Object... objects) {
         try (Connection conn = getConnection();
-             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+                PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
             for (int i = 0; i < objects.length; i++) {
                 statement.setObject(i + 1, objects[i]);
             }
@@ -78,8 +78,8 @@ public class DataAccess<T> {
     }
 
     /**
-     * This method is used for select statements that return values according to the defined mapper, can be used
-     * when there should be one row exactly matching. It does not check if there are more than one though.
+     * This method is used for select statements that return values according to the defined mapper, can be used when
+     * there should be one row exactly matching. It does not check if there are more than one though.
      */
     public T queryFirst(String sql, Object... objects) {
         return queryStream(sql, objects).findFirst().orElseThrow(() -> new DataAccessException(ErrorType.NOT_FOUND));
@@ -93,8 +93,8 @@ public class DataAccess<T> {
     }
 
     /**
-     * This converts a JDBC result set into a java stream of objects.
-     * It wraps a series of Closeable and makes sure each of them are consumed once the Stream closes.
+     * This converts a JDBC result set into a java stream of objects. It wraps a series of Closeable and makes sure each
+     * of them are consumed once the Stream closes.
      */
     public Stream<T> queryStream(String sql, Object... objects) {
         UncheckedCloseable close = null;
@@ -109,25 +109,26 @@ public class DataAccess<T> {
             connection.setAutoCommit(false);
             ResultSet resultSet = statement.executeQuery();
             close = close.nest(resultSet);
-            return StreamSupport.stream(new Spliterators.AbstractSpliterator<ResultSet>(
-                    Long.MAX_VALUE, Spliterator.ORDERED) {
-                @Override
-                public boolean tryAdvance(Consumer<? super ResultSet> action) {
-                    try {
-                        if (!resultSet.next()) return false;
-                        action.accept(resultSet);
-                        return true;
-                    } catch (SQLException e) {
-                        throw toException(e, e.getErrorCode());
-                    }
-                }
-            }, false).onClose(close).map(rs -> {
-                try {
-                    return mapper.map(rs);
-                } catch (SQLException e) {
-                    throw new DataAccessException(e, ErrorType.BAD_MAPPING);
-                }
-            });
+            return StreamSupport
+                    .stream(new Spliterators.AbstractSpliterator<ResultSet>(Long.MAX_VALUE, Spliterator.ORDERED) {
+                        @Override
+                        public boolean tryAdvance(Consumer<? super ResultSet> action) {
+                            try {
+                                if (!resultSet.next())
+                                    return false;
+                                action.accept(resultSet);
+                                return true;
+                            } catch (SQLException e) {
+                                throw toException(e, e.getErrorCode());
+                            }
+                        }
+                    }, false).onClose(close).map(rs -> {
+                        try {
+                            return mapper.map(rs);
+                        } catch (SQLException e) {
+                            throw new DataAccessException(e, ErrorType.BAD_MAPPING);
+                        }
+                    });
         } catch (SQLException e) {
             if (close != null)
                 try {
@@ -143,14 +144,14 @@ public class DataAccess<T> {
     // Thus, we keep the dependencies to H2 low and can replace it if necessary.
     private DataAccessException toException(Exception cause, int h2Code) {
         switch (h2Code) {
-            case ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1:
-                return new DataAccessException("Resource not found", cause, ErrorType.NOT_FOUND);
-            case ErrorCode.DUPLICATE_KEY_1:
-                return new DataAccessException("Resource already exists", cause, ErrorType.DUPLICATE);
-            case ErrorCode.CHECK_CONSTRAINT_VIOLATED_1:
-                return new DataAccessException("Resource constraints violated", cause, ErrorType.DATA_QUALITY);
-            default:
-                return new DataAccessException(cause, ErrorType.UNKNOWN);
+        case ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1:
+            return new DataAccessException("Resource not found", cause, ErrorType.NOT_FOUND);
+        case ErrorCode.DUPLICATE_KEY_1:
+            return new DataAccessException("Resource already exists", cause, ErrorType.DUPLICATE);
+        case ErrorCode.CHECK_CONSTRAINT_VIOLATED_1:
+            return new DataAccessException("Resource constraints violated", cause, ErrorType.DATA_QUALITY);
+        default:
+            return new DataAccessException(cause, ErrorType.UNKNOWN);
         }
     }
 

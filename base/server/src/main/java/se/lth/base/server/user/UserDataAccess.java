@@ -14,18 +14,19 @@ import java.util.UUID;
  * Basic functionality to support standard user operations. Some notable omissions are removing user, time out on
  * sessions, getting a user by name or id, etc.
  * <p>
- * This is intended to be as realistic as possible with reasonable security (single factor authentication).
- * The security measures are as follows.
+ * This is intended to be as realistic as possible with reasonable security (single factor authentication). The security
+ * measures are as follows.
  * <ul>
- * <li>All passwords are stored in a hashed format in the database, using @{@link Credentials#generatePasswordHash(long)}}</li>
- * <li>Usernames are used to salt passwords,
- * <a href="https://en.wikipedia.org/wiki/Salt_(cryptography)">see here for explanation.</a>
+ * <li>All passwords are stored in a hashed format in the database,
+ * using @{@link Credentials#generatePasswordHash(long)}}</li>
+ * <li>Usernames are used to salt passwords, <a href="https://en.wikipedia.org/wiki/Salt_(cryptography)">see here for
+ * explanation.</a>
  * <li>When a user does login, it receives a UUID-token. This token is then used to authenticate,
- * using @{@link #getSession}.
- * </li>
+ * using @{@link #getSession}.</li>
  * </ul>
  *
  * @author Rasmus Ros, rasmus.ros@cs.lth.se
+ * 
  * @see DataAccess
  */
 public class UserDataAccess extends DataAccess<User> {
@@ -34,8 +35,7 @@ public class UserDataAccess extends DataAccess<User> {
         // Feel free to change this to a lambda expression
         @Override
         public User map(ResultSet resultSet) throws SQLException {
-            return new User(resultSet.getInt("user_id"),
-                    Role.valueOf(resultSet.getString("role")),
+            return new User(resultSet.getInt("user_id"), Role.valueOf(resultSet.getString("role")),
                     resultSet.getString("username"));
         }
     }
@@ -47,13 +47,17 @@ public class UserDataAccess extends DataAccess<User> {
     /**
      * Add a new user to the system.
      *
-     * @param credentials of the new user, containing name, role, and password.
-     * @throws DataAccessException if duplicated username or too short user names.
+     * @param credentials
+     *            of the new user, containing name, role, and password.
+     * 
+     * @throws DataAccessException
+     *             if duplicated username or too short user names.
      */
     public User addUser(Credentials credentials) {
         long salt = Credentials.generateSalt();
-        int userId = insert("INSERT INTO users(role_id, username, password_hash, salt) VALUES ((" +
-                        "SELECT role_id FROM user_role WHERE user_role.role=?),?,?,?)",
+        int userId = insert(
+                "INSERT INTO users(role_id, username, password_hash, salt) VALUES (("
+                        + "SELECT role_id FROM user_role WHERE user_role.role=?),?,?,?)",
                 credentials.getRole().name(), credentials.getUsername(), credentials.generatePasswordHash(salt), salt);
         return new User(userId, credentials.getRole(), credentials.getUsername());
     }
@@ -61,23 +65,21 @@ public class UserDataAccess extends DataAccess<User> {
     public User updateUser(int userId, Credentials credentials) {
         if (credentials.hasPassword()) {
             long salt = Credentials.generateSalt();
-            execute("UPDATE users SET username = ?, password_hash = ?, salt = ?, role_id = (" +
-                            "    SELECT user_role.role_id FROM user_role WHERE user_role.role = ?) " +
-                            "WHERE user_id = ?",
+            execute("UPDATE users SET username = ?, password_hash = ?, salt = ?, role_id = ("
+                    + "    SELECT user_role.role_id FROM user_role WHERE user_role.role = ?) " + "WHERE user_id = ?",
                     credentials.getUsername(), credentials.generatePasswordHash(salt), salt,
                     credentials.getRole().name(), userId);
         } else {
-            execute("UPDATE users SET username = ?, role_id = (" +
-                            "    SELECT user_role.role_id FROM user_role WHERE user_role.role = ?) " +
-                            "WHERE user_id = ?",
+            execute("UPDATE users SET username = ?, role_id = ("
+                    + "    SELECT user_role.role_id FROM user_role WHERE user_role.role = ?) " + "WHERE user_id = ?",
                     credentials.getUsername(), credentials.getRole().name(), userId);
         }
         return getUser(userId);
     }
 
     public User getUser(int userId) {
-        return queryFirst("SELECT user_id, role, username FROM users, user_role " +
-                "WHERE users.user_id = ? AND users.role_id = user_role.role_id", userId);
+        return queryFirst("SELECT user_id, role, username FROM users, user_role "
+                + "WHERE users.user_id = ? AND users.role_id = user_role.role_id", userId);
     }
 
     public boolean deleteUser(int userId) {
@@ -88,31 +90,35 @@ public class UserDataAccess extends DataAccess<User> {
      * @return all users in the system.
      */
     public List<User> getUsers() {
-        return query("SELECT user_id, username, role FROM users, user_role " +
-                "WHERE users.role_id = user_role.role_id");
+        return query(
+                "SELECT user_id, username, role FROM users, user_role " + "WHERE users.role_id = user_role.role_id");
     }
 
     /**
      * Fetch session and the corresponding user.
      *
-     * @param sessionId globally unqiue identifier, stored in the client.
+     * @param sessionId
+     *            globally unqiue identifier, stored in the client.
+     * 
      * @return session object wrapping the user.
-     * @throws DataAccessException if the session is not found.
+     * 
+     * @throws DataAccessException
+     *             if the session is not found.
      */
     public Session getSession(UUID sessionId) {
-        User user = queryFirst("SELECT users.user_id, username, role FROM users, user_role, session " +
-                "WHERE user_role.role_id = users.role_id " +
-                "    AND session.user_id = users.user_id " +
-                "    AND session.session_uuid = ?", sessionId);
-        execute("UPDATE session SET last_seen = CURRENT_TIMESTAMP() " +
-                "WHERE session_uuid = ?", sessionId);
+        User user = queryFirst("SELECT users.user_id, username, role FROM users, user_role, session "
+                + "WHERE user_role.role_id = users.role_id " + "    AND session.user_id = users.user_id "
+                + "    AND session.session_uuid = ?", sessionId);
+        execute("UPDATE session SET last_seen = CURRENT_TIMESTAMP() " + "WHERE session_uuid = ?", sessionId);
         return new Session(sessionId, user);
     }
 
     /**
      * Logout a user. This method is idempotent, meaning it is safe to repeat indefinitely.
      *
-     * @param sessionId session to remove
+     * @param sessionId
+     *            session to remove
+     * 
      * @return true if the session was found, false otherwise.
      */
     public boolean removeSession(UUID sessionId) {
@@ -122,21 +128,24 @@ public class UserDataAccess extends DataAccess<User> {
     /**
      * Login a user.
      *
-     * @param credentials username and plain text password.
+     * @param credentials
+     *            username and plain text password.
+     * 
      * @return New user session, consisting of a @{@link UUID} and @{@link User}.
-     * @throws DataAccessException if the username or password does not match.
+     * 
+     * @throws DataAccessException
+     *             if the username or password does not match.
      */
     public Session authenticate(Credentials credentials) {
         long salt = new DataAccess<>(getDriverUrl(), (rs) -> rs.getLong(1))
                 .queryStream("SELECT salt FROM users WHERE username = ?", credentials.getUsername()).findFirst()
                 .orElseThrow(() -> new DataAccessException("Username or password incorrect", ErrorType.DATA_QUALITY));
         UUID hash = credentials.generatePasswordHash(salt);
-        User user = queryFirst("SELECT user_id, username, role FROM users, user_role " +
-                "WHERE user_role.role_id = users.role_id " +
-                "    AND username = ? " +
-                "    AND password_hash = ?", credentials.getUsername(), hash);
-        UUID sessionId = insert("INSERT INTO session (user_id) " +
-                "SELECT user_id from users WHERE username = ?", user.getName());
+        User user = queryFirst("SELECT user_id, username, role FROM users, user_role "
+                + "WHERE user_role.role_id = users.role_id " + "    AND username = ? " + "    AND password_hash = ?",
+                credentials.getUsername(), hash);
+        UUID sessionId = insert("INSERT INTO session (user_id) " + "SELECT user_id from users WHERE username = ?",
+                user.getName());
         return new Session(sessionId, user);
     }
 }

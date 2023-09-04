@@ -60,8 +60,7 @@ public class Credentials {
      */
     UUID generatePasswordHash(long salt) {
         try {
-            KeySpec spec = new PBEKeySpec(password.toCharArray(),
-                    ByteBuffer.allocate(8).putLong(salt).array(),
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), ByteBuffer.allocate(8).putLong(salt).array(),
                     ITERATION_COST, SIZE);
             SecretKeyFactory f = SecretKeyFactory.getInstance(ALGORITHM);
             byte[] blob = f.generateSecret(spec).getEncoded();
@@ -80,7 +79,7 @@ public class Credentials {
 
     public static void main(String[] args) {
         // This is left as is to show how the system was seeded. You can't login to the user admin interface and create
-        // a new admin user if there are no users, so the first users are created manually and added  to the database
+        // a new admin user if there are no users, so the first users are created manually and added to the database
         // schema.
         long s1 = generateSalt();
         long s2 = generateSalt();

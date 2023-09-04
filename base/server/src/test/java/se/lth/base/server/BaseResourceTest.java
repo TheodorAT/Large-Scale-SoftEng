@@ -17,7 +17,6 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.util.Collections;
 
-
 public class BaseResourceTest extends JerseyTest {
 
     protected static final User ADMIN = new User(1, Role.ADMIN, "Admin");
@@ -68,9 +67,8 @@ public class BaseResourceTest extends JerseyTest {
         @Override
         public void filter(ClientRequestContext requestContext) throws IOException {
             if (authedSession != null) {
-                requestContext.getHeaders().put("Cookie", Collections.singletonList(
-                        new Cookie(UserResource.USER_TOKEN, authedSession.getSessionId().toString())
-                ));
+                requestContext.getHeaders().put("Cookie", Collections
+                        .singletonList(new Cookie(UserResource.USER_TOKEN, authedSession.getSessionId().toString())));
             }
         }
     }

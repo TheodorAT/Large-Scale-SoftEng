@@ -4,6 +4,7 @@ package se.lth.base.server.foo;
  * Data class for the starting functionality.
  *
  * @author Rasmus Ros, rasmus.ros@cs.lth.se
+ * 
  * @see FooDataAccess
  */
 public class Foo {
@@ -36,5 +37,3 @@ public class Foo {
         return created;
     }
 }
-
-

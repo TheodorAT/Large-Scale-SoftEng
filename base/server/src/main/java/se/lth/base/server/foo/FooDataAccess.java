@@ -16,6 +16,7 @@ import java.util.List;
  * more specific names to your classes, see for example @{@link UserDataAccess} which is more aptly named.
  *
  * @author Rasmus Ros, rasmus.ros@cs.lth.se
+ * 
  * @see UserDataAccess
  * @see DataAccess
  */
@@ -25,9 +26,7 @@ public class FooDataAccess extends DataAccess<Foo> {
         // Feel free to change this to a lambda expression
         @Override
         public Foo map(ResultSet resultSet) throws SQLException {
-            return new Foo(resultSet.getInt("foo_id"),
-                    resultSet.getInt("user_id"),
-                    resultSet.getString("payload"),
+            return new Foo(resultSet.getInt("foo_id"), resultSet.getInt("user_id"), resultSet.getString("payload"),
                     resultSet.getObject("created", Date.class).getTime());
         }
     }
@@ -39,14 +38,17 @@ public class FooDataAccess extends DataAccess<Foo> {
     /**
      * Add new foo payload connected to a user.
      *
-     * @param userId  user to add payload to.
-     * @param payload new payload to append.
+     * @param userId
+     *            user to add payload to.
+     * @param payload
+     *            new payload to append.
+     * 
      * @return the created foo object, containing additionally created date and the id of the foo.
      */
     public Foo addFoo(int userId, String payload) {
         long created = System.currentTimeMillis();
-        int fooId = insert("INSERT INTO foo (user_id, payload, created) VALUES (?,?,?)",
-                userId, payload, new Date(created));
+        int fooId = insert("INSERT INTO foo (user_id, payload, created) VALUES (?,?,?)", userId, payload,
+                new Date(created));
         return new Foo(fooId, userId, payload, created);
     }
 
@@ -60,7 +62,9 @@ public class FooDataAccess extends DataAccess<Foo> {
     /**
      * Get all foo payload created by a user.
      *
-     * @param userId user to filter on.
+     * @param userId
+     *            user to filter on.
+     * 
      * @return users foo objects.
      */
     public List<Foo> getUsersFoo(int userId) {

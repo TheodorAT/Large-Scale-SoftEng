@@ -35,7 +35,7 @@ public class JsonProvider implements MessageBodyReader<Object>, MessageBodyWrite
 
     @Override
     public Object readFrom(Class<Object> aClass, Type type, Annotation[] annotations, MediaType mediaType,
-                           MultivaluedMap<String, String> multivaluedMap, InputStream entityStream)
+            MultivaluedMap<String, String> multivaluedMap, InputStream entityStream)
             throws IOException, WebApplicationException {
         try (InputStreamReader streamReader = new InputStreamReader(entityStream, StandardCharsets.UTF_8);) {
             return GSON.fromJson(streamReader, type);
@@ -49,7 +49,7 @@ public class JsonProvider implements MessageBodyReader<Object>, MessageBodyWrite
 
     @Override
     public void writeTo(Object o, Class<?> aClass, Type type, Annotation[] annotations, MediaType mediaType,
-                        MultivaluedMap<String, Object> multivaluedMap, OutputStream entityStream)
+            MultivaluedMap<String, Object> multivaluedMap, OutputStream entityStream)
             throws IOException, WebApplicationException {
         try (OutputStreamWriter writer = new OutputStreamWriter(entityStream, StandardCharsets.UTF_8);) {
             GSON.toJson(o, writer);

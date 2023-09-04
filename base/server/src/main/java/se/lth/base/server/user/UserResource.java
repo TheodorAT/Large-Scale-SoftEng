@@ -43,24 +43,22 @@ public class UserResource {
     @POST
     @PermitAll
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response login(Credentials credentials,
-                          @QueryParam("remember") @DefaultValue("false") boolean rememberMe) {
+    public Response login(Credentials credentials, @QueryParam("remember") @DefaultValue("false") boolean rememberMe) {
         Session newSession = userDao.authenticate(credentials);
         int maxAge = rememberMe ? (int) TimeUnit.DAYS.toSeconds(7) : NewCookie.DEFAULT_MAX_AGE;
         return Response.noContent().cookie(newCookie(newSession.getSessionId().toString(), maxAge, null)).build();
     }
 
     private NewCookie newCookie(String value, int maxAge, Date expiry) {
-        return new NewCookie(USER_TOKEN,
-                value,                                          // value
-                "/rest",                                        // path
-                context.getUriInfo().getBaseUri().getHost(),    // host
-                NewCookie.DEFAULT_VERSION,                      // version
-                "",                                             // comment
-                maxAge,                                         // max-age
-                expiry,                                         // expiry
-                false,                                          // secure
-                true);                                          // http-only
+        return new NewCookie(USER_TOKEN, value, // value
+                "/rest", // path
+                context.getUriInfo().getBaseUri().getHost(), // host
+                NewCookie.DEFAULT_VERSION, // version
+                "", // comment
+                maxAge, // max-age
+                expiry, // expiry
+                false, // secure
+                true); // http-only
 
     }
 

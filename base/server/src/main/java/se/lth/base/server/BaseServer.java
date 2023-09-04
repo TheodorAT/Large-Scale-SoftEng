@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-
 public class BaseServer {
 
     public static void main(String[] args) {
@@ -33,14 +32,11 @@ public class BaseServer {
 
         Server server = new Server(Config.instance().getPort());
 
-        server.setRequestLog((request, response) -> StdErrLog.getLogger(BaseServer.class).info(
-                request.getMethod() + " " + request.getOriginalURI() + " " + response.getStatus()));
+        server.setRequestLog((request, response) -> StdErrLog.getLogger(BaseServer.class)
+                .info(request.getMethod() + " " + request.getOriginalURI() + " " + response.getStatus()));
 
         // Handlers take care of server request in the order given
-        HandlerList handlers = new HandlerList(
-                indexHandler(),
-                staticContentHandler(),
-                jerseyHandler(jerseyConfig()));
+        HandlerList handlers = new HandlerList(indexHandler(), staticContentHandler(), jerseyHandler(jerseyConfig()));
         server.setHandler(handlers);
 
         try {
@@ -57,10 +53,12 @@ public class BaseServer {
         return new AbstractHandler() {
 
             @Override
-            public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+            public void handle(String target, Request baseRequest, HttpServletRequest request,
+                    HttpServletResponse response) throws IOException, ServletException {
                 if (target.equals("/")) {
                     response.addHeader("Content-Type", "text/html");
-                    copyStream(BaseServer.class.getResourceAsStream("/webassets/index.html"), response.getOutputStream());
+                    copyStream(BaseServer.class.getResourceAsStream("/webassets/index.html"),
+                            response.getOutputStream());
                     baseRequest.setHandled(true);
                 }
             }
@@ -81,7 +79,6 @@ public class BaseServer {
         jerseyConfig.register(RolesAllowedDynamicFeature.class);
         return jerseyConfig;
     }
-
 
     private static Handler jerseyHandler(ResourceConfig resourceConfig) {
         ServletHolder jerseyServlet = new ServletHolder(new ServletContainer(resourceConfig));
