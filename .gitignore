@@ -2,3 +2,6 @@
 *.idea
 base/server/target
 node_modules/
+.classpath
+.settings/
+.project
