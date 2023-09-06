@@ -1,7 +1,7 @@
 run:
 	mvn package && java -jar target/base-server-jar-with-dependencies.jar
 
-run:
+test:
 	mvn test
 
 check:
