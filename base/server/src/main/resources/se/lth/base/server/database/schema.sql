@@ -24,10 +24,55 @@ CREATE TABLE session(session_uuid UUID DEFAULT RANDOM_UUID(),
                      PRIMARY KEY(session_uuid),
                      FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE);
 
+
+-- LOCATIONS
+-- this might have to be edited depending on the info retrieved from the .txt file
+-- i haven't seen it myself
+CREATE TABLE locations (
+    location_id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    latitude DOUBLE NOT NULL,
+    longitude DOUBLE NOT NULL,
+    PRIMARY KEY (location_id)
+);
+
+-- TRIPS
+CREATE TABLE trips (
+    trip_id INT AUTO_INCREMENT NOT NULL,
+    driver_id INT NOT NULL,
+    from_location_id INT NOT NULL,
+    to_location_id INT NOT NULL,
+    -- using TIMESTAMP for both, allowing us to skip the date
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP NOT NULL,
+    seat_capacity INT NOT NULL, -- not to be changed, when checking seat availability, query trip_passengers. Excluding driver
+    PRIMARY KEY (trip_id),
+    FOREIGN KEY (driver_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (from_location_id) REFERENCES locations (location_id) ON DELETE CASCADE,
+    FOREIGN KEY (to_location_id) REFERENCES locations (location_id) ON DELETE CASCADE
+);
+
+CREATE TABLE trip_passengers(
+    trip_id INT NOT NULL,
+    user_id INT NOT NULL,
+    PRIMARY KEY (trip_id, user_id),
+    FOREIGN KEY (trip_id) REFERENCES trips (trip_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
+);
+
+
+
+-- INSERTS
+
 INSERT INTO user_role VALUES (1, 'ADMIN'), (2, 'USER');
 INSERT INTO users(role_id, username, salt, password_hash)
     VALUES (1, 'Admin', -2883142073796788660, '8dc0e2ab-4bf1-7671-c0c4-d22ffb55ee59'),
            (2, 'Test', 5336889820313124494, '144141f3-c868-85e8-0243-805ca28cdabd');
+
+
+
+
+-- TO BE REMOVED
 -- Example table containing some data per user, you are expected to remove this table in your project.
 CREATE TABLE foo(
     -- First the four columns are specified:
