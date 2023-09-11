@@ -10,11 +10,11 @@ The base repo for the project.
 - Node 18 or higher
 - Maven 3.x
 
-## For windows users
+### For windows users
 
 To run make-files in windows, use [Chocolatey](https://chocolatey.org/install)
 
-## How to start working
+# Running tests:
 
 First, navigate to the `base/server` folder and run:
 
@@ -45,6 +45,14 @@ to be executed in the `base/server` directory.
 
 The project uses [prettier](https://prettier.io/) for javascript formatting and the Eclipse
 formatting standard used in the [Eclipse JDT Language Server](https://github.com/eclipse-jdtls/eclipse.jdt.ls).
+
+## Start working on a new feature
+
+When developing a new feature, work on a separate branch. 
+
+- Create a new branch with an appropriate name using: `git branch <branch-name>`
+- To switch between branches use: `git checkout <branch-name>`
+- Commit to this branch and when the feature is ready for merge, create a merge request using the [coursegit website](https://coursegit.cs.lth.se/etsn05/team-1-2023/-/branches).
 
 ### Configure your editor
 
