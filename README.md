@@ -54,11 +54,11 @@ formatting standard used in the [Eclipse JDT Language Server](https://github.com
 
 3. Note the Card ID of the feature, e.g. ETS-766
 
-4. Create a branch with the same name as the Card ID of the feature: git switch -c <card-id>
+4. Create a branch with the same name as the Card ID of the feature: git switch -c &lt;card-id&gt;
 
 5. Write code and tests covering the code you wrote. Document new functions with doc strings and lines of code that are not described by the code itself.
 Commit as often as you like, preferably after every big change.
-When the feature is ready to be reviewed, push the branch to GitLab: git push -u origin <card-id>
+When the feature is ready to be reviewed, push the branch to GitLab: git push -u origin &lt;card-id&gt;
 
 6. Create a merge request to the main branch on the [coursegit website](https://coursegit.cs.lth.se/etsn05/team-1-2023/-/branches).
 
