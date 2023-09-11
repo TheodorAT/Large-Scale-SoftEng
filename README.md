@@ -12,9 +12,9 @@ The base repo for the project.
 
 ### For windows users
 
-To run make-files in windows, use [Chocolatey](https://chocolatey.org/install)
+To run make-files in windows, use [Chocolatey](https://chocolatey.org/install).
 
-# Running tests:
+# Running tests and building:
 
 First, navigate to the `base/server` folder and run:
 
@@ -48,11 +48,19 @@ formatting standard used in the [Eclipse JDT Language Server](https://github.com
 
 ## Start working on a new feature
 
-When developing a new feature, work on a separate branch. 
+1. Select the feature you will work on in Favro
 
-- Create a new branch with an appropriate name using: `git branch <branch-name>`
-- To switch between branches use: `git checkout <branch-name>`
-- Commit to this branch and when the feature is ready for merge, create a merge request using the [coursegit website](https://coursegit.cs.lth.se/etsn05/team-1-2023/-/branches).
+2. Assign yourself to the card.
+
+3. Note the Card ID of the feature, e.g. ETS-766
+
+4. Create a branch with the same name as the Card ID of the feature: git switch -c <card-id>
+
+5. Write code and tests covering the code you wrote. Document new functions with doc strings and lines of code that are not described by the code itself.
+Commit as often as you like, preferably after every big change.
+When the feature is ready to be reviewed, push the branch to GitLab: git push -u origin <card-id>
+
+6. Create a merge request to the main branch on the [coursegit website](https://coursegit.cs.lth.se/etsn05/team-1-2023/-/branches).
 
 ### Configure your editor
 
