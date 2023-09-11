@@ -49,20 +49,20 @@ package:
       - base/server/target/base-server-jar-with-dependencies.jar
       - base/server/target/site/apidocs
 
-deploy:
-  variables:
-     DOCKER_TLS_CERTDIR: ''
-  image: docker:stable
-  stage: deploy
-  dependencies:
-    - package
-  services:
-    - docker:dind
-  before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-  script:
-    - docker build --force-rm --pull -t "$CI_REGISTRY_IMAGE" -f Dockerfile .
-    - docker push "$CI_REGISTRY_IMAGE"
+        #deploy:
+        #  variables:
+        #     DOCKER_TLS_CERTDIR: ''
+        #  image: docker:stable
+        #  stage: deploy
+        #  dependencies:
+        #    - package
+        #  services:
+        #    - docker:dind-rootless
+        #  before_script:
+        #    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+        #  script:
+        #    - docker build --force-rm --pull -t "$CI_REGISTRY_IMAGE" -f Dockerfile .
+        #    - docker push "$CI_REGISTRY_IMAGE"
   #rules:
   #  - changes:
   #     - base/server/src/main/**/*
