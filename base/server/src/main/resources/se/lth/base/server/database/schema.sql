@@ -64,7 +64,12 @@ CREATE TABLE trip_passengers(
 
 -- INSERTS
 
-INSERT INTO user_role VALUES (1, 'ADMIN'), (2, 'USER');
+-- Kept 2 user for backwards compatability w/ tests. 
+-- Admin sees all tabs, most funcitonality
+-- Driver sees all tabs except for admin tab
+-- User sees all tabs except register shuttle and admin tab
+-- "both", i.e., driver and passenger, therefore should be a "driver"
+INSERT INTO user_role VALUES (1, 'ADMIN'), (2, 'USER'), (3, 'DRIVER');
 INSERT INTO users(role_id, username, salt, password_hash)
     VALUES (1, 'Admin', -2883142073796788660, '8dc0e2ab-4bf1-7671-c0c4-d22ffb55ee59'),
            (2, 'Test', 5336889820313124494, '144141f3-c868-85e8-0243-805ca28cdabd');
