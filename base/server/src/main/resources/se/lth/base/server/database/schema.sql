@@ -61,12 +61,13 @@ CREATE TABLE trips (
     seat_capacity INT NOT NULL, -- not to be changed, when checking seat availability, query trip_passengers. Excluding driver
 
     PRIMARY KEY (trip_id),
+
+    CHECK (seat_capacity > 0),
+    CHECK (start_time < end_time),
+
     FOREIGN KEY (driver_id) REFERENCES users (user_id) ON DELETE CASCADE,
     FOREIGN KEY (from_location_id) REFERENCES locations (location_id) ON DELETE SET NULL,
     FOREIGN KEY (to_location_id) REFERENCES locations (location_id) ON DELETE SET NULL
-
-    CHECK (seat_capacity > 0),
-    CHECK (start_time < end_time)
 );
 
 CREATE TABLE trip_passengers(
