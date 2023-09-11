@@ -56,6 +56,8 @@ CREATE TABLE trips (
     -- using TIMESTAMP for both, allowing us to skip the date
     start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP NOT NULL,
+
+    -- this seat_capacity will later be changed to a FOREIGN ref to shuttles
     seat_capacity INT NOT NULL, -- not to be changed, when checking seat availability, query trip_passengers. Excluding driver
 
     PRIMARY KEY (trip_id),
@@ -67,6 +69,7 @@ CREATE TABLE trips (
 CREATE TABLE trip_passengers(
     trip_id INT NOT NULL,
     user_id INT NOT NULL,
+    
     PRIMARY KEY (trip_id, user_id),
     FOREIGN KEY (trip_id) REFERENCES trips (trip_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
