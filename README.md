@@ -12,7 +12,7 @@ The base repo for the project.
 
 ## For windows users
 
-To use make-files in windows, use [Chocolatey](https://chocolatey.org/install)
+To run make-files in windows, use [Chocolatey](https://chocolatey.org/install)
 
 ## How to start working
 
