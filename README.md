@@ -48,7 +48,7 @@ formatting standard used in the [Eclipse JDT Language Server](https://github.com
 
 ## Start working on a new feature
 
-1. Select the user story you will work on in the standup meeting. All discussion and task selection will be done on the card related to the task in [Favro](https://docs.google.com/document/d/14jlmhP4wQ_dBpx58O8t94aBQgeIAcfgIheynxVng_AM/edit). 
+1. Select the user story you will work on in the standup meeting. All discussion and task selection will be done on the card related to the task in [Favro](https://favro.com/organization/b33ec59bd1d4f62903322255/acf3cab4a8408b670a0257cc). 
 
 2. If the user story is not broken into tasks, break it up into tasks. Tag them to either frontend or backend.
 
