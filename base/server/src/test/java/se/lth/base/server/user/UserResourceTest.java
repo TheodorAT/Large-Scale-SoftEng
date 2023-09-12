@@ -101,6 +101,7 @@ public class UserResourceTest extends BaseResourceTest {
         login(TEST_CREDENTIALS);
         target("user").path(Integer.toString(TEST.getId())).request().delete(Void.class); // Include response type to trigger exception
         //Now that we have deleted we try to get the deleted. Expect not found 
+        login(ADMIN_CREDENTIALS);
         target("user").path(Integer.toString(TEST.getId())).request().get(Void.class);
     }
 
