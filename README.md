@@ -29,7 +29,7 @@ to be executed in the `base/server` directory.
 
 ### Using Maven
 
-- To run the project: `mvn package && java -jar target/base-server-jar-with-dependencies.jar`
+- To run the project: `mvn package && java -jar target/carpooling-server-jar-with-dependencies.jar`
 - To run the tests: `mvn test`
 - To check code formatting: `npm run prettier-check && mvn validate -P check-java-format`
 - To format the code: `mvn package -P format-js,format-java`

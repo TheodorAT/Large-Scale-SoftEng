@@ -104,7 +104,7 @@
 
 
 <build>
-  <finalName>base-server</finalName>
+  <finalName>carpooling-server</finalName>
   <plugins>
 
     <plugin>
