@@ -10,7 +10,7 @@ package se.lth.base.server;
 public class Config {
 
     private static final int DEFAULT_PORT = 8080;
-    private static final String DEFAULT_DATABASE_DRIVER = "jdbc:h2:~/base-server/data";
+    private static final String DEFAULT_DATABASE_DRIVER = "jdbc:h2:~/carpooling-server/data";
 
     private static final Config INSTANCE = new Config(DEFAULT_PORT, DEFAULT_DATABASE_DRIVER);
 

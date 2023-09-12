@@ -29,7 +29,7 @@ to be executed in the `base/server` directory.
 
 ### Using Maven
 
-- To run the project: `mvn package && java -jar target/base-server-jar-with-dependencies.jar`
+- To run the project: `mvn package && java -jar target/carpooling-server-jar-with-dependencies.jar`
 - To run the tests: `mvn test`
 - To check code formatting: `npm run prettier-check && mvn validate -P check-java-format`
 - To format the code: `mvn package -P format-js,format-java`
@@ -48,19 +48,25 @@ formatting standard used in the [Eclipse JDT Language Server](https://github.com
 
 ## Start working on a new feature
 
-1. Select the feature you will work on in Favro
+1. Select the user story you will work on in the standup meeting. All discussion and task selection will be done on the card related to the task in [Favro](https://docs.google.com/document/d/14jlmhP4wQ_dBpx58O8t94aBQgeIAcfgIheynxVng_AM/edit). 
 
-2. Assign yourself to the card.
+2. If the user story is not broken into tasks, break it up into tasks. Tag them to either frontend or backend.
 
-3. Note the Card ID of the feature, e.g. ETS-766
+3. Move the tasks created to the `To do` section in the sprint board if they are not already there.
 
-4. Create a branch with the same name as the Card ID of the feature: git switch -c &lt;card-id&gt;
+4. Assign yourself to the task you will work on and move it into `In Progress`.
 
-5. Write code and tests covering the code you wrote. Document new functions with doc strings and lines of code that are not described by the code itself.
-Commit as often as you like, preferably after every big change.
-When the feature is ready to be reviewed, push the branch to GitLab: git push -u origin &lt;card-id&gt;
+5. Note the Card ID of the task card, e.g. ETS-766
 
-6. Create a merge request to the main branch on the [coursegit website](https://coursegit.cs.lth.se/etsn05/team-1-2023/-/branches).
+6. Create a branch with a short description using camel case and the Card ID of the task, e.g.: `git switch -c createRegistering-ETS-766`
+
+7. Write code and tests covering the code you wrote. Document new functions with doc strings and lines of code that are not described by the code itself. Make sure that the code is correctly formatted using `make check`/`make format`.
+
+8. Commit as often as you like, preferably after every big change.
+When the feature is ready to be reviewed, push the branch to GitLab: `git push -u origin createRegistering-ETS-766`
+
+9. Create a merge request to the main branch on the [coursegit website](https://coursegit.cs.lth.se/etsn05/team-1-2023/-/branches) website. Don't forget to run `git fetch main && git merge origin/main` to get the latest changes.
+
 
 ### Configure your editor
 

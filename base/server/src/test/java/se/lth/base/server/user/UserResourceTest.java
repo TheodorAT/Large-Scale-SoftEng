@@ -96,11 +96,21 @@ public class UserResourceTest extends BaseResourceTest {
         target("user").request().post(Entity.json(""), Void.class); // Include response type to trigger exception
     }
 
-    @Test(expected = ForbiddenException.class)
-    public void deleteUserAsUser() {
+    @Test(expected = NotFoundException.class)
+    public void deleteYourselfAsUser() {
         login(TEST_CREDENTIALS);
-        target("user").path(Integer.toString(ADMIN.getId())).request().delete(Void.class); // Include response type to
-                                                                                           // trigger exception
+        target("user").path(Integer.toString(TEST.getId())).request().delete(Void.class); // Include response type to trigger exception
+        //Now that we have deleted we try to get the deleted. Expect not found 
+        login(ADMIN_CREDENTIALS);
+        target("user").path(Integer.toString(TEST.getId())).request().get(Void.class);
+    }
+
+    @Test(expected = ForbiddenException.class)
+    public void deleteOtherUserAsUser(){
+        Credentials newCredentials = new Credentials("pelle", "passphrase", Role.USER);
+        User newUser = createNewUser(newCredentials); 
+        login(TEST_CREDENTIALS);
+        target("user").path(Integer.toString(newUser.getId())).request().delete(Void.class);
     }
 
     @Test
@@ -121,9 +131,8 @@ public class UserResourceTest extends BaseResourceTest {
 
     @Test
     public void testAddUser() {
-        login(ADMIN_CREDENTIALS);
         Credentials newCredentials = new Credentials("pelle", "passphrase", Role.USER);
-        User newUser = target("user").request().post(Entity.json(newCredentials), User.class);
+        User newUser = createNewUser(newCredentials); 
         assertEquals(newCredentials.getUsername(), newUser.getName());
         assertEquals(newCredentials.getRole(), newUser.getRole());
         assertTrue(newUser.getId() > 0);
@@ -144,7 +153,7 @@ public class UserResourceTest extends BaseResourceTest {
     }
 
     @Test(expected = WebApplicationException.class)
-    public void dontDeleteYourself() {
+    public void dontDeleteYourselfAsAdmin() {
         login(ADMIN_CREDENTIALS);
         target("user").path(Integer.toString(ADMIN.getId())).request().delete(Void.class);
     }
@@ -183,5 +192,11 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(TEST.getId(), user.getId());
         assertEquals(newTest.getUsername(), user.getName());
         assertEquals(newTest.getRole(), user.getRole());
+    }
+
+    public User createNewUser(Credentials newCredentials){
+        login(ADMIN_CREDENTIALS);
+        User newUser = target("user").request().post(Entity.json(newCredentials), User.class);
+        return newUser; 
     }
 }
