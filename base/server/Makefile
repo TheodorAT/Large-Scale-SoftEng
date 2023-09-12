@@ -1,5 +1,5 @@
 run:
-	mvn package && java -jar target/base-server-jar-with-dependencies.jar
+	mvn package && java -jar target/carpooling-server-jar-with-dependencies.jar
 
 test:
 	mvn test
