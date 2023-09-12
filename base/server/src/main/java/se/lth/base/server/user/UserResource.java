@@ -120,7 +120,6 @@ public class UserResource {
     }
 
     @Path("{id}")
-    //@RolesAllowed(Role.Names.ADMIN)
     @DELETE
     public void deleteUser(@PathParam("id") int userId) {
         if (userId == currentUser().getId() && currentUser().getRole().equals(Role.ADMIN)) {

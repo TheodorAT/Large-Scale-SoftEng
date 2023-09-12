@@ -153,7 +153,7 @@ public class UserResourceTest extends BaseResourceTest {
     }
 
     @Test(expected = WebApplicationException.class)
-    public void dontDeleteYourself() {
+    public void dontDeleteYourselfAsAdmin() {
         login(ADMIN_CREDENTIALS);
         target("user").path(Integer.toString(ADMIN.getId())).request().delete(Void.class);
     }
