@@ -44,6 +44,7 @@ public class CreateSchema {
         boolean tableExists = counter
                 .queryFirst("SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'USER_ROLE'") > 0L;
         if (!tableExists) {
+            System.out.println("Creating schema");
             createSchema();
             return true;
         }
