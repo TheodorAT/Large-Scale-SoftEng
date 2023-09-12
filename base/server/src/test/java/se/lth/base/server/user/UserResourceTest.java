@@ -96,11 +96,17 @@ public class UserResourceTest extends BaseResourceTest {
         target("user").request().post(Entity.json(""), Void.class); // Include response type to trigger exception
     }
 
-    @Test(expected = ForbiddenException.class)
-    public void deleteUserAsUser() {
+    @Test(expected = NotFoundException.class)
+    public void deleteYourselfAsUser() {
         login(TEST_CREDENTIALS);
-        target("user").path(Integer.toString(ADMIN.getId())).request().delete(Void.class); // Include response type to
-                                                                                           // trigger exception
+        target("user").path(Integer.toString(TEST.getId())).request().delete(Void.class); // Include response type to trigger exception
+        //Now that we have deleted we try to get the deleted. Expect not found 
+        target("user").path(Integer.toString(TEST.getId())).request().get(Void.class);
+    }
+
+    @Test(expected = ForbiddenException.class)
+    public void deleteOtherUserAsUser(){
+
     }
 
     @Test
