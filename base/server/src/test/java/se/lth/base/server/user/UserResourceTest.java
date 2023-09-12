@@ -107,7 +107,10 @@ public class UserResourceTest extends BaseResourceTest {
 
     @Test(expected = ForbiddenException.class)
     public void deleteOtherUserAsUser(){
-
+        Credentials newCredentials = new Credentials("pelle", "passphrase", Role.USER);
+        User newUser = createNewUser(newCredentials); 
+        login(TEST_CREDENTIALS);
+        target("user").path(Integer.toString(newUser.getId())).request().delete(Void.class);
     }
 
     @Test
@@ -128,9 +131,8 @@ public class UserResourceTest extends BaseResourceTest {
 
     @Test
     public void testAddUser() {
-        login(ADMIN_CREDENTIALS);
         Credentials newCredentials = new Credentials("pelle", "passphrase", Role.USER);
-        User newUser = target("user").request().post(Entity.json(newCredentials), User.class);
+        User newUser = createNewUser(newCredentials); 
         assertEquals(newCredentials.getUsername(), newUser.getName());
         assertEquals(newCredentials.getRole(), newUser.getRole());
         assertTrue(newUser.getId() > 0);
@@ -190,5 +192,11 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(TEST.getId(), user.getId());
         assertEquals(newTest.getUsername(), user.getName());
         assertEquals(newTest.getRole(), user.getRole());
+    }
+
+    public User createNewUser(Credentials newCredentials){
+        login(ADMIN_CREDENTIALS);
+        User newUser = target("user").request().post(Entity.json(newCredentials), User.class);
+        return newUser; 
     }
 }
