@@ -9,6 +9,3 @@ check:
 
 format:
 	mvn package -P format-js,format-java
-
-delete-db:
-	rm -rf ~/carpooling-server
