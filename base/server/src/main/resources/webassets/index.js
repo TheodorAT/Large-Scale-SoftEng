@@ -8,6 +8,10 @@ base.mainController = (function () {
       partial: "foo/foo.html",
       controller: base.fooController,
     },
+    driver: {
+      partial: "driver/driver.html",
+      controller: base.driverController,
+    },
     admin: {
       partial: "admin/user-admin.html",
       controller: base.userAdminController,
