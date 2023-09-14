@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>searchShuttles</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<header>
+    <nav id="bar">
+        <ul >
+            <li><a href="#">Book Trip</a></li>
+            <li><a href="#">Register Trip</a></li>
+            <li><a href="#">My Trips</a></li>
+            <li><a href="#">Admin</a></li>
+        </ul>
+        <div class="settings">
+            <button id="settings-btn">⚙️</button>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <section id="search-section">
+        <h1>Search for Available Shuttles</h1>
+        <div class="search-form">
+            <input type="text" id="from-input" placeholder="From">
+            <input type="text" id="destination-input" placeholder="Destination">
+            <input type="datetime-local" id="datetime-input">
+            <button id="search-btn">Search</button>
+        </div>
+    </section>
+
+    <section id="book-section">
+        <button id="book-trip-btn">Book</button>
+    </section>
+
+    <section id="shuttle-list">
+        <table>
+            <thead>
+            <tr>
+                <th>From</th>
+                <th>To</th>
+                <th>Start Time</th>
+                <th>Arrival Time</th>
+                <th>Duration</th>
+                <th>Seats Left</th>
+                <th>Driver</th>
+                <th>Rating</th>
+                <th>Car</th>
+                <th>Baggage</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--  data using JavaScript -->
+            </tbody>
+        </table>
+    </section>
+</main>
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
