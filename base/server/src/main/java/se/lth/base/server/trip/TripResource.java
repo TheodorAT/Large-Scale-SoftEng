@@ -22,17 +22,11 @@ import java.util.concurrent.TimeUnit;
 @Path("trip")
 public class TripResource {
 
-    private final ContainerRequestContext context;
-    private final Trip trip;
     private final User user;
-    private final Session session;
     private final TripDataAccess tripDao = new TripDataAccess(Config.instance().getDatabaseDriver());
 
     public TripResource(@Context ContainerRequestContext context) {
-        this.context = context;
-        this.trip = (Trip) context.getProperty(Trip.class.getSimpleName());
         this.user = (User) context.getProperty(User.class.getSimpleName());
-        this.session = (Session) context.getProperty(Session.class.getSimpleName());
     }
 
     @POST

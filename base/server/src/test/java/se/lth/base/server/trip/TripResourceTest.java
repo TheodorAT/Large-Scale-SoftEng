@@ -30,15 +30,14 @@ public class TripResourceTest extends BaseResourceTest {
         login(TEST_CREDENTIALS);
     }
 
-
     @Test
     public void addTrip() {
         Trip t = new Trip(1, 1, 1, 2, new Timestamp(10200), new Timestamp(12600), 4);
-        
+
         Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
-                
+
         Trip trip = target("trip").request().post(e, Trip.class);
-        
+
         assertEquals(TEST.getId(), trip.getDriverId());
         assertEquals(10000, trip.getStartTime().getTime());
         assertEquals(12000, trip.getEndTime().getTime());
