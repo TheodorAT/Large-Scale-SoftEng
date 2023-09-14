@@ -1,5 +1,6 @@
 package se.lth.base.server.trip;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 
@@ -9,11 +10,11 @@ public class Trip {
     private final int driverId;
     private final int fromLocationId;
     private final int toLocationId;
-    private final Date startTime;
-    private final Date endTime;
+    private final Timestamp startTime;
+    private final Timestamp endTime;
     private final int seatCapacity;
 
-    public Trip(int id, int driverId, int fromLocationId, int toLocationId, Date startTime, Date endTime, int seatCapacity) {
+    public Trip(int id, int driverId, int fromLocationId, int toLocationId, Timestamp startTime, Timestamp endTime, int seatCapacity) {
         this.id = id;
         this.driverId = driverId;
         this.fromLocationId = fromLocationId;
@@ -22,7 +23,6 @@ public class Trip {
         this.endTime = endTime;
         this.seatCapacity = seatCapacity;
     }
-
 
     public int getId() {
         return id;
@@ -40,12 +40,12 @@ public class Trip {
         return toLocationId;
     }
     
-    public Date getStartTime() {
-        return new Date(startTime.getTime());
+    public Timestamp getStartTime() {
+        return new Timestamp(startTime.getTime());
     }
     
-    public Date getEndTime() {
-        return new Date(endTime.getTime());
+    public Timestamp getEndTime() {
+        return new Timestamp(endTime.getTime());
     }
     
     public int getSeatCapacity() {

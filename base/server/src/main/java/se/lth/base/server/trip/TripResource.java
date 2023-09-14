@@ -11,6 +11,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.server.model.Resource;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -34,8 +37,8 @@ public class TripResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    @RolesAllowed(Role.Names.USER)
     public Trip createTrip(Trip trip) {
-        return tripDao.addTrip(user.getId(), trip);
+        Trip result = tripDao.addTrip(user.getId(), trip);
+        return result;
     }
 }

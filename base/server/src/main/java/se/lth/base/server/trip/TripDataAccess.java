@@ -13,7 +13,7 @@ public class TripDataAccess extends DataAccess<Trip> {
         @Override
         public Trip map(ResultSet resultSet) throws SQLException {
             return new Trip(resultSet.getInt("trip_id"), resultSet.getInt("driver_id"),
-                    resultSet.getInt("from_location_id"), resultSet.getInt("to_location_id"), resultSet.getDate("start_time"), resultSet.getDate("end_time"), resultSet.getInt("seat_capacity"));
+                    resultSet.getInt("from_location_id"), resultSet.getInt("to_location_id"), resultSet.getTimestamp("start_time"), resultSet.getTimestamp("end_time"), resultSet.getInt("seat_capacity"));
         }
     }
 
