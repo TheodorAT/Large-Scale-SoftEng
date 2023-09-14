@@ -94,6 +94,11 @@ INSERT INTO users(role_id, username, salt, password_hash)
     VALUES (1, 'Admin', -2883142073796788660, '8dc0e2ab-4bf1-7671-c0c4-d22ffb55ee59'),
            (2, 'Test', 5336889820313124494, '144141f3-c868-85e8-0243-805ca28cdabd');
 
+-- #TODO remove when adding locations
+INSERT INTO locations(name, latitude, longitude)
+    VALUES  ('Test Location 1', 0, 0),
+            ('Test Location 2', 0, 0);
+
 
 
 
