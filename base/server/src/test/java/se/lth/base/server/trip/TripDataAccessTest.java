@@ -10,6 +10,7 @@ import se.lth.base.server.trip.TripDataAccess;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -21,7 +22,7 @@ public class TripDataAccessTest extends BaseDataAccessTest {
 
     @Test
     public void addTrip() {
-        Trip data = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, -1, -1, new Date(10200), new Date(10400), 5));
+        Trip data = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, new Timestamp(10200), new Timestamp(10400), 5));
         assertEquals(TEST.getId(), data.getDriverId());
         assertEquals(10200, data.getStartTime().getTime());
         assertEquals(10400, data.getEndTime().getTime());

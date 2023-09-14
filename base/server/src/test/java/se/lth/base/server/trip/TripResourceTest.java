@@ -8,7 +8,11 @@ import se.lth.base.server.trip.Trip;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+
+import java.sql.Timestamp;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,16 +33,14 @@ public class TripResourceTest extends BaseResourceTest {
 
     @Test
     public void addTrip() {
-        Map<String, String> parametersMap = Map.of(
-            "fromLocation", "-1", 
-            "toLocation", "-1", 
-            "startTime", "10200", 
-            "endTime", "10400"
-        );
-        System.out.println(Entity.json(parametersMap));
-        Trip trip = target("trip").request().post(Entity.json(parametersMap), Trip.class);
+        Trip t = new Trip(1, 1, 1, 2, new Timestamp(10200), new Timestamp(12600), 4);
+        
+        Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
+                
+        Trip trip = target("trip").request().post(e, Trip.class);
+        
         assertEquals(TEST.getId(), trip.getDriverId());
-        assertEquals("10200", trip.getStartTime().getTime());
-        assertEquals("10400", trip.getEndTime().getTime());
+        assertEquals(10000, trip.getStartTime().getTime());
+        assertEquals(12000, trip.getEndTime().getTime());
     }
 }
