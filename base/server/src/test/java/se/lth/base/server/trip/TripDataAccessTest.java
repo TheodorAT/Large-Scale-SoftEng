@@ -3,15 +3,10 @@ package se.lth.base.server.trip;
 import org.junit.Test;
 import se.lth.base.server.Config;
 import se.lth.base.server.database.BaseDataAccessTest;
-import se.lth.base.server.database.DataAccessException;
-import se.lth.base.server.trip.Trip;
-import se.lth.base.server.trip.TripDataAccess;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * @author Rasmus Ros, rasmus.ros@cs.lth.se

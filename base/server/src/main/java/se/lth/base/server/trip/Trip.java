@@ -1,7 +1,6 @@
 package se.lth.base.server.trip;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class Trip {
 

@@ -3,21 +3,10 @@ package se.lth.base.server.trip;
 import se.lth.base.server.Config;
 import se.lth.base.server.user.*;
 
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.Response;
-
-import org.glassfish.jersey.server.model.Resource;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 @Path("trip")
 public class TripResource {
