@@ -11,3 +11,4 @@ If you have not already created a merge request by the end of 2023-09-15, you ne
 3. Create a merge request on CourseGit.
 
 ## Write your name here
+- Magnus Remnetorp
