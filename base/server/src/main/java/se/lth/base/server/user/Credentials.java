@@ -49,15 +49,15 @@ public class Credentials {
         return role;
     }
 
-    public String getFirst_name(){
+    public String getFirst_Name(){
         return first_name; 
     }
 
-    public String getLast_name(){
+    public String getLast_Name(){
         return last_name; 
     }
 
-    public String getPhone_number(){
+    public String getPhone_Number(){
         return phone_number; 
     }
 

@@ -36,7 +36,9 @@ public class UserDataAccess extends DataAccess<User> {
         @Override
         public User map(ResultSet resultSet) throws SQLException {
             return new User(resultSet.getInt("user_id"), Role.valueOf(resultSet.getString("role")),
-                    resultSet.getString("username"));
+                    resultSet.getString("username"), resultSet.getString("first_name"), 
+                    resultSet.getString("last_name"), resultSet.getString("email"), 
+                    resultSet.getString("phone_number"));
         }
     }
 
@@ -59,7 +61,8 @@ public class UserDataAccess extends DataAccess<User> {
                 "INSERT INTO users(role_id, username, password_hash, salt) VALUES (("
                         + "SELECT role_id FROM user_role WHERE user_role.role=?),?,?,?)",
                 credentials.getRole().name(), credentials.getUsername(), credentials.generatePasswordHash(salt), salt);
-        return new User(userId, credentials.getRole(), credentials.getUsername());
+        return new User(userId, credentials.getRole(), credentials.getUsername(), credentials.getFirst_Name(),
+                        credentials.getLast_Name(), credentials.getEmail(), credentials.getPhone_Number());
     }
 
     public User updateUser(int userId, Credentials credentials) {
