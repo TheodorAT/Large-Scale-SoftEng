@@ -25,11 +25,20 @@ public class Credentials {
     @Expose(serialize = false)
     private final String password;
     private final Role role;
+    private final String first_name; 
+    private final String last_name;
+    private final String email; 
+    private final String phone_number;
 
-    public Credentials(String username, String password, Role role) {
+    public Credentials(String username, String password, Role role, String first_name, 
+                       String last_name, String email, String phone_number) {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.first_name = first_name; 
+        this.last_name = last_name; 
+        this.email = email; 
+        this.phone_number = phone_number; 
     }
 
     public String getUsername() {
@@ -38,6 +47,22 @@ public class Credentials {
 
     public Role getRole() {
         return role;
+    }
+
+    public String getFirst_name(){
+        return first_name; 
+    }
+
+    public String getLast_name(){
+        return last_name; 
+    }
+
+    public String getPhone_number(){
+        return phone_number; 
+    }
+
+    public String getEmail(){
+        return email; 
     }
 
     // Password hashing function parameters.
@@ -84,9 +109,9 @@ public class Credentials {
         long s1 = generateSalt();
         long s2 = generateSalt();
         System.out.println(s1);
-        System.out.println(new Credentials("Admin", "password", Role.ADMIN).generatePasswordHash(s1));
+        System.out.println(new Credentials("Admin", "password", Role.ADMIN, "Admin", "Admin", "admin@admin.se", "+4600000000").generatePasswordHash(s1));
 
         System.out.println(s2);
-        System.out.println(new Credentials("Test", "password", Role.USER).generatePasswordHash(s2));
+        System.out.println(new Credentials("Test", "password", Role.USER, "User", "User", "user@user.se", "+4600000001").generatePasswordHash(s2));
     }
 }

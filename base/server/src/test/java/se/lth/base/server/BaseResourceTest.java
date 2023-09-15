@@ -20,9 +20,9 @@ import java.util.Collections;
 public class BaseResourceTest extends JerseyTest {
 
     protected static final User ADMIN = new User(1, Role.ADMIN, "Admin");
-    protected static final Credentials ADMIN_CREDENTIALS = new Credentials("Admin", "password", Role.ADMIN);
+    protected static final Credentials ADMIN_CREDENTIALS = new Credentials("Admin", "password", Role.ADMIN, "User", "User", "user@user07.se", "+4600000001");
     protected static final User TEST = new User(2, Role.USER, "Test");
-    protected static final Credentials TEST_CREDENTIALS = new Credentials("Test", "password", Role.USER);
+    protected static final Credentials TEST_CREDENTIALS = new Credentials("Test", "password", Role.USER, "User", "User", "user@user08.se", "+4600000001");
 
     private static final String IN_MEM_DRIVER_URL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
 
