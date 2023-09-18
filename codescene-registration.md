@@ -14,4 +14,4 @@ If you have not already created a merge request by the end of 2023-09-15, you ne
 - Magnus Remnetorp
 - Bianca Widstam
 - Amanda Nystedt
-
+- Anton Tingelholm
