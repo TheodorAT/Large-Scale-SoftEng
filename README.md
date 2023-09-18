@@ -48,7 +48,7 @@ formatting standard used in the [Eclipse JDT Language Server](https://github.com
 
 ## Start working on a new feature
 
-1. Select the user story you will work on in the standup meeting. All discussion and task selection will be done on the card related to the task in [Favro](https://favro.com/organization/b33ec59bd1d4f62903322255/acf3cab4a8408b670a0257cc). 
+1. Select the user story you will work on in the standup meeting. All discussion and task selection will be done on the card related to the task in [Favro](https://favro.com/organization/b33ec59bd1d4f62903322255/acf3cab4a8408b670a0257cc).
 
 2. If the user story is not broken into tasks, break it up into tasks. Tag them to either frontend or backend.
 
@@ -62,11 +62,9 @@ formatting standard used in the [Eclipse JDT Language Server](https://github.com
 
 7. Write code and tests covering the code you wrote. Document new functions with doc strings and lines of code that are not described by the code itself. Make sure that the code is correctly formatted using `make check`/`make format`.
 
-8. Commit as often as you like, preferably after every big change.
-When the feature is ready to be reviewed, push the branch to GitLab: `git push -u origin createRegistering-ETS-766`
+8. Commit and push to your branch as often as you like, preferably after every big change. Start every commit message with the following tag: \[your-task-card-id-on-Favro\]. Do the first push with `git push -u origin createRegistering-ETS-766`, after that `git push` should suffice.
 
-9. Create a merge request to the main branch on the [coursegit website](https://coursegit.cs.lth.se/etsn05/team-1-2023/-/branches) website. Don't forget to run `git fetch main && git merge origin/main` to get the latest changes.
-
+9. When the feature is ready to be reviewed, create a merge request to the main branch on the [coursegit website](https://coursegit.cs.lth.se/etsn05/team-1-2023/-/branches) website. Don't forget to run `git fetch main && git merge origin/main` to get the latest changes.
 
 ### Configure your editor
 
