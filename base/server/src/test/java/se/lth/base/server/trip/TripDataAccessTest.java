@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 import java.sql.Timestamp;
 
 /**
- * @author Rasmus Ros, rasmus.ros@cs.lth.se
+ * @author Isak Wahlqvist
  */
 public class TripDataAccessTest extends BaseDataAccessTest {
 
@@ -17,11 +17,9 @@ public class TripDataAccessTest extends BaseDataAccessTest {
 
     @Test
     public void addTrip() {
-        Trip data = tripDao.addTrip(TEST.getId(),
-                new Trip(-1, -1, 1, 2, new Timestamp(10200), new Timestamp(10400), 5));
+        Trip data = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, new Timestamp(10200), new Timestamp(0), 5));
         assertEquals(TEST.getId(), data.getDriverId());
         assertEquals(10200, data.getStartTime().getTime());
-        assertEquals(10400, data.getEndTime().getTime());
         assertEquals(5, data.getSeatCapacity());
     }
 }
