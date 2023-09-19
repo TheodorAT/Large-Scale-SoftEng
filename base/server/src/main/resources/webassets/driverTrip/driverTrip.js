@@ -64,16 +64,18 @@ base.driverTripController = function () {
         controller.filterFunction("to");
       };
 
-      let from = document.querySelectorAll("#dropdown-from li option");
+      let from = document.querySelectorAll("#dropdown-from li button");
       for (var i = 0, il = from.length; i < il; i++) {
         from[i].onclick = function (event) {
-          controller.selectCity(event.target.label, "from");
+          event.preventDefault();
+          controller.selectCity(event.target.innerHTML, "from");
         };
       }
-      let to = document.querySelectorAll("#dropdown-to li option");
+      let to = document.querySelectorAll("#dropdown-to li button");
       for (var i = 0, il = to.length; i < il; i++) {
         to[i].onclick = function (event) {
-          controller.selectCity(event.target.label, "to");
+          event.preventDefault();
+          controller.selectCity(event.target.innerHTML, "to");
         };
       }
 
@@ -91,27 +93,27 @@ base.driverTripController = function () {
         let ul = document.getElementById("dropdown-" + id);
         let li = document.createElement("li");
         ul.appendChild(li);
-        let option = document.createElement("option");
-        option.text = destinations[i];
-        option.classList.add("dropdown-item");
-        li.appendChild(option);
+        let button = document.createElement("button");
+        button.innerHTML = destinations[i];
+        button.classList.add("dropdown-item");
+        li.appendChild(button);
       }
     },
-    selectCity: function (option, id) {
-      document.getElementById(id).value = option;
+    selectCity: function (city, id) {
+      document.getElementById(id).value = city;
       document.getElementById("dropdown-" + id).classList.toggle("show");
     },
     filterFunction: function (id) {
-      var input, filter, options, i;
+      var input, filter, citys, i;
       input = document.getElementById(id);
       filter = input.value.toUpperCase();
-      options = document.querySelectorAll("#dropdown-" + id + " li option");
-      for (i = 0; i < options.length; i++) {
-        let txtValue = options[i].textContent || options[i].innerText;
+      citys = document.querySelectorAll("#dropdown-" + id + " li button");
+      for (i = 0; i < citys.length; i++) {
+        let txtValue = citys[i].textContent || citys[i].innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          options[i].style.display = "";
+          citys[i].style.display = "";
         } else {
-          options[i].style.display = "none";
+          citys[i].style.display = "none";
         }
       }
     },
