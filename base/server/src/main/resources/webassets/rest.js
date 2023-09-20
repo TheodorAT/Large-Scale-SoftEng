@@ -12,6 +12,12 @@ base.rest = (function () {
     this.createdDate = new Date(this.created);
   };
 
+  const Trip = function (json) {
+    Object.assign(this, json);
+    this.startTime = new Date(this.startTime);
+    this.endTime = new Date(this.endTime);
+  };
+
   const Role = function (role) {
     this.name = role;
     this.label = this.name[0] + this.name.toLowerCase().slice(1);
@@ -34,6 +40,7 @@ base.rest = (function () {
   base.Foo = Foo;
   base.User = User;
   base.Role = Role;
+  base.Trip = Trip;
 
   // This method extends the functionality of fetch by adding default error handling.
   // Using it is entirely optional.
@@ -168,6 +175,49 @@ base.rest = (function () {
     deleteUser: function (userId) {
       return baseFetch("/rest/user/" + userId, { method: "DELETE" });
     },
+
+      /*
+     * Fetches the foos of the user, either the currently logged in one, or of a specific user (admin only).
+     * userId (optional): a specific user OR if userId is not specified.
+     * returns: an array of Foo
+     * example: const someonesFoos = base.rest.getFoos(1);
+     */
+    getDestinations: function () {
+      return baseFetch("/rest/location/all",{method:"GET"}).then((response) => response.json());
+    },
+
+        /*
+     * Adds trip expects javascript object containing payload
+     * trip: plain javascript object to add
+     * returns: Trip object
+     * example: const myTrip = base.rest.addFoo({'payload': 'i wrote this in the input field'});
+     */
+    createTrip: function (trip) {
+      console.log(trip)
+      return baseFetch("/rest/trip", {
+        method: "POST",
+        body: JSON.stringify(trip),
+        headers: jsonHeader,
+      })
+        .then((response) => response.json())
+        .then((f) => new Trip(f));
+    },
+
+      /*
+     * Fetches the trips of the driver
+     * userId (optional): a specific user OR if userId is not specified.
+     * returns: an array of Trips
+     * example: const someonesFoos = base.rest.getFoos(1);
+     */
+    getDriverTrips: function () {
+      return baseFetch("/rest/trip/driver", {
+        method: "GET"
+      })
+        .then((response) => response.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
+    },
+
+
 
     /*
      * Fetches the foos of the user, either the currently logged in one, or of a specific user (admin only).

@@ -3,6 +3,8 @@ package se.lth.base.server.trip;
 import se.lth.base.server.Config;
 import se.lth.base.server.user.*;
 
+import java.util.List;
+
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
@@ -22,6 +24,14 @@ public class TripResource {
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Trip createTrip(Trip trip) {
         Trip result = tripDao.addTrip(user.getId(), trip);
+        return result;
+    }
+
+    @Path("driver")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public List<Trip> getTripsFromDriver() {
+        List<Trip> result = tripDao.getTripsFromDriver(user.getId());
         return result;
     }
 }
