@@ -177,10 +177,9 @@ base.rest = (function () {
     },
 
     /*
-     * Fetches the foos of the user, either the currently logged in one, or of a specific user (admin only).
-     * userId (optional): a specific user OR if userId is not specified.
-     * returns: an array of Foo
-     * example: const someonesFoos = base.rest.getFoos(1);
+     * Fetches the destinations
+     * returns: an array of destinations
+     * example: const destinations = base.rest.getDestinations(1);
      */
     getDestinations: function () {
       return baseFetch("/rest/location/all", { method: "GET" }).then((response) => response.json());
@@ -190,7 +189,7 @@ base.rest = (function () {
      * Adds trip expects javascript object containing payload
      * trip: plain javascript object to add
      * returns: Trip object
-     * example: const myTrip = base.rest.addFoo({'payload': 'i wrote this in the input field'});
+     * example: const myTrip = base.rest.createTrip({fromLocationId: "id", toLocationId: "id", startTime: "time", seatCapacity: "seats"});
      */
     createTrip: function (trip) {
       console.log(trip);
@@ -205,9 +204,8 @@ base.rest = (function () {
 
     /*
      * Fetches the trips of the driver
-     * userId (optional): a specific user OR if userId is not specified.
      * returns: an array of Trips
-     * example: const someonesFoos = base.rest.getFoos(1);
+     * example: const trips = base.rest.getDriverTrips(1);
      */
     getDriverTrips: function () {
       return baseFetch("/rest/trip/driver", {
