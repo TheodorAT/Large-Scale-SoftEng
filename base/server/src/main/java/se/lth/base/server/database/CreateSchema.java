@@ -46,11 +46,12 @@ public class CreateSchema {
 
     public void insertLocations(String path) {
         String insertDataQuery = "INSERT INTO locations (municipality, name, longitude, latitude) VALUES (?, ?, ?, ?);";
-        
+
         try (Connection conn = new DataAccess<>(driverUrl, null).getConnection()) {
             try (PreparedStatement insertDataStmt = conn.prepareStatement(insertDataQuery);
-                 BufferedReader br = new BufferedReader(new InputStreamReader(DataAccess.class.getResourceAsStream(path)))) {
-                
+                    BufferedReader br = new BufferedReader(
+                            new InputStreamReader(DataAccess.class.getResourceAsStream(path)))) {
+
                 String line = br.readLine();
                 while ((line = br.readLine()) != null) {
                     StringTokenizer st = new StringTokenizer(line, ",");
@@ -63,7 +64,7 @@ public class CreateSchema {
                     insertDataStmt.addBatch();
                     System.out.println(line);
                 }
-                
+
                 insertDataStmt.executeBatch();
             }
 

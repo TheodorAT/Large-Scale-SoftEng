@@ -29,8 +29,9 @@ public class TripDataAccess extends DataAccess<Trip> {
 
         // #TODO get the endtime from the location distances and the start time
         // Right now it is just the starttime + 1 hour (3600000 ms)
-        int trip_id = insert(sql, driverId, trip.getFromLocationId(), trip.getToLocationId(), new Timestamp(trip.getStartTime()),
-                new Timestamp(trip.getStartTime() + 3600000), trip.getSeatCapacity());
+        int trip_id = insert(sql, driverId, trip.getFromLocationId(), trip.getToLocationId(),
+                new Timestamp(trip.getStartTime()), new Timestamp(trip.getStartTime() + 3600000),
+                trip.getSeatCapacity());
 
         return new Trip(trip_id, driverId, trip.getFromLocationId(), trip.getToLocationId(), trip.getStartTime(),
                 trip.getStartTime() + 3600000, trip.getSeatCapacity());

@@ -12,8 +12,8 @@ public class LocationDataAccess extends DataAccess<Location> {
     private static class LocationMapper implements Mapper<Location> {
         @Override
         public Location map(ResultSet resultSet) throws SQLException {
-            return new Location(resultSet.getInt("location_id"), resultSet.getString("municipality"), resultSet.getString("name"),
-                    resultSet.getDouble("latitude"), resultSet.getDouble("longitude"));
+            return new Location(resultSet.getInt("location_id"), resultSet.getString("municipality"),
+                    resultSet.getString("name"), resultSet.getDouble("latitude"), resultSet.getDouble("longitude"));
         }
     }
 
