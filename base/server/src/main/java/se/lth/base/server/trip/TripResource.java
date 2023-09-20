@@ -5,6 +5,7 @@ import se.lth.base.server.user.*;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
@@ -21,9 +22,18 @@ public class TripResource {
     }
 
     @POST
+    @RolesAllowed(Role.Names.DRIVER)
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Trip createTrip(Trip trip) {
         Trip result = tripDao.addTrip(user.getId(), trip);
+        return result;
+    }
+
+    @Path("driver/{driverId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public List<Trip> getTripsFromDriver(@PathParam("driverId") int driverId) {
+        List<Trip> result = tripDao.getTripsFromDriver(driverId);
         return result;
     }
 
