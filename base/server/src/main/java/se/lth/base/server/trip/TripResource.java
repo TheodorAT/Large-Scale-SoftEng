@@ -30,18 +30,23 @@ public class TripResource {
     /**
      * Retrieve a list of trips matching specified parameters.
      * 
-     * @param fromLocationId ID of the starting as parameter when searching for the trips.
-     * @param toLocationId   ID of the destination as parameter when searching for the trips.
-     * @return A list of Trip objects representing trips that match the parameters. Returned to the client in JSON format.
+     * @param fromLocationId
+     *            ID of the starting as parameter when searching for the trips.
+     * 
+     * @param toLocationId
+     *            ID of the destination as parameter when searching for the trips.
+     * 
+     * @return A list of Trip objects representing trips that match the parameters. Returned to the client in JSON
+     *         format.
      *
      */
     @GET
     @Path("/search") // Will need to update, (update in test as well)
     @Produces(MediaType.APPLICATION_JSON)
     public List<Trip> searchTrips(
-            //possible to add parameters below, such as date/time/seats. Needs to be added in method availableTrips (TripDataAccess) as well. (requires also modify respective test method)
-            @QueryParam("fromLocationId") int fromLocationId,
-            @QueryParam("toLocationId") int toLocationId) {
+            // possible to add parameters below, such as date/time/seats. Needs to be added in method availableTrips
+            // (TripDataAccess) as well. (requires also modify respective test method)
+            @QueryParam("fromLocationId") int fromLocationId, @QueryParam("toLocationId") int toLocationId) {
         List<Trip> matchingTrips = tripDao.availableTrips(fromLocationId, toLocationId);
         return matchingTrips;
     }

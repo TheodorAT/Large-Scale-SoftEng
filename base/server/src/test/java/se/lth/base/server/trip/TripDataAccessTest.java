@@ -29,18 +29,15 @@ public class TripDataAccessTest extends BaseDataAccessTest {
     /**
      * Test method for retrieving available trips from the database.
      * 
-     * Test procedure: 
-     *  1. Creates sample of trips and add them to the database
-     *  2. Retrieves available trips with parameters fromLocationId=1 and toLocationId=2
-     *  3. Validates the ID of the retrieved trip and checks the size of the list.
-     *  4. Retrieves available trips with parameters fromLocationId=2 and toLocationId=3
-     *  5. Goes through the list and checks the locations for each trip.
-     *  6. Checks if the sum of all trip-ids are correct.
+     * Test procedure: 1. Creates sample of trips and add them to the database. 2. Retrieves available trips with
+     * parameters given parameters. 3. Validates the ID of the retrieved trip and checks the size of the list. 4.
+     * Retrieves available trips with new parameters. 5. Goes through the list and checks the locations for each trip.
+     * 6. Checks if the sum of all trip-ids are correct.
      */
     @Test
-    public void availableTrips(){
+    public void availableTrips() {
         Trip trip1 = tripDao.addTrip(TEST.getId(),
-                new Trip(-1, -1, 1, 2, new Timestamp(10200), new Timestamp(10400), 5));  
+                new Trip(-1, -1, 1, 2, new Timestamp(10200), new Timestamp(10400), 5));
         Trip trip2 = tripDao.addTrip(TEST.getId(),
                 new Trip(-1, -1, 2, 3, new Timestamp(10600), new Timestamp(10800), 3));
         Trip trip3 = tripDao.addTrip(TEST.getId(),
@@ -50,11 +47,11 @@ public class TripDataAccessTest extends BaseDataAccessTest {
 
         List<Trip> result = tripDao.availableTrips(1, 2);
         assertEquals(result.get(0).getId(), trip1.getId());
-        assertEquals(result.size(),1);
+        assertEquals(result.size(), 1);
 
         result = tripDao.availableTrips(2, 3);
         int sumOfIds = 0;
-        for (int i = 0; i < result.size(); i++){
+        for (int i = 0; i < result.size(); i++) {
             assertEquals(result.get(i).getFromLocationId(), 2);
             assertEquals(result.get(i).getToLocationId(), 3);
             sumOfIds += result.get(i).getId();

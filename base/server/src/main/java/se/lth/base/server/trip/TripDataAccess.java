@@ -31,19 +31,23 @@ public class TripDataAccess extends DataAccess<Trip> {
                 trip.getEndTime(), trip.getSeatCapacity());
     }
 
-     /**
+    /**
      * Retrieves a list of available trips based on the parameters.
      * 
-     * @param fromLocationId ID of starting location.
-     * @param toLocationId   ID of destination.
+     * @param fromLocationId
+     *            ID of starting location.
+     * 
+     * @param toLocationId
+     *            ID of destination.
+     * 
      * @return A list of Trip objects (available trips matching the parameters).
      * 
      */
     public List<Trip> availableTrips(int fromLocationId, int toLocationId) {
-        //possible to add parameters below, such as date/time/seats. Needs to be added in method searchTrips (TripResource) as well. (requires also modify respective test method)
-        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ?";   
+        // possible to add parameters below, such as date/time/seats. Needs to be added in method searchTrips
+        // (TripResource) as well. (requires also modify respective test method)
+        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ?";
         return query(sql, fromLocationId, toLocationId);
     }
-    
 
 }
