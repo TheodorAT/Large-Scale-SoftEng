@@ -10,6 +10,8 @@ base.driverTripController = function () {
 
   let model = [];
 
+  let citys = [];
+
   const DriverTripViewModel = function (_trip) {
     this.trip = _trip;
     const viewModel = this;
@@ -22,8 +24,10 @@ base.driverTripController = function () {
     this.update = function (trElement) {
       const td = trElement.children;
       td[0].textContent = viewModel.trip.id;
-      td[1].textContent = viewModel.trip.fromLocationId;
-      td[2].textContent = viewModel.trip.toLocationId;
+      let fromlocation = controller.getCitysFromId(viewModel.trip.fromLocationId);
+      let tolocation = controller.getCitysFromId(viewModel.trip.toLocationId);
+      td[1].textContent = fromlocation.name;
+      td[2].textContent = tolocation.name;
       td[3].textContent = viewModel.trip.seatCapacity;
       const start = viewModel.trip.startTime;
       td[4].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
@@ -52,22 +56,26 @@ base.driverTripController = function () {
         controller.submitDriver();
         return false;
       };
-      base.rest.getDestinations().then(function (destinations) {
-        controller.setCitys("from", destinations);
-        controller.setCitys("to", destinations);
-      });
       document.getElementById("from").onkeyup = function (event) {
         controller.filterFunction("from");
       };
       document.getElementById("to").onkeyup = function (event) {
         controller.filterFunction("to");
       };
-      // Loads all registered trips from the server through the REST API, see res.js for definition.
+      // Loads all registered trips and destinations from the server through the REST API, see res.js for definition.
       // It will replace the model with the trips, and then render them through the view.
-      base.rest.getDriverTrips().then(function (trips) {
-        model = trips.map((t) => new DriverTripViewModel(t));
-        view.render();
+      base.rest.getDestinations().then(function (destinations) {
+        citys = destinations;
+        controller.setCitys("from", destinations);
+        controller.setCitys("to", destinations);
+        base.rest.getDriverTrips().then(function (trips) {
+          model = trips.map((t) => new DriverTripViewModel(t));
+          view.render();
+        });
       });
+    },
+    getCitysFromId: function(id) {
+      return citys.find((city) => city.locationId == id);
     },
     setCitys: function (id, destinations) {
       for (let i = 0; i < destinations.length; i++) {
@@ -110,11 +118,13 @@ base.driverTripController = function () {
       const seats = document.getElementById("seats").value;
       const datetime = new Date(document.getElementById("datetime").value).getTime();
       const form = { fromLocationId: from, toLocationId: to, startTime: datetime, seatCapacity: seats };
+      const fromCity = controller.getCitysFromId(from).name;
+      const toCity = controller.getCitysFromId(to).name;
       document.getElementById("registeredTripsModal").textContent =
         "From: " +
-        from +
+        fromCity +
         " To: " +
-        to +
+        toCity +
         " Date: " +
         new Date(datetime).toLocaleDateString() +
         " Number of available seats: " +
