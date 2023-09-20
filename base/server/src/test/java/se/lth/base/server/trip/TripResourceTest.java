@@ -34,7 +34,7 @@ public class TripResourceTest extends BaseResourceTest {
 
         assertEquals(TEST.getId(), trip.getDriverId());
         assertEquals(10000, trip.getStartTime());
-        assertEquals(12000, trip.getEndTime());
+        assertEquals(10000 + 3600000, trip.getEndTime());
     }
 
     /**
@@ -51,8 +51,7 @@ public class TripResourceTest extends BaseResourceTest {
         int fromLocationId = 1;
         int toLocationId = 2;
         Trip trip1 = new Trip(1, 1, fromLocationId, toLocationId, 10200, 12600, 4);
-        Trip trip2 = new Trip(1, 1, fromLocationId + 1, toLocationId + 1, 10200, 12600,
-                4);
+        Trip trip2 = new Trip(1, 1, fromLocationId + 1, toLocationId + 1, 10200, 12600, 4);
 
         for (int i = 0; i < 5; i++) {
             target("trip").request().post(Entity.entity(trip1, MediaType.APPLICATION_JSON), Trip.class);

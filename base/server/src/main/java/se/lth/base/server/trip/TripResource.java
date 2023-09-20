@@ -5,8 +5,6 @@ import se.lth.base.server.user.*;
 
 import java.util.List;
 
-import java.util.List;
-
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;

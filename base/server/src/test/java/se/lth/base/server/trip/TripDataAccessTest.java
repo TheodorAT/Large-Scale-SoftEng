@@ -23,7 +23,6 @@ public class TripDataAccessTest extends BaseDataAccessTest {
         assertEquals(5, data.getSeatCapacity());
     }
 
-
     /**
      * Test method for retrieving available trips from the database.
      * 
@@ -34,14 +33,10 @@ public class TripDataAccessTest extends BaseDataAccessTest {
      */
     @Test
     public void availableTrips() {
-        Trip trip1 = tripDao.addTrip(TEST.getId(),
-                new Trip(-1, -1, 1, 2, 10200, 10400, 5));
-        Trip trip2 = tripDao.addTrip(TEST.getId(),
-                new Trip(-1, -1, 2, 3, 10600, 10800, 3));
-        Trip trip3 = tripDao.addTrip(TEST.getId(),
-                new Trip(-1, -1, 2, 3, 11000, 11200, 2));
-        Trip trip4 = tripDao.addTrip(TEST.getId(),
-                new Trip(-1, -1, 2, 3, 13000, 14200, 4));
+        Trip trip1 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10200, 10400, 5));
+        Trip trip2 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 2, 3, 10600, 10800, 3));
+        Trip trip3 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 2, 3, 11000, 11200, 2));
+        Trip trip4 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 2, 3, 13000, 14200, 4));
 
         List<Trip> result = tripDao.availableTrips(1, 2);
         assertEquals(result.get(0).getId(), trip1.getId());
