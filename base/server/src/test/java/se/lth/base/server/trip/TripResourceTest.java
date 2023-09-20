@@ -5,11 +5,15 @@ import org.junit.Test;
 import se.lth.base.server.BaseResourceTest;
 
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TripResourceTest extends BaseResourceTest {
 
@@ -29,5 +33,53 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(TEST.getId(), trip.getDriverId());
         assertEquals(10000, trip.getStartTime().getTime());
         assertEquals(12000, trip.getEndTime().getTime());
+    }
+
+
+
+ 
+    /** 
+     * Test method to validate the retrieval of available trips based on location parameters.
+     * 
+     * Test procedure:
+     * 1. Creating trips and performing HTTP POST request to add new trips to the database. 
+     * 2. Performing a HTTP GET request to retrieve the available trips matching the parameteters fromLocationId = 1 and toLocationID = 2. 
+     * 3. Check the list is not null or empty. 
+     * 4. Validates the size of the list.
+     * 5. Validates the fromLocation and destination of the first trip in the list.
+     * 6. TOOD - more tests to validate
+     * 
+     */
+    @Test
+    public void availableTrips(){
+        int fromLocationId = 1;
+        int toLocationId = 2;
+        Trip trip1 = new Trip(1, 1, fromLocationId, toLocationId, new Timestamp(10200), new Timestamp(12600), 4);
+        Trip trip2 = new Trip(1, 1, fromLocationId + 1, toLocationId + 1, new Timestamp(10200), new Timestamp(12600), 4);
+
+        for(int i = 0; i < 5; i++){
+            target("trip")
+                .request()
+                .post(Entity.entity(trip1, MediaType.APPLICATION_JSON), Trip.class);
+            
+            // adding other trips to the database
+            if (i % 2 != 0){
+                target("trip")
+                    .request()
+                    .post(Entity.entity(trip2, MediaType.APPLICATION_JSON), Trip.class);
+            }
+        }
+        
+        List<Trip> trips = target("trip/search")
+                .queryParam("fromLocationId", fromLocationId)
+                .queryParam("toLocationId", toLocationId)
+                .request()
+                .get(new GenericType<List<Trip>>(){});
+
+        assertNotNull(trips);
+        assertFalse(trips.isEmpty());
+        assertEquals(trips.size(), 5);
+        assertEquals(trips.get(0).getFromLocationId(), fromLocationId);
+        assertEquals(trips.get(0).getToLocationId(), toLocationId);
     }
 }
