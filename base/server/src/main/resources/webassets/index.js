@@ -12,6 +12,11 @@ base.mainController = (function () {
       partial: "admin/user-admin.html",
       controller: base.userAdminController,
     },
+    search:{
+      partial: "searchForAvailbleShuttles/search.html",
+      controller: base.searchShuttlesController,
+    },
+
   };
 
   const model = {
