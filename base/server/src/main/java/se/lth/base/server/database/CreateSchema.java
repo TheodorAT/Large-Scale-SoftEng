@@ -3,9 +3,13 @@ package se.lth.base.server.database;
 import org.h2.tools.RunScript;
 import se.lth.base.server.Config;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.StringTokenizer;
 
 /**
  * Contains helpers for creating the database schema. Each time the server starts
@@ -25,6 +29,7 @@ public class CreateSchema {
         CreateSchema cs = new CreateSchema(Config.instance().getDatabaseDriver());
         cs.dropAll();
         cs.createSchema();
+        cs.insertLocations("dataleverans/areas.csv");
     }
 
     public void dropAll() {
@@ -35,6 +40,35 @@ public class CreateSchema {
         try (Connection conn = new DataAccess<>(driverUrl, null).getConnection()) {
             runScript(conn);
         } catch (SQLException e) {
+            throw new DataAccessException(e, ErrorType.UNKNOWN);
+        }
+    }
+
+    public void insertLocations(String path) {
+        String insertDataQuery = "INSERT INTO locations (municipality, name, longitude, latitude) VALUES (?, ?, ?, ?);";
+
+        try (Connection conn = new DataAccess<>(driverUrl, null).getConnection()) {
+            try (PreparedStatement insertDataStmt = conn.prepareStatement(insertDataQuery);
+                    BufferedReader br = new BufferedReader(
+                            new InputStreamReader(DataAccess.class.getResourceAsStream(path)))) {
+
+                String line = br.readLine();
+                while ((line = br.readLine()) != null) {
+                    StringTokenizer st = new StringTokenizer(line, ",");
+                    int id = Integer.parseInt(st.nextToken());
+                    insertDataStmt.setString(1, st.nextToken());
+                    insertDataStmt.setString(2, st.nextToken());
+                    insertDataStmt.setDouble(3, Double.parseDouble(st.nextToken()));
+                    insertDataStmt.setDouble(4, Double.parseDouble(st.nextToken()));
+
+                    insertDataStmt.addBatch();
+                    System.out.println(line);
+                }
+
+                insertDataStmt.executeBatch();
+            }
+
+        } catch (SQLException | IOException e) {
             throw new DataAccessException(e, ErrorType.UNKNOWN);
         }
     }
