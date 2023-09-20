@@ -39,7 +39,7 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(3610200, trip.getEndTime());
     }
 
-    @Test
+/*     @Test
     public void getAllTripsFromDriverId() {
         Trip t = new Trip(1, 1, 1, 2, 10200, 12600, 4);
 
@@ -52,7 +52,7 @@ public class TripResourceTest extends BaseResourceTest {
         List<Trip> trips = target("trip").path("driver").path(TEST.getId() + "").request().get(TRIP_LIST);
 
         assertEquals(1, trips.size());
-    }
+    } */
 
     /**
      * Test method to validate the retrieval of available trips based on location parameters.

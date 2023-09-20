@@ -17,6 +17,9 @@ base.rest = (function () {
     this.startTime = new Date(this.startTime);
     this.endTime = new Date(this.endTime);
   };
+  const Location = function (json) {
+    Object.assign(this, json);
+  };
 
   const Role = function (role) {
     this.name = role;
@@ -41,6 +44,7 @@ base.rest = (function () {
   base.User = User;
   base.Role = Role;
   base.Trip = Trip;
+  base.Location = Location;
 
   // This method extends the functionality of fetch by adding default error handling.
   // Using it is entirely optional.
@@ -177,12 +181,14 @@ base.rest = (function () {
     },
 
     /*
-     * Fetches the destinations
-     * returns: an array of destinations
-     * example: const destinations = base.rest.getDestinations(1);
+     * Fetches the locations
+     * returns: an array of locations
+     * example: const locations = base.rest.getLocations();
      */
-    getDestinations: function () {
-      return baseFetch("/rest/location/all", { method: "GET" }).then((response) => response.json());
+    getLocations: function () {
+      return baseFetch("/rest/location/all", { method: "GET" })
+      .then((response) => response.json())
+      .then((locations) => locations.map((l) => new Location(l)));
     },
 
     /*
@@ -192,7 +198,6 @@ base.rest = (function () {
      * example: const myTrip = base.rest.createTrip({fromLocationId: "id", toLocationId: "id", startTime: "time", seatCapacity: "seats"});
      */
     createTrip: function (trip) {
-      console.log(trip);
       return baseFetch("/rest/trip", {
         method: "POST",
         body: JSON.stringify(trip),
