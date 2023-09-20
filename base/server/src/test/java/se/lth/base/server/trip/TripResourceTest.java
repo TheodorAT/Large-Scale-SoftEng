@@ -39,20 +39,19 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(3610200, trip.getEndTime());
     }
 
-/*     @Test
-    public void getAllTripsFromDriverId() {
-        Trip t = new Trip(1, 1, 1, 2, 10200, 12600, 4);
-
-        Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
-
-        Trip trip = target("trip").request().post(e, Trip.class);
-
-        assertEquals(TEST.getId(), trip.getDriverId());
-
-        List<Trip> trips = target("trip").path("driver").path(TEST.getId() + "").request().get(TRIP_LIST);
-
-        assertEquals(1, trips.size());
-    } */
+    /*
+     * @Test public void getAllTripsFromDriverId() { Trip t = new Trip(1, 1, 1, 2, 10200, 12600, 4);
+     * 
+     * Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
+     * 
+     * Trip trip = target("trip").request().post(e, Trip.class);
+     * 
+     * assertEquals(TEST.getId(), trip.getDriverId());
+     * 
+     * List<Trip> trips = target("trip").path("driver").path(TEST.getId() + "").request().get(TRIP_LIST);
+     * 
+     * assertEquals(1, trips.size()); }
+     */
 
     /**
      * Test method to validate the retrieval of available trips based on location parameters.

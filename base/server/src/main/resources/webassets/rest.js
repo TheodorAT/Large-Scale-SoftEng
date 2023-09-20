@@ -187,8 +187,8 @@ base.rest = (function () {
      */
     getLocations: function () {
       return baseFetch("/rest/location/all", { method: "GET" })
-      .then((response) => response.json())
-      .then((locations) => locations.map((l) => new Location(l)));
+        .then((response) => response.json())
+        .then((locations) => locations.map((l) => new Location(l)));
     },
 
     /*

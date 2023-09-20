@@ -28,6 +28,7 @@ public class TripResource {
         Trip result = tripDao.addTrip(user.getId(), trip);
         return result;
     }
+
     /**
      * Retrieve a list of trips matching specified parameters.
      * 
