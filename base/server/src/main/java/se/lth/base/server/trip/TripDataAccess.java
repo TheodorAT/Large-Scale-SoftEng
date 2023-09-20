@@ -3,6 +3,7 @@ package se.lth.base.server.trip;
 import se.lth.base.server.database.DataAccess;
 import se.lth.base.server.database.Mapper;
 
+import java.util.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -40,6 +41,25 @@ public class TripDataAccess extends DataAccess<Trip> {
     public List<Trip> getTripsFromDriver(int driverId) {
         String sql = "SELECT * FROM trips WHERE driver_id = ?";
         return query(sql, driverId);
+    }
+
+    /**
+     * Retrieves a list of available trips based on the parameters.
+     * 
+     * @param fromLocationId
+     *            ID of starting location.
+     * 
+     * @param toLocationId
+     *            ID of destination.
+     * 
+     * @return A list of Trip objects (available trips matching the parameters).
+     * 
+     */
+    public List<Trip> availableTrips(int fromLocationId, int toLocationId) {
+        // possible to add parameters below, such as date/time/seats. Needs to be added in method searchTrips
+        // (TripResource) as well. (requires also modify respective test method)
+        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ?";
+        return query(sql, fromLocationId, toLocationId);
     }
 
 }

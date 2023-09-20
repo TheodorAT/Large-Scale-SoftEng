@@ -98,8 +98,8 @@ INSERT INTO users(role_id, username, salt, password_hash)
 -- #TODO remove when adding locations
 INSERT INTO locations(municipality, name, latitude, longitude)
     VALUES  ('Municipality', 'Test Location 1', 0, 0),
-            ('Municipality', 'Test Location 2', 0, 0);
-
+            ('Municipality', 'Test Location 2', 0, 0),
+            ('Municipality', 'Test Location 3', 0, 0);
 
 
 
