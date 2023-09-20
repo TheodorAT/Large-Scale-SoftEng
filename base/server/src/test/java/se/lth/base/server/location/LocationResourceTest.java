@@ -24,7 +24,7 @@ public class LocationResourceTest extends BaseResourceTest {
     public void getAll() {
         List<Location> locations = target("location").path("all").request().get(LOCATION_LIST);
 
-        // assertEquals(2, locations.size());
+        // assertEquals(3, locations.size());
         // assertEquals("Test Location 1", locations.get(0).getName());
     }
 }

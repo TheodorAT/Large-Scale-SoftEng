@@ -2,7 +2,6 @@ package se.lth.base.server.trip;
 
 import se.lth.base.server.database.DataAccess;
 import se.lth.base.server.database.Mapper;
-import se.lth.base.server.location.Location;
 
 import java.util.*;
 import java.sql.ResultSet;

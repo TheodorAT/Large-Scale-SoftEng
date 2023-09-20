@@ -5,6 +5,7 @@ import se.lth.base.server.user.*;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
@@ -21,12 +22,12 @@ public class TripResource {
     }
 
     @POST
+    @RolesAllowed(Role.Names.DRIVER)
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Trip createTrip(Trip trip) {
         Trip result = tripDao.addTrip(user.getId(), trip);
         return result;
     }
-
     /**
      * Retrieve a list of trips matching specified parameters.
      * 
