@@ -17,9 +17,9 @@ public class TripDataAccessTest extends BaseDataAccessTest {
 
     @Test
     public void addTrip() {
-        Trip data = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, new Timestamp(10200), new Timestamp(0), 5));
+        Trip data = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10200, 0, 5));
         assertEquals(TEST.getId(), data.getDriverId());
-        assertEquals(10200, data.getStartTime().getTime());
+        assertEquals(10200, data.getStartTime());
         assertEquals(5, data.getSeatCapacity());
     }
 }

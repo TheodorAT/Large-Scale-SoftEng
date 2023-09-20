@@ -2,7 +2,6 @@ package se.lth.base.server.trip;
 
 import se.lth.base.server.database.DataAccess;
 import se.lth.base.server.database.Mapper;
-import se.lth.base.server.location.Location;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +15,7 @@ public class TripDataAccess extends DataAccess<Trip> {
         public Trip map(ResultSet resultSet) throws SQLException {
             return new Trip(resultSet.getInt("trip_id"), resultSet.getInt("driver_id"),
                     resultSet.getInt("from_location_id"), resultSet.getInt("to_location_id"),
-                    resultSet.getTimestamp("start_time"), resultSet.getTimestamp("end_time"),
+                    resultSet.getTimestamp("start_time").getTime(), resultSet.getTimestamp("end_time").getTime(),
                     resultSet.getInt("seat_capacity"));
         }
     }
@@ -30,10 +29,11 @@ public class TripDataAccess extends DataAccess<Trip> {
 
         // #TODO get the endtime from the location distances and the start time
         // Right now it is just the starttime + 1 hour (3600000 ms)
-        int trip_id = insert(sql, driverId, trip.getFromLocationId(), trip.getToLocationId(), trip.getStartTime(),
-                new Timestamp(trip.getStartTime().getTime() + 3600000), trip.getSeatCapacity());
+        int trip_id = insert(sql, driverId, trip.getFromLocationId(), trip.getToLocationId(), new Timestamp(trip.getStartTime()),
+                new Timestamp(trip.getStartTime() + 3600000), trip.getSeatCapacity());
+
         return new Trip(trip_id, driverId, trip.getFromLocationId(), trip.getToLocationId(), trip.getStartTime(),
-                new Timestamp(trip.getStartTime().getTime() + 3600000), trip.getSeatCapacity());
+                trip.getStartTime() + 3600000, trip.getSeatCapacity());
     }
 
     public List<Trip> getTripsFromDriver(int driverId) {

@@ -1,18 +1,16 @@
 package se.lth.base.server.trip;
 
-import java.sql.Timestamp;
-
 public class Trip {
 
     private final int id;
     private final int driverId;
     private final int fromLocationId;
     private final int toLocationId;
-    private final Timestamp startTime;
-    private final Timestamp endTime;
+    private final long startTime;
+    private final long endTime;
     private final int seatCapacity;
 
-    public Trip(int id, int driverId, int fromLocationId, int toLocationId, Timestamp startTime, Timestamp endTime,
+    public Trip(int id, int driverId, int fromLocationId, int toLocationId, long startTime, long endTime,
             int seatCapacity) {
         this.id = id;
         this.driverId = driverId;
@@ -39,12 +37,12 @@ public class Trip {
         return toLocationId;
     }
 
-    public Timestamp getStartTime() {
-        return new Timestamp(startTime.getTime());
+    public long getStartTime() {
+        return startTime;
     }
 
-    public Timestamp getEndTime() {
-        return new Timestamp(endTime.getTime());
+    public long getEndTime() {
+        return endTime;
     }
 
     public int getSeatCapacity() {
