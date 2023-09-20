@@ -74,7 +74,7 @@ base.driverTripController = function () {
         });
       });
     },
-    getCitysFromId: function(id) {
+    getCitysFromId: function (id) {
       return citys.find((city) => city.locationId == id);
     },
     setCitys: function (id, destinations) {
