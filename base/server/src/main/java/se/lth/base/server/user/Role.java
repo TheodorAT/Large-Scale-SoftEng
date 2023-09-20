@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public enum Role {
 
-    NONE(1), USER(2), ADMIN(3);
+    NONE(1), USER(2), DRIVER(2), ADMIN(3);
 
     /**
      * The reason for this strange pattern is to be able to use @{@link javax.annotation.security.RolesAllowed} which
@@ -25,6 +25,7 @@ public enum Role {
      */
     public static class Names {
         public static final String USER = "USER";
+        public static final String DRIVER = "DRIVER";
         public static final String ADMIN = "ADMIN";
     }
 
