@@ -1,6 +1,5 @@
 package se.lth.base.server.tripPassenger;
 
-
 import org.junit.Test;
 import se.lth.base.server.Config;
 import se.lth.base.server.database.BaseDataAccessTest;
@@ -13,7 +12,8 @@ import java.sql.Timestamp;
 
 public class TripPassengerDataAccessTest extends BaseDataAccessTest {
 
-    private TripPassengerDataAccess tripPassengerDao = new TripPassengerDataAccess(Config.instance().getDatabaseDriver());
+    private TripPassengerDataAccess tripPassengerDao = new TripPassengerDataAccess(
+            Config.instance().getDatabaseDriver());
     private TripDataAccess tripDao = new TripDataAccess(Config.instance().getDatabaseDriver());
 
     @Test

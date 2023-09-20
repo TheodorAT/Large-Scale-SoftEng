@@ -11,9 +11,10 @@ import javax.ws.rs.core.MediaType;
 
 @Path("tripPassenger")
 public class TripPassengerResource {
-    
+
     private final User user;
-    private final TripPassengerDataAccess tripPassengerDao = new TripPassengerDataAccess(Config.instance().getDatabaseDriver());
+    private final TripPassengerDataAccess tripPassengerDao = new TripPassengerDataAccess(
+            Config.instance().getDatabaseDriver());
 
     public TripPassengerResource(@Context ContainerRequestContext context) {
         this.user = (User) context.getProperty(User.class.getSimpleName());
@@ -25,5 +26,4 @@ public class TripPassengerResource {
         return tripPassengerDao.bookTrip(trip.getId(), user.getId());
     }
 
-    
 }

@@ -6,9 +6,8 @@ import java.sql.SQLException;
 import se.lth.base.server.database.DataAccess;
 import se.lth.base.server.database.Mapper;
 
+public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
 
-public class TripPassengerDataAccess extends DataAccess<TripPassenger>{
-    
     private static class TripPassengerMapper implements Mapper<TripPassenger> {
         @Override
         public TripPassenger map(ResultSet resultSet) throws SQLException {
