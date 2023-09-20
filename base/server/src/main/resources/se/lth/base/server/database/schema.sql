@@ -97,7 +97,8 @@ INSERT INTO users(role_id, username, salt, password_hash)
 -- #TODO remove when adding locations
 INSERT INTO locations(name, latitude, longitude)
     VALUES  ('Test Location 1', 0, 0),
-            ('Test Location 2', 0, 0);
+            ('Test Location 2', 0, 0),
+            ('Test Location 3', 0, 0);
 
 
 
