@@ -176,24 +176,24 @@ base.rest = (function () {
       return baseFetch("/rest/user/" + userId, { method: "DELETE" });
     },
 
-      /*
+    /*
      * Fetches the foos of the user, either the currently logged in one, or of a specific user (admin only).
      * userId (optional): a specific user OR if userId is not specified.
      * returns: an array of Foo
      * example: const someonesFoos = base.rest.getFoos(1);
      */
     getDestinations: function () {
-      return baseFetch("/rest/location/all",{method:"GET"}).then((response) => response.json());
+      return baseFetch("/rest/location/all", { method: "GET" }).then((response) => response.json());
     },
 
-        /*
+    /*
      * Adds trip expects javascript object containing payload
      * trip: plain javascript object to add
      * returns: Trip object
      * example: const myTrip = base.rest.addFoo({'payload': 'i wrote this in the input field'});
      */
     createTrip: function (trip) {
-      console.log(trip)
+      console.log(trip);
       return baseFetch("/rest/trip", {
         method: "POST",
         body: JSON.stringify(trip),
@@ -203,7 +203,7 @@ base.rest = (function () {
         .then((f) => new Trip(f));
     },
 
-      /*
+    /*
      * Fetches the trips of the driver
      * userId (optional): a specific user OR if userId is not specified.
      * returns: an array of Trips
@@ -211,13 +211,11 @@ base.rest = (function () {
      */
     getDriverTrips: function () {
       return baseFetch("/rest/trip/driver", {
-        method: "GET"
+        method: "GET",
       })
         .then((response) => response.json())
         .then((trips) => trips.map((f) => new Trip(f)));
     },
-
-
 
     /*
      * Fetches the foos of the user, either the currently logged in one, or of a specific user (admin only).

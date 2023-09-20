@@ -18,8 +18,7 @@ public class TripDataAccess extends DataAccess<Trip> {
             return new Trip(resultSet.getInt("trip_id"), resultSet.getInt("driver_id"),
                     resultSet.getInt("from_location_id"), resultSet.getInt("to_location_id"),
                     resultSet.getObject("start_time", Date.class).getTime(),
-                    resultSet.getObject("end_time", Date.class).getTime(),
-                    resultSet.getInt("seat_capacity"));
+                    resultSet.getObject("end_time", Date.class).getTime(), resultSet.getInt("seat_capacity"));
         }
     }
 
@@ -33,8 +32,7 @@ public class TripDataAccess extends DataAccess<Trip> {
         // Right now it is just the starttime + 1 hour (3600000 ms)
         long end_time = trip.getStartTime() + 3600000;
         int trip_id = insert(sql, driverId, trip.getFromLocationId(), trip.getToLocationId(),
-                new Timestamp(trip.getStartTime()),
-                new Timestamp(end_time), trip.getSeatCapacity());
+                new Timestamp(trip.getStartTime()), new Timestamp(end_time), trip.getSeatCapacity());
         return new Trip(trip_id, driverId, trip.getFromLocationId(), trip.getToLocationId(), trip.getStartTime(),
                 end_time, trip.getSeatCapacity());
     }

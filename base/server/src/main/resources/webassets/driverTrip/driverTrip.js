@@ -55,7 +55,7 @@ base.driverTripController = function () {
       base.rest.getDestinations().then(function (destinations) {
         controller.setCitys("from", destinations);
         controller.setCitys("to", destinations);
-      });  
+      });
       document.getElementById("from").onkeyup = function (event) {
         controller.filterFunction("from");
       };
@@ -68,7 +68,6 @@ base.driverTripController = function () {
         model = trips.map((t) => new DriverTripViewModel(t));
         view.render();
       });
-      
     },
     setCitys: function (id, destinations) {
       for (let i = 0; i < destinations.length; i++) {
@@ -82,13 +81,13 @@ base.driverTripController = function () {
         li.appendChild(button);
         button.onclick = function (event) {
           event.preventDefault();
-          controller.selectCity(event.target,id);
+          controller.selectCity(event.target, id);
         };
       }
     },
     selectCity: function (city, id) {
       document.getElementById(id).value = city.innerHTML;
-      document.getElementById(id).name = city.value 
+      document.getElementById(id).name = city.value;
       document.getElementById("dropdown-" + id).classList.toggle("show");
     },
     filterFunction: function (id) {
@@ -112,7 +111,14 @@ base.driverTripController = function () {
       const datetime = new Date(document.getElementById("datetime").value).getTime();
       const form = { fromLocationId: from, toLocationId: to, startTime: datetime, seatCapacity: seats };
       document.getElementById("registeredTripsModal").textContent =
-        "From: " + from + " To: " + to + " Date: " + new Date(datetime).toLocaleDateString() + " Number of available seats: " + seats;
+        "From: " +
+        from +
+        " To: " +
+        to +
+        " Date: " +
+        new Date(datetime).toLocaleDateString() +
+        " Number of available seats: " +
+        seats;
 
       //Call the REST API to register trip, see file rest.js for definitions.
       base.rest.createTrip(form).then(function (trip) {
