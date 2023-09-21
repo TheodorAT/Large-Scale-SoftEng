@@ -30,6 +30,32 @@ public class Credentials {
     private final String email; 
     private final String phone_number;
 
+    /**
+     * Login Constructor
+     * @param username
+     * @param password
+     * @param role
+     */
+    public Credentials (String username, String password, Role role){
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.first_name = ""; 
+        this.last_name = ""; 
+        this.email = ""; 
+        this.phone_number = ""; 
+    }
+
+    /**
+     * AddUser Constructor
+     * @param username
+     * @param password
+     * @param role
+     * @param first_name
+     * @param last_name
+     * @param email
+     * @param phone_number
+     */
     public Credentials(String username, String password, Role role, String first_name, 
                        String last_name, String email, String phone_number) {
         this.username = username;
@@ -70,7 +96,8 @@ public class Credentials {
     private static final int ITERATION_COST = 16;
     private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
 
-    public boolean validPassword() {
+    public boolean validPassword() { 
+        // TODO: Implement regex for password requirements
         return this.password.length() >= 8;
     }
 
