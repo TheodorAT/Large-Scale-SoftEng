@@ -13,7 +13,7 @@ base.mainController = (function () {
       controller: base.userAdminController,
     },
     search:{
-      partial: "searchForAvailbleShuttles/search.html",
+      partial: "searchForAvailableShuttles/search.html",
       controller: base.searchShuttlesController,
     },
 
