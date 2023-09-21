@@ -15,49 +15,72 @@
         <h1>Create account</h1>
         <div class="input-table">
             <div class="input-row">
-                <label for="username-input">Username:</label>
+                <label for="username-input">Username*</label>
                 <input type="text" id="username-input" placeholder="E.g. Axel.Axelsson">
             </div>
-        
+            
             <div class="input-row">
-                <label for="first-name-input">First name:</label>
-                <input type="text" id="first-name-input" placeholder="E.g. Axel">
+                <label for="password-input">Password*</label>
+                <input type="password" id="password-input" placeholder="********">
+            </div>
+
+            <div class="input-row" id="text">
+                <b>
+                    - Minimun eight letters
+                </b>
+            </div>
+
+            <div class="input-row" id="text">
+                <b>
+                    - Contains at least one non-letter character
+                </b>
             </div>
 
             <div class="input-row">
-                <label for="last-name-input">Last name:</label>
-                <input type="text" id="last-name-input" placeholder="E.g. Axelsson">
-            </div>
-
-            <div class="input-row">
-                <label for="email-input">Email:</label>
-                <input type="text" id="email-input" placeholder="E.g. axel.axelsson@gmail.com">
-            </div>
-
-            <div class="input-row">
-                <label for="phone-input">Phone number:</label>
-                <input type="text" id="phone-input" placeholder="E.g. 070XXXXXXX">
-            </div>
-
-            <div class="input-row">
-                <label for="password-input">Password:</label>
+                <label for="password-input">Password*</label>
                 <input type="password" id="password-input" placeholder="********">
             </div>
 
             <div class="input-row">
-                <label for="roles">Role:</label>
+                <label for="first-name-input">First name*</label>
+                <input type="text" id="first-name-input" placeholder="E.g. Axel">
+            </div>
+
+            <div class="input-row">
+                <label for="last-name-input">Last name*</label>
+                <input type="text" id="last-name-input" placeholder="E.g. Axelsson">
+            </div>
+
+            <div class="input-row">
+                <label for="email-input">Email*</label>
+                <input type="text" id="email-input" placeholder="E.g. axel.axelsson@gmail.com">
+            </div>
+
+            <div class="input-row">
+                <label for="phone-input">Phone number*</label>
+                <input type="text" id="phone-input" placeholder="E.g. 070XXXXXXX">
+            </div>
+
+            
+
+            <div class="input-row">
+                <label for="roles">Role*</label>
                 <select id="roles" name="role">
                     <option value="" disabled selected>Select your option</option>
                     <option value="Driver">Driver</option>
                     <option value="Passenger">Passenger</option>
                 </select>
-                
             </div>
+
+            <div class="input-row">
+                <label>* Mandatory</label>
+            </div>
+            
         </div>
     </section>
 
     <section id="create-button">
-        <button id="button">Create</button>
+        <button id="button">Create account</button>
     </section>
 
     
@@ -66,5 +89,7 @@
 
 
 </body>
+
+<script src="register.js"></script>
 
 </html>
