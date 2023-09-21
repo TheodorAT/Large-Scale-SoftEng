@@ -80,7 +80,7 @@ public class UserDataAccess extends DataAccess<User> {
     }
 
     public User getUser(int userId) {
-        return queryFirst("SELECT user_id, role, username FROM users, user_role "
+        return queryFirst("SELECT user_id, role, username, first_name, last_name, email, phone_number FROM users, user_role "
                 + "WHERE users.user_id = ? AND users.role_id = user_role.role_id", userId);
     }
 
@@ -108,7 +108,7 @@ public class UserDataAccess extends DataAccess<User> {
      *             if the session is not found.
      */
     public Session getSession(UUID sessionId) {
-        User user = queryFirst("SELECT users.user_id, username, role FROM users, user_role, session "
+        User user = queryFirst("SELECT users.user_id, username, role, first_name, last_name, email, phone_number FROM users, user_role, session "
                 + "WHERE user_role.role_id = users.role_id " + "    AND session.user_id = users.user_id "
                 + "    AND session.session_uuid = ?", sessionId);
         execute("UPDATE session SET last_seen = CURRENT_TIMESTAMP() " + "WHERE session_uuid = ?", sessionId);

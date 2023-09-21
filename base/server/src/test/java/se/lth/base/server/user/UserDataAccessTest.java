@@ -63,7 +63,7 @@ public class UserDataAccessTest extends BaseDataAccessTest {
     @Test
     public void authenticateNewUser() {
         userDao.addUser(new Credentials("Pelle", "!2", Role.USER, "User", "User", "user@user5.se", "+4600000001"));
-        Session pellesSession = userDao.authenticate(new Credentials("Pelle", "!2", Role.NONE, "User", "User", "user@user6.se", "+4600000001"));
+        Session pellesSession = userDao.authenticate(new Credentials("Pelle", "!2", Role.NONE));
         assertEquals("Pelle", pellesSession.getUser().getName());
         assertNotNull(pellesSession.getSessionId());
     }
@@ -102,7 +102,7 @@ public class UserDataAccessTest extends BaseDataAccessTest {
     @Test
     public void checkSession() {
         userDao.addUser(new Credentials("uffe", "genius programmer", Role.ADMIN, "User", "User", "user@user13.se", "+4600000001"));
-        Session session = userDao.authenticate(new Credentials("uffe", "genius programmer", Role.NONE, "User", "User", "user@user14.se", "+4600000001"));
+        Session session = userDao.authenticate(new Credentials("uffe", "genius programmer", Role.NONE));
         Session checked = userDao.getSession(session.getSessionId());
         assertEquals("uffe", checked.getUser().getName());
         assertEquals(session.getSessionId(), checked.getSessionId());
@@ -111,7 +111,7 @@ public class UserDataAccessTest extends BaseDataAccessTest {
     @Test
     public void checkRemovedSession() {
         userDao.addUser(new Credentials("lisa", "y", Role.ADMIN, "User", "User", "user@user15.se", "+4600000001"));
-        Session session = userDao.authenticate(new Credentials("lisa", "y", Role.NONE, "User", "User", "user@user16.se", "+4600000001"));
+        Session session = userDao.authenticate(new Credentials("lisa", "y", Role.NONE));
         Session checked = userDao.getSession(session.getSessionId());
         assertEquals(session.getSessionId(), checked.getSessionId());
         userDao.removeSession(checked.getSessionId());
@@ -148,9 +148,9 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     @Test
     public void updateWithoutPassword() {
-        Session session1 = userDao.authenticate(new Credentials("Test", "password", Role.USER, "User", "User", "user@user19.se", "+4600000001"));
-        userDao.updateUser(2, new Credentials("test2", null, Role.USER, "User", "User", "user@user20.se", "+4600000001"));
-        Session session2 = userDao.authenticate(new Credentials("test2", "password", Role.USER, "User", "User", "user@user21.se", "+4600000001"));
+        Session session1 = userDao.authenticate(new Credentials("Test", "password", Role.USER ));
+        userDao.updateUser(2, new Credentials("test2", null, Role.USER));
+        Session session2 = userDao.authenticate(new Credentials("test2", "password", Role.USER ));
         System.out.println(session1);
         System.out.println(session2);
     }
