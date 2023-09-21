@@ -1,0 +1,107 @@
+html {
+    height: 100%;
+    width: 100%;
+}
+
+/*
+Gives "everything" its placement.
+*/
+#Register-User {
+    text-align: center;
+    padding: 30px;
+    
+}
+
+main {
+    display: inline-block;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 50px;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    width: 30%;
+    margin-left: 450px;
+}
+
+/*
+Gives the table its style.
+*/
+input[type="text"], input[type="password"], button {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+select {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px; 
+    width: 188.5px;
+}
+
+/*
+Gives the table its placement.
+*/
+.input-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 90px;
+}
+
+/*
+Gives the rows their placement and structure.
+*/
+.input-row {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+
+/*
+Gives the label its structure and placement. 
+*/
+label {
+    min-width: 150px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+
+/*
+Gives the create button its placement.
+*/
+#create-button {
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+/*
+Gives the create button its style.
+*/
+#button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
