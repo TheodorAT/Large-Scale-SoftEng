@@ -1,11 +1,3 @@
-
-document.querySelector("#search-btn").addEventListener("click", handleSearch);
-
-
-
-
-
-
 /*
  * Model/view/controller for the foo tab.
  * Author: Rasmus Ros, rasmus.ros@cs.lth.se
@@ -13,7 +5,7 @@ document.querySelector("#search-btn").addEventListener("click", handleSearch);
 var base = base || {};
 // Defines the base namespace, if not already declared. Through this pattern it doesn't matter which order
 // the scripts are loaded in.
-base.fooController = function () {
+base.searchShuttlesController = function () {
     "use strict"; // add this to avoid some potential bugs
 
     // List of all foo data, will be useful to have when update functionality is added in lab 2.
@@ -61,6 +53,7 @@ base.fooController = function () {
 
     const controller = {
         load: function () {
+            document.querySelector("#search-btn").addEventListener("click", handleSearch);
             document.getElementById("search-form").onsubmit = function (event) {
                 event.preventDefault();
                 controller.submitTrip();
