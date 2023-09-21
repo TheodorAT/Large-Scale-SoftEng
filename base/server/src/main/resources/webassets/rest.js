@@ -267,6 +267,7 @@ base.rest = (function () {
      * function will return an array of JavaScript objects, each representing a shuttle
      * example: const shuttles = base.rest.getShuttles('City A', 'City B', '2023-09-20 10:00');
      */
+    /*
     getShuttles: function (from, destination, datetime) {
       const queryParams = new URLSearchParams({
         from: from,
@@ -278,6 +279,8 @@ base.rest = (function () {
           .then((response) => response.json())
           .then((shuttles) => shuttles.map((shuttle) => Object.assign({}, shuttle)));
     },
+
+*/
 
 
     /*
