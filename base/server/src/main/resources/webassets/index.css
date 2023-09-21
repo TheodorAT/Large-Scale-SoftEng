@@ -7,3 +7,8 @@ ul.navbar-nav > li > a {
 .list-group-item-action {
     cursor: pointer;
 }
+
+.dropdown-menu {
+    max-height: 200px;
+    overflow-y: scroll;
+}

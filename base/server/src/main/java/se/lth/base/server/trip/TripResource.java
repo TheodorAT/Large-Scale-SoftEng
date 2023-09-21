@@ -29,14 +29,6 @@ public class TripResource {
         return result;
     }
 
-    @Path("driver/{driverId}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public List<Trip> getTripsFromDriver(@PathParam("driverId") int driverId) {
-        List<Trip> result = tripDao.getTripsFromDriver(driverId);
-        return result;
-    }
-
     /**
      * Retrieve a list of trips matching specified parameters.
      * 
@@ -59,5 +51,13 @@ public class TripResource {
             @QueryParam("fromLocationId") int fromLocationId, @QueryParam("toLocationId") int toLocationId) {
         List<Trip> matchingTrips = tripDao.availableTrips(fromLocationId, toLocationId);
         return matchingTrips;
+    }
+
+    @Path("driver")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public List<Trip> getTripsFromDriver() {
+        List<Trip> result = tripDao.getTripsFromDriver(user.getId());
+        return result;
     }
 }
