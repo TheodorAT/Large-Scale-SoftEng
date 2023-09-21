@@ -11,7 +11,7 @@
 <body>
 <header>
     <nav id="bar">
-        <ul >
+        <ul>
             <li><a href="#">Book Trip</a></li>
             <li><a href="#">Register Trip</a></li>
             <li><a href="#">My Trips</a></li>
@@ -25,47 +25,88 @@
 
 <main>
     <section id="search-section">
-        <h1>Search for Available Shuttles</h1>
-        <div class="search-form">
-            <input type="text" id="from-input" placeholder="From">
-            <input type="text" id="destination-input" placeholder="Destination">
-            <input type="datetime-local" id="datetime-input">
-            <button id="search-btn">Search</button>
-        </div>
+        <h2>Search for Available Shuttles</h2>
+        <form id="search-form" class="form-row pt-4">
+            <div class="form-group col-md-auto">
+                <label for="from-input">From</label>
+                <div class="dropdown">
+                    <input type="text" id="from-input" class="form-control" placeholder="Search origin.."
+                           data-bs-toggle="dropdown" aria-expanded="false" autocomplete="off" />
+                    <ul class="dropdown-menu" id="dropdown-from">
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group col-md-auto">
+                <label for="destination-input">Destination</label>
+                <div class="dropdown">
+                    <input type="text" id="destination-input" class="form-control"
+                           placeholder="Search destination.." data-bs-toggle="dropdown" aria-expanded="false"
+                           autocomplete="off" />
+                    <ul class="dropdown-menu" id="dropdown-destination">
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group col-md-auto">
+                <label for="datetime-input">Start Date & Time</label>
+                <input type="datetime-local" id="datetime-input" class="form-control" required />
+            </div>
+            <div class="form-group d-flex align-items-end">
+                <button id="search-btn" type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
     </section>
 
     <section id="book-section">
         <button id="book-trip-btn">Book</button>
     </section>
 
-    <section id="shuttle-list">
-        <table>
+    <section>
+        <table class="table" id="shuttle-list">
             <thead>
             <tr>
-                <th>From</th>
-                <th>To</th>
-                <th>Start Time</th>
-                <th>Arrival Time</th>
-                <th>Duration</th>
-                <th>Seats Left</th>
-                <th>Driver</th>
-                <th>Rating</th>
-                <th>Car</th>
-                <th>Baggage</th>
+                <th scope="col">#</th>
+                <th scope="col">From</th>
+                <th scope="col">To</th>
+                <th scope="col">Start Time</th>
+                <th scope="col">Arrival Time</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Seats Left</th>
+                <th scope="col">Driver</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Car</th>
+                <th scope="col">Baggage</th>
             </tr>
             </thead>
             <tbody>
-            <!--  data using JavaScript -->
+            <template id="trips-template">
+                <tr>
+                    <th scope="row"></th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </template>
             </tbody>
         </table>
     </section>
 </main>
 <script src="script.js"></script>
 <script type="application/javascript">
-    base.loginController.initOnLoad();
+    // Attaching the submit event handler to the "search-form" element
+    document.getElementById("search-form").onsubmit = function (event) {
+        // Your event handling code here
+        event.preventDefault(); // Prevent the default form submission behavior
+        // Other actions you want to perform on form submission
+        return false; // Ensure the form doesn't submit in the traditional way
+    };
 </script>
-
 </body>
-
 
 </html>
