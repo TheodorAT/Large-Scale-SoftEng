@@ -2,28 +2,64 @@ var base = base || {};
 base.userAdminController = function () {
   "use strict";
 
-  const model = {
+ /* const model = {
     selectedUser: {},
     users: [],
     roles: [],
     roleNames: [],
-  };
+  };*/
+
+  let model = [];
 
   // Every user has one of these
   const UserViewModel = function (_user) {
     this.user = _user;
     const viewModel = this;
 
-    this.renderListElement = function () {
-      const t = document.getElementById("user-template");
+    this.render = function (template) {
+        this.update(template.content.querySelector("tr"));
+        const clone = document.importNode(template.content, true);
+        template.parentElement.appendChild(clone);
+    };
+    this.update = function (trElement) {
+      const td = trElement.children;
+      td[0].textContent = 'Amanda Nystedt';
+      // td[0].textContent = viewModel.user.name;
+      td[1].textContent = viewModel.user.username;
+      td[2].textContent = viewModel.user.id;
+      td[3].textContent = viewModel.user.role.name;
+
+      /*const t = document.getElementById("user-template");
       let button = t.content.querySelector("button");
       button.textContent = viewModel.user.username;
       const clone = document.importNode(t.content, true);
       button = clone.querySelector("button");
       button.onclick = viewModel.select;
       viewModel.listElement = button;
-      t.parentElement.appendChild(clone);
+      t.parentElement.appendChild(clone);*/
     };
+  }
+  const view = {
+    // Creates HTML for each trip in model
+    render: function () {
+          // A template element is a special element used only to add dynamic content multiple times.
+          // See: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template
+          const t = this.template();
+          model.forEach((d) => d.render(t));
+    },
+        template: function () {
+          return document.getElementById("user-template");
+        },
+  };
+  const controller = {
+    load: function () {
+        base.rest.getUsers().then(function (users) {
+        model = users.map((f) => new UserViewModel(f));
+        view.render();
+        });
+    }
+};
+
 
     this.remove = function () {
       base.rest.deleteUser(model.selectedUser.user.id).then(function () {
@@ -34,7 +70,7 @@ base.userAdminController = function () {
         model.users[0].select();
       });
     };
-
+/*
     this.select = function () {
       model.selectedUser = viewModel;
 
@@ -147,7 +183,7 @@ base.userAdminController = function () {
         model.users[0].select();
       });
     },
-  };
+  };*/
 
   return controller;
 };
