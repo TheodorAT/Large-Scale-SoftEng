@@ -58,9 +58,8 @@ public class UserDataAccess extends DataAccess<User> {
     public User addUser(Credentials credentials) {
         long salt = Credentials.generateSalt();
         int userId = insert(
-                "INSERT INTO users(role_id, username, password_hash, salt) VALUES (("
-                        + "SELECT role_id FROM user_role WHERE user_role.role=?),?,?,?)",
-                credentials.getRole().name(), credentials.getUsername(), credentials.generatePasswordHash(salt), salt);
+                "INSERT INTO users(role_id, username, password_hash, salt, first_name, last_name, email, phone_number) VALUES ((" + "SELECT role_id FROM user_role WHERE user_role.role=?),?,?,?,?,?,?,?)",
+                credentials.getRole().name(), credentials.getUsername(), credentials.generatePasswordHash(salt), salt, credentials.getFirst_Name(), credentials.getLast_Name(), credentials.getEmail(), credentials.getPhone_Number());
         return new User(userId, credentials.getRole(), credentials.getUsername(), credentials.getFirst_Name(),
                         credentials.getLast_Name(), credentials.getEmail(), credentials.getPhone_Number());
     }
@@ -94,7 +93,7 @@ public class UserDataAccess extends DataAccess<User> {
      */
     public List<User> getUsers() {
         return query(
-                "SELECT user_id, username, role FROM users, user_role " + "WHERE users.role_id = user_role.role_id");
+                "SELECT user_id, username, first_name, last_name, email, phone_number, role FROM users, user_role " + "WHERE users.role_id = user_role.role_id");
     }
 
     /**
@@ -144,7 +143,7 @@ public class UserDataAccess extends DataAccess<User> {
                 .queryStream("SELECT salt FROM users WHERE username = ?", credentials.getUsername()).findFirst()
                 .orElseThrow(() -> new DataAccessException("Username or password incorrect", ErrorType.DATA_QUALITY));
         UUID hash = credentials.generatePasswordHash(salt);
-        User user = queryFirst("SELECT user_id, username, role FROM users, user_role "
+        User user = queryFirst("SELECT user_id, username, first_name, last_name, email, phone_number, role FROM users, user_role "
                 + "WHERE user_role.role_id = users.role_id " + "    AND username = ? " + "    AND password_hash = ?",
                 credentials.getUsername(), hash);
         UUID sessionId = insert("INSERT INTO session (user_id) " + "SELECT user_id from users WHERE username = ?",
