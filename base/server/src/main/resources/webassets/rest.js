@@ -12,6 +12,15 @@ base.rest = (function () {
     this.createdDate = new Date(this.created);
   };
 
+  const Trip = function (json) {
+    Object.assign(this, json);
+    this.startTime = new Date(this.startTime);
+    this.endTime = new Date(this.endTime);
+  };
+  const Location = function (json) {
+    Object.assign(this, json);
+  };
+
   const Role = function (role) {
     this.name = role;
     this.label = this.name[0] + this.name.toLowerCase().slice(1);
@@ -34,6 +43,8 @@ base.rest = (function () {
   base.Foo = Foo;
   base.User = User;
   base.Role = Role;
+  base.Trip = Trip;
+  base.Location = Location;
 
   // This method extends the functionality of fetch by adding default error handling.
   // Using it is entirely optional.
@@ -167,6 +178,46 @@ base.rest = (function () {
      */
     deleteUser: function (userId) {
       return baseFetch("/rest/user/" + userId, { method: "DELETE" });
+    },
+
+    /*
+     * Fetches the locations
+     * returns: an array of locations
+     * example: const locations = base.rest.getLocations();
+     */
+    getLocations: function () {
+      return baseFetch("/rest/location/all", { method: "GET" })
+        .then((response) => response.json())
+        .then((locations) => locations.map((l) => new Location(l)));
+    },
+
+    /*
+     * Adds trip expects javascript object containing payload
+     * trip: plain javascript object to add
+     * returns: Trip object
+     * example: const myTrip = base.rest.createTrip({fromLocationId: "id", toLocationId: "id", startTime: "time", seatCapacity: "seats"});
+     */
+    createTrip: function (trip) {
+      return baseFetch("/rest/trip", {
+        method: "POST",
+        body: JSON.stringify(trip),
+        headers: jsonHeader,
+      })
+        .then((response) => response.json())
+        .then((f) => new Trip(f));
+    },
+
+    /*
+     * Fetches the trips of the driver
+     * returns: an array of Trips
+     * example: const trips = base.rest.getDriverTrips(1);
+     */
+    getDriverTrips: function () {
+      return baseFetch("/rest/trip/driver", {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
     },
 
     /*

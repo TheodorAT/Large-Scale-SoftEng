@@ -40,6 +40,7 @@ CREATE TABLE session(session_uuid UUID DEFAULT RANDOM_UUID(),
 -- i haven't seen it myself
 CREATE TABLE locations (
     location_id INT AUTO_INCREMENT NOT NULL,
+    municipality VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
     latitude DOUBLE NOT NULL,
     longitude DOUBLE NOT NULL,
@@ -97,6 +98,11 @@ VALUES
     (2, 'Test', 5336889820313124494, '144141f3-c868-85e8-0243-805ca28cdabd', 'Test_first_name', 
     'Test_last_name', 'Test_email', 'Test_phone_number');
 
+-- #TODO remove when adding locations
+INSERT INTO locations(municipality, name, latitude, longitude)
+    VALUES  ('Municipality', 'Test Location 1', 0, 0),
+            ('Municipality', 'Test Location 2', 0, 0),
+            ('Municipality', 'Test Location 3', 0, 0);
 
 
 
