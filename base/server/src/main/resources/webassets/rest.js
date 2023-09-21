@@ -207,6 +207,27 @@ base.rest = (function () {
     deleteFoo: function (fooId) {
       return baseFetch("/rest/foo/" + fooId, { method: "DELETE" });
     },
+    /*
+     * Fetches available shuttles based on search criteria.
+     * from: the starting point
+     * destination: the destination point
+     * datetime: the desired departure datetime
+     *
+     * function will return an array of JavaScript objects, each representing a shuttle
+     * example: const shuttles = base.rest.getShuttles('City A', 'City B', '2023-09-20 10:00');
+     */
+    getShuttles: function (from, destination, datetime) {
+      const queryParams = new URLSearchParams({
+        from: from,
+        destination: destination,
+        datetime: datetime,
+      });
+
+      return baseFetch("/rest/shuttles?" + queryParams.toString())
+          .then((response) => response.json())
+          .then((shuttles) => shuttles.map((shuttle) => Object.assign({}, shuttle)));
+    },
+
 
     /*
      * Updates foo with specified integer id with a new integer total

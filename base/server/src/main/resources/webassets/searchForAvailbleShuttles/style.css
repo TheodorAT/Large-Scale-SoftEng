@@ -9,7 +9,7 @@ body, h1, h2, h3, p, ul, li {
 }
 
 header {
-    background-color: #333;
+    background-color: blue;
     color: #fff;
     padding: 10px 0;
 }
@@ -93,7 +93,7 @@ input[type="text"], input[type="datetime-local"], button {
 }
 
 button {
-    background-color: #333;
+    background-color: blue;
     color: #fff;
     cursor: pointer;
 }
