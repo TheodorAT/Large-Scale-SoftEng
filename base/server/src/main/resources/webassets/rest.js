@@ -282,7 +282,6 @@ base.rest = (function () {
 
 */
 
-
     /*
      * Updates foo with specified integer id with a new integer total
      * fooId: id to update
