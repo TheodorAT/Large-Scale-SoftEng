@@ -84,7 +84,9 @@ public class UserResource {
     public User createUser(Credentials credentials) {
         if (!credentials.hasPassword() || !credentials.validPassword()) {
             // TODO: Update valid password to check for at least one non-letter character
-            throw new WebApplicationException("Password invalid, please make sure your password contains minimnum 8 letters", Response.Status.BAD_REQUEST);
+            throw new WebApplicationException(
+                    "Password invalid, please make sure your password contains minimnum 8 letters",
+                    Response.Status.BAD_REQUEST);
         }
         return userDao.addUser(credentials);
     }
