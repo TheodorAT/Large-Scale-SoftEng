@@ -108,7 +108,7 @@ public class UserResourceTest extends BaseResourceTest {
 
     @Test(expected = ForbiddenException.class)
     public void deleteOtherUserAsUser() {
-        Credentials newCredentials = new Credentials("pelle", "passphrase", Role.USER, "User", "User", "user@user03.se", "+4600000001");
+        Credentials newCredentials = new Credentials("pelle", "passphrase1", Role.USER, "User", "User", "user@user03.se", "+4600000001");
         User newUser = createNewUser(newCredentials);
         login(TEST_CREDENTIALS);
         target("user").path(Integer.toString(newUser.getId())).request().delete(Void.class);
@@ -132,7 +132,7 @@ public class UserResourceTest extends BaseResourceTest {
 
     @Test
     public void testAddUser() {
-        Credentials newCredentials = new Credentials("pelle", "passphrase", Role.USER, "User", "User", "user@user04.se", "+4600000001");
+        Credentials newCredentials = new Credentials("pelle", "passphrase1", Role.USER, "User", "User", "user@user04.se", "+4600000001");
         User newUser = createNewUser(newCredentials);
         assertEquals(newCredentials.getUsername(), newUser.getName());
         assertEquals(newCredentials.getRole(), newUser.getRole());

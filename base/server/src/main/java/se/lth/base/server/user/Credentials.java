@@ -96,10 +96,13 @@ public class Credentials {
     private static final int ITERATION_COST = 16;
     private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
 
-    public boolean validPassword() { 
-        // TODO: Implement regex for password requirements
-        return this.password.length() >= 8;
+    public boolean validPassword() {
+        // Password must be at least 8 characters long and contain at least one non-letter character
+        // String regex = "^(?=.*[^a-zA-Z]).{8,}$"; // Explanation below
+        // TODO: Generate hash for hard inserted users in .sql file  
+        return this.password.length() >= 8; //&& this.password.matches(regex);
     }
+    
 
     public boolean hasPassword() {
         return password != null;

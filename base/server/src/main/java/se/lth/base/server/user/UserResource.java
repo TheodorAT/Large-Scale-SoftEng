@@ -83,7 +83,8 @@ public class UserResource {
     @RolesAllowed(Role.Names.ADMIN)
     public User createUser(Credentials credentials) {
         if (!credentials.hasPassword() || !credentials.validPassword()) {
-            throw new WebApplicationException("Password too short", Response.Status.BAD_REQUEST);
+            // TODO: Update valid password to check for at least one non-letter character
+            throw new WebApplicationException("Password invalid, please make sure your password contains minimnum 8 letters", Response.Status.BAD_REQUEST);
         }
         return userDao.addUser(credentials);
     }
