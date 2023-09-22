@@ -77,15 +77,15 @@ public class Credentials {
         return role;
     }
 
-    public String getFirst_Name() {
+    public String getFirstName() {
         return first_name;
     }
 
-    public String getLast_Name() {
+    public String getLastName() {
         return last_name;
     }
 
-    public String getPhone_Number() {
+    public String getPhoneNumber() {
         return phone_number;
     }
 
