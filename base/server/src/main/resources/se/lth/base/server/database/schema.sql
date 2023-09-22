@@ -91,9 +91,12 @@ CREATE TABLE trip_passengers(
 -- "both", i.e., driver and passenger, therefore should be a "driver"
 INSERT INTO user_role VALUES (1, 'ADMIN'), (2, 'USER'), (3, 'DRIVER');
 
-INSERT INTO users(role_id, username, salt, password_hash)
-    VALUES (1, 'Admin', -2883142073796788660, '8dc0e2ab-4bf1-7671-c0c4-d22ffb55ee59'),
-           (2, 'Test', 5336889820313124494, '144141f3-c868-85e8-0243-805ca28cdabd');
+INSERT INTO users(role_id, username, salt, password_hash, first_name, last_name, email, phone_number)
+VALUES 
+    (1, 'Admin', -2883142073796788660, '8dc0e2ab-4bf1-7671-c0c4-d22ffb55ee59', 'Admin_first_name',
+     'Admin_last_name', 'Admin_email', 'Admin_phone_number'),
+    (2, 'Test', 5336889820313124494, '144141f3-c868-85e8-0243-805ca28cdabd', 'Test_first_name', 
+    'Test_last_name', 'Test_email', 'Test_phone_number');
 
 -- #TODO remove when adding locations
 INSERT INTO locations(municipality, name, latitude, longitude)

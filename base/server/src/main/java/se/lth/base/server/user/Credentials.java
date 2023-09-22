@@ -25,11 +25,48 @@ public class Credentials {
     @Expose(serialize = false)
     private final String password;
     private final Role role;
+    private final String first_name;
+    private final String last_name;
+    private final String email;
+    private final String phone_number;
 
+    /**
+     * Login Constructor
+     * 
+     * @param username
+     * @param password
+     * @param role
+     */
     public Credentials(String username, String password, Role role) {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.first_name = "";
+        this.last_name = "";
+        this.email = "";
+        this.phone_number = "";
+    }
+
+    /**
+     * AddUser Constructor
+     * 
+     * @param username
+     * @param password
+     * @param role
+     * @param first_name
+     * @param last_name
+     * @param email
+     * @param phone_number
+     */
+    public Credentials(String username, String password, Role role, String first_name, String last_name, String email,
+            String phone_number) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+        this.phone_number = phone_number;
     }
 
     public String getUsername() {
@@ -40,13 +77,32 @@ public class Credentials {
         return role;
     }
 
+    public String getFirstName() {
+        return first_name;
+    }
+
+    public String getLastName() {
+        return last_name;
+    }
+
+    public String getPhoneNumber() {
+        return phone_number;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     // Password hashing function parameters.
     private static final int SIZE = 256;
     private static final int ITERATION_COST = 16;
     private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
 
     public boolean validPassword() {
-        return this.password.length() >= 8;
+        // Password must be at least 8 characters long and contain at least one non-letter character
+        // String regex = "^(?=.*[^a-zA-Z]).{8,}$"; // Explanation below
+        // TODO: Generate hash for hard inserted users in .sql file
+        return this.password.length() >= 8; // && this.password.matches(regex);
     }
 
     public boolean hasPassword() {
@@ -84,9 +140,12 @@ public class Credentials {
         long s1 = generateSalt();
         long s2 = generateSalt();
         System.out.println(s1);
-        System.out.println(new Credentials("Admin", "password", Role.ADMIN).generatePasswordHash(s1));
+        System.out.println(
+                new Credentials("Admin", "password", Role.ADMIN, "Admin", "Admin", "admin@admin.se", "+4600000000")
+                        .generatePasswordHash(s1));
 
         System.out.println(s2);
-        System.out.println(new Credentials("Test", "password", Role.USER).generatePasswordHash(s2));
+        System.out.println(new Credentials("Test", "password", Role.USER, "User", "User", "user@user.se", "+4600000001")
+                .generatePasswordHash(s2));
     }
 }
