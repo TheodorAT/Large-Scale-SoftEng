@@ -108,7 +108,8 @@ public class UserResourceTest extends BaseResourceTest {
 
     @Test(expected = ForbiddenException.class)
     public void deleteOtherUserAsUser() {
-        Credentials newCredentials = new Credentials("pelle", "passphrase", Role.USER);
+        Credentials newCredentials = new Credentials("pelle", "passphrase1", Role.USER, "User", "User",
+                "user@user03.se", "+4600000001");
         User newUser = createNewUser(newCredentials);
         login(TEST_CREDENTIALS);
         target("user").path(Integer.toString(newUser.getId())).request().delete(Void.class);
@@ -132,7 +133,8 @@ public class UserResourceTest extends BaseResourceTest {
 
     @Test
     public void testAddUser() {
-        Credentials newCredentials = new Credentials("pelle", "passphrase", Role.USER);
+        Credentials newCredentials = new Credentials("pelle", "passphrase1", Role.USER, "User", "User",
+                "user@user04.se", "+4600000001");
         User newUser = createNewUser(newCredentials);
         assertEquals(newCredentials.getUsername(), newUser.getName());
         assertEquals(newCredentials.getRole(), newUser.getRole());
@@ -181,14 +183,16 @@ public class UserResourceTest extends BaseResourceTest {
     @Test(expected = WebApplicationException.class)
     public void dontDemoteYourself() {
         login(ADMIN_CREDENTIALS);
-        Credentials update = new Credentials("admin", "password", Role.USER);
+        Credentials update = new Credentials("admin", "password", Role.USER, "User", "User", "user@user05.se",
+                "+4600000001");
         target("user").path(Integer.toString(ADMIN.getId())).request().put(Entity.json(update), User.class);
     }
 
     @Test
     public void updateUser() {
         login(ADMIN_CREDENTIALS);
-        Credentials newTest = new Credentials("test2", null, Role.ADMIN);
+        Credentials newTest = new Credentials("test2", null, Role.ADMIN, "User", "User", "user@user06.se",
+                "+4600000001");
         User user = target("user").path(Integer.toString(TEST.getId())).request().put(Entity.json(newTest), User.class);
         assertEquals(TEST.getId(), user.getId());
         assertEquals(newTest.getUsername(), user.getName());

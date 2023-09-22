@@ -12,8 +12,8 @@ import static org.junit.Assert.assertNotEquals;
 public class CredentialsTest {
     @Test
     public void saltApplied() {
-        Credentials a = new Credentials("a", "123", Role.NONE);
-        Credentials b = new Credentials("b", "123", Role.NONE);
+        Credentials a = new Credentials("a", "123", Role.NONE, "User", "User", "user@user1.se", "+4600000001");
+        Credentials b = new Credentials("b", "123", Role.NONE, "User", "User", "user@user2.se", "+4600000001");
         UUID pwd = a.generatePasswordHash(1L);
         UUID m = b.generatePasswordHash(2L);
         assertNotEquals(pwd, m);
