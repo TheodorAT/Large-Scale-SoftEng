@@ -5,8 +5,12 @@ base.mainController = (function () {
   const routingTable = {
     // first in table is the default
     "driver-trips": {
-      partial: "driverTrip/driverTrip.html",
+      partial: "drivertrips/driver-trips.html",
       controller: base.driverTripController,
+    },
+    "my-trips": {
+      partial: "mytrips/my-trips.html",
+      controller: base.myTripsController,
     },
     foo: {
       partial: "foo/foo.html",
