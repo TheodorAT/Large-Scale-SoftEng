@@ -5,7 +5,7 @@
 var base = base || {};
 
 base.myTripsController = function () {
-  "use strict"; 
+  "use strict";
 
   // List of all trip data
   let model = [];
@@ -14,17 +14,17 @@ base.myTripsController = function () {
   const MyTripsViewModel = function (_trip) {
     this.trip = _trip;
     const viewModel = this;
-    
+
     this.render = function (pastTemplate, updomingTemplate) {
       let template;
       let now = new Date().getTime();
       // Depending if the trip is old or new it should update the past or upcoming table
-      viewModel.trip.startTime < now ? template = pastTemplate : template = updomingTemplate;
+      viewModel.trip.startTime < now ? (template = pastTemplate) : (template = updomingTemplate);
       this.update(template.content.querySelector("tr"));
       const clone = document.importNode(template.content, true);
       template.parentElement.appendChild(clone);
     };
-    // Update a single table row to display a trip 
+    // Update a single table row to display a trip
     this.update = function (trElement) {
       const td = trElement.children;
       let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
@@ -43,13 +43,12 @@ base.myTripsController = function () {
     };
   };
 
-
   const view = {
     // Creates HTML for each trip in model
     render: function () {
       const pt = this.pastTemplate();
       const ut = this.upcomingTemplate();
-      model.forEach((d) => d.render(pt,ut));
+      model.forEach((d) => d.render(pt, ut));
     },
     pastTemplate: function () {
       return document.getElementById("past-trips-template");
