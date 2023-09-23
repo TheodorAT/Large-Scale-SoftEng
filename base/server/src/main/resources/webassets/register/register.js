@@ -37,7 +37,7 @@ base.registerUserController = function () {
 
         return username.length >= 3;
       }
-      
+
       function isValidPassword(password) {
         return password.length >= 8 && /^(?=.*[^\w\s]).{8,}$/.test(password);
       }
@@ -46,9 +46,11 @@ base.registerUserController = function () {
         alert("Username is invalid.");
         return;
       }
-  
+
       if (!isValidPassword(password)) {
-        alert("Password is invalid. It must be at least 8 characters long and contain at least one non letter character.");
+        alert(
+          "Password is invalid. It must be at least 8 characters long and contain at least one non letter character.",
+        );
         return;
       }
 
@@ -63,7 +65,7 @@ base.registerUserController = function () {
       };
 
       // register the user though rest api?
-      // does createUser function exist on the rest server? 
+      // does createUser function exist on the rest server?
       base.rest.createUser(new user(userData)).then(function () {
         alert("User registration success!");
       });
