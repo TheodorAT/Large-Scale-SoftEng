@@ -2,80 +2,82 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="Create-User" content="width=device-width" />
-    <title>RegisterUser</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register User</title>
+    <!-- Bootstrap CSS from a CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
 
   <body>
-    <main>
-      <section id="Register-User">
-        <h1>Create account</h1>
-        <div class="input-table">
-          <div class="input-row">
+    <main class="container">
+      <section id="Register-User" class="mt-5">
+        <h1>Create Account</h1>
+        <form>
+          <div class="form-group">
             <label for="username-input">Username*</label>
-            <input type="text" id="username-input" placeholder="E.g. Axel.Axelsson" />
+            <input type="text" class="form-control" id="username-input" placeholder="E.g. Axel.Axelsson" required />
           </div>
 
-          <div class="input-row">
+          <div class="form-group">
             <label for="password-input">Password*</label>
-            <input type="password" id="password-input" placeholder="********" />
+            <input type="password" class="form-control" id="password-input" placeholder="********" required />
           </div>
 
-          <div class="input-row" id="text">
-            <b> - Minimun eight letters </b>
+          <div class="form-group">
+            <small class="form-text text-muted">- Minimum eight letters</small>
+            <small class="form-text text-muted">- Contains at least one non-letter character</small>
           </div>
 
-          <div class="input-row" id="text">
-            <b> - Contains at least one non-letter character </b>
-          </div>
-
-          <div class="input-row">
-            <label for="password-input">Password*</label>
-            <input type="password" id="password-input" placeholder="********" />
-          </div>
-
-          <div class="input-row">
+          <div class="form-group">
             <label for="first-name-input">First name*</label>
-            <input type="text" id="first-name-input" placeholder="E.g. Axel" />
+            <input type="text" class="form-control" id="first-name-input" placeholder="E.g. Axel" required />
           </div>
 
-          <div class="input-row">
+          <div class="form-group">
             <label for="last-name-input">Last name*</label>
-            <input type="text" id="last-name-input" placeholder="E.g. Axelsson" />
+            <input type="text" class="form-control" id="last-name-input" placeholder="E.g. Axelsson" required />
           </div>
 
-          <div class="input-row">
+          <div class="form-group">
             <label for="email-input">Email*</label>
-            <input type="text" id="email-input" placeholder="E.g. axel.axelsson@gmail.com" />
+            <input
+              type="email"
+              class="form-control"
+              id="email-input"
+              placeholder="E.g. axel.axelsson@gmail.com"
+              required
+            />
           </div>
 
-          <div class="input-row">
+          <div class="form-group">
             <label for="phone-input">Phone number*</label>
-            <input type="text" id="phone-input" placeholder="E.g. 070XXXXXXX" />
+            <input type="tel" class="form-control" id="phone-input" placeholder="E.g. 070XXXXXXX" required />
           </div>
 
-          <div class="input-row">
+          <div class="form-group">
             <label for="roles">Role*</label>
-            <select id="roles" name="role">
+            <select class="form-control" id="roles" name="role" required>
               <option value="" disabled selected>Select your option</option>
               <option value="Driver">Driver</option>
               <option value="Passenger">Passenger</option>
             </select>
           </div>
 
-          <div class="input-row">
-            <label>* Mandatory</label>
+          <div class="form-group">
+            <small class="form-text text-muted">* Mandatory</small>
           </div>
-        </div>
-      </section>
 
-      <section id="create-button">
-        <button id="button">Create account</button>
+          <button type="submit" class="btn btn-primary" id="button">Create Account</button>
+        </form>
       </section>
     </main>
-    <script src="script.js"></script>
-  </body>
 
-  <script src="register.js"></script>
+    <!-- Bootstrap JavaScript and jQuery from a CDN -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Your custom JavaScript files -->
+    <script src="script.js"></script>
+    <script src="register.js"></script>
+  </body>
 </html>

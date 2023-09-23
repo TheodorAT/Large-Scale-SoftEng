@@ -1,106 +1,57 @@
-html {
+/* Reset default margins and paddings */
+html,
+body {
   height: 100%;
-  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-/*
-Gives "everything" its placement.
-*/
+/* Center the form */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 110vh;
+}
+
+#Register-User h1 {
+  font-size: 24px; /* Font size */
+  margin-bottom: 20px; /* space below heading */
+  color: #333; /* heading font color */
+}
+
+/* Center the form in container */
 #Register-User {
   text-align: center;
   padding: 30px;
 }
 
+/* changed font family for body */
 body {
   font-family: Arial, sans-serif;
-  zoom: 0.9;
-  margin-top: 30px;
-  margin: 50px;
 }
 
-main {
-  display: inline-block;
+/* Added bootstrap classes */
+
+/* Bootstrap container */
+.container {
+  padding: 20px;
   border: 1px solid #ccc;
-  padding: 10px;
-  margin: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 30%;
-  margin-left: 450px;
+  border-radius: 5px;
+  width: 350px;
 }
 
-/*
-Gives the table its style.
-*/
-input[type="text"],
-input[type="password"],
-button {
+/* Bootstrap form */
+.form-group {
+  margin-bottom: 15px;
+}
+.form-control {
   padding: 10px;
-  margin: 5px;
-  border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
 }
 
-select {
-  padding: 10px;
-  margin: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  width: 188.5px;
-}
-
-/*
-Gives the table its placement.
-*/
-.input-table {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 90px;
-}
-
-/*
-Gives the rows their placement and structure.
-*/
-.input-row {
-  display: flex;
-  align-items: center;
-  margin: 5px 0;
-}
-
-#text {
-  margin-left: 170px;
-  font-size: 10px;
-  text-align: left;
-  width: 200px;
-  font-weight: normal;
-}
-
-/*
-Gives the label its structure and placement. 
-*/
-label {
-  min-width: 150px;
-  text-align: right;
-  margin-right: 10px;
-}
-
-/*
-Gives the create button its placement.
-*/
-#create-button {
-  text-align: center;
-  margin-top: -10px;
-  margin-bottom: 20px;
-}
-
-/*
-Gives the create button its style.
-*/
+/* Bootstrap button */
 #button {
   background-color: #333;
   color: #fff;
@@ -109,4 +60,27 @@ Gives the create button its style.
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* styling for small text (password requirements) */
+.small {
+  font-size: 12px;
+  color: #777;
+}
+
+/* label placement */
+label {
+  text-align: left;
+}
+
+/* input placement */
+input[type="text"],
+input[type="password"],
+select {
+  width: 100%;
+}
+
+/* margin for small text */
+#text {
+  margin-top: 5px;
 }
