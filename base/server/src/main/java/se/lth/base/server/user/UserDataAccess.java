@@ -36,7 +36,9 @@ public class UserDataAccess extends DataAccess<User> {
         @Override
         public User map(ResultSet resultSet) throws SQLException {
             return new User(resultSet.getInt("user_id"), Role.valueOf(resultSet.getString("role")),
-                    resultSet.getString("username"));
+                    resultSet.getString("username"), resultSet.getString("first_name"),
+                    resultSet.getString("last_name"), resultSet.getString("email"),
+                    resultSet.getString("phone_number"));
         }
     }
 
@@ -56,10 +58,13 @@ public class UserDataAccess extends DataAccess<User> {
     public User addUser(Credentials credentials) {
         long salt = Credentials.generateSalt();
         int userId = insert(
-                "INSERT INTO users(role_id, username, password_hash, salt) VALUES (("
-                        + "SELECT role_id FROM user_role WHERE user_role.role=?),?,?,?)",
-                credentials.getRole().name(), credentials.getUsername(), credentials.generatePasswordHash(salt), salt);
-        return new User(userId, credentials.getRole(), credentials.getUsername());
+                "INSERT INTO users(role_id, username, password_hash, salt, first_name, last_name, email, phone_number) VALUES (("
+                        + "SELECT role_id FROM user_role WHERE user_role.role=?),?,?,?,?,?,?,?)",
+                credentials.getRole().name(), credentials.getUsername(), credentials.generatePasswordHash(salt), salt,
+                credentials.getFirstName(), credentials.getLastName(), credentials.getEmail(),
+                credentials.getPhoneNumber());
+        return new User(userId, credentials.getRole(), credentials.getUsername(), credentials.getFirstName(),
+                credentials.getLastName(), credentials.getEmail(), credentials.getPhoneNumber());
     }
 
     public User updateUser(int userId, Credentials credentials) {
@@ -78,8 +83,10 @@ public class UserDataAccess extends DataAccess<User> {
     }
 
     public User getUser(int userId) {
-        return queryFirst("SELECT user_id, role, username FROM users, user_role "
-                + "WHERE users.user_id = ? AND users.role_id = user_role.role_id", userId);
+        return queryFirst(
+                "SELECT user_id, role, username, first_name, last_name, email, phone_number FROM users, user_role "
+                        + "WHERE users.user_id = ? AND users.role_id = user_role.role_id",
+                userId);
     }
 
     public boolean deleteUser(int userId) {
@@ -90,8 +97,8 @@ public class UserDataAccess extends DataAccess<User> {
      * @return all users in the system.
      */
     public List<User> getUsers() {
-        return query(
-                "SELECT user_id, username, role FROM users, user_role " + "WHERE users.role_id = user_role.role_id");
+        return query("SELECT user_id, username, first_name, last_name, email, phone_number, role FROM users, user_role "
+                + "WHERE users.role_id = user_role.role_id");
     }
 
     /**
@@ -106,9 +113,11 @@ public class UserDataAccess extends DataAccess<User> {
      *             if the session is not found.
      */
     public Session getSession(UUID sessionId) {
-        User user = queryFirst("SELECT users.user_id, username, role FROM users, user_role, session "
-                + "WHERE user_role.role_id = users.role_id " + "    AND session.user_id = users.user_id "
-                + "    AND session.session_uuid = ?", sessionId);
+        User user = queryFirst(
+                "SELECT users.user_id, username, role, first_name, last_name, email, phone_number FROM users, user_role, session "
+                        + "WHERE user_role.role_id = users.role_id " + "    AND session.user_id = users.user_id "
+                        + "    AND session.session_uuid = ?",
+                sessionId);
         execute("UPDATE session SET last_seen = CURRENT_TIMESTAMP() " + "WHERE session_uuid = ?", sessionId);
         return new Session(sessionId, user);
     }
@@ -141,8 +150,10 @@ public class UserDataAccess extends DataAccess<User> {
                 .queryStream("SELECT salt FROM users WHERE username = ?", credentials.getUsername()).findFirst()
                 .orElseThrow(() -> new DataAccessException("Username or password incorrect", ErrorType.DATA_QUALITY));
         UUID hash = credentials.generatePasswordHash(salt);
-        User user = queryFirst("SELECT user_id, username, role FROM users, user_role "
-                + "WHERE user_role.role_id = users.role_id " + "    AND username = ? " + "    AND password_hash = ?",
+        User user = queryFirst(
+                "SELECT user_id, username, first_name, last_name, email, phone_number, role FROM users, user_role "
+                        + "WHERE user_role.role_id = users.role_id " + "    AND username = ? "
+                        + "    AND password_hash = ?",
                 credentials.getUsername(), hash);
         UUID sessionId = insert("INSERT INTO session (user_id) " + "SELECT user_id from users WHERE username = ?",
                 user.getName());
