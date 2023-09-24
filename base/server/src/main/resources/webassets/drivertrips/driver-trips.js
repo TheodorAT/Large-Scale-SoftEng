@@ -53,7 +53,7 @@ base.driverTripController = function () {
     load: function () {
       document.getElementById("driver-form").onsubmit = function (event) {
         event.preventDefault();
-        controller.submitDriver();
+        controller.submitDriverTrip();
         return false;
       };
       document.getElementById("from").onkeyup = function (event) {
@@ -112,12 +112,12 @@ base.driverTripController = function () {
         }
       }
     },
-    submitDriver: function () {
+    submitDriverTrip: function () {
       const from = document.getElementById("from").name;
       const to = document.getElementById("to").name;
       const seats = document.getElementById("seats").value;
-      const datetime = new Date(document.getElementById("datetime").value).getTime();
-      const form = { fromLocationId: from, toLocationId: to, startTime: datetime, seatCapacity: seats };
+      const startTime = new Date(document.getElementById("startTime").value).getTime();
+      const form = { fromLocationId: from, toLocationId: to, startTime: startTime, seatCapacity: seats };
       const fromCity = controller.getLocationFromId(from).name;
       const toCity = controller.getLocationFromId(to).name;
       document.getElementById("registeredTripsModal").textContent =
@@ -126,7 +126,7 @@ base.driverTripController = function () {
         " To: " +
         toCity +
         " Date: " +
-        new Date(datetime).toLocaleDateString() +
+        new Date(startTime).toLocaleDateString() +
         " Number of available seats: " +
         seats;
 
@@ -140,7 +140,7 @@ base.driverTripController = function () {
         document.getElementById("from").value = "";
         document.getElementById("to").value = "";
         document.getElementById("seats").value = "";
-        document.getElementById("datetime").value = "";
+        document.getElementById("startTime").value = "";
         const myModal = new bootstrap.Modal(document.getElementById("driverModal"));
         myModal.show();
       });
