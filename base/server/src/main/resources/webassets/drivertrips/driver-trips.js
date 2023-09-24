@@ -19,7 +19,7 @@ base.driverTripController = function () {
 
     this.render = function (template) {
       let now = new Date().getTime();
-      if (viewModel.trip.startTime < now) {
+      if (viewModel.trip.startTime > now) {
         this.update(template.content.querySelector("tr"));
         const clone = document.importNode(template.content, true);
         template.parentElement.appendChild(clone);
@@ -75,6 +75,8 @@ base.driverTripController = function () {
       document.getElementById("to").onkeyup = function (event) {
         controller.filterFunction("to");
       };
+      let date = new Date();
+      document.getElementById("startTime").setAttribute("min", date.toLocaleDateString() + "T" + date.getHours()+ ":" + date.getMinutes()); 
 
       document.getElementById("mytrips").onclick = function (event) {
         event.preventDefault();
