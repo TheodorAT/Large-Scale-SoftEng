@@ -12,8 +12,8 @@ import java.sql.SQLException;
 import java.util.StringTokenizer;
 
 /**
- * Contains helpers for creating the database schema. Each time the server
- * starts the @{@link #createSchemaIfNotExists()} method is called.
+ * Contains helpers for creating the database schema. Each time the server starts
+ * the @{@link #createSchemaIfNotExists()} method is called.
  *
  * @author Rasmus Ros, rasmus.ros@cs.lth.se
  */
@@ -48,7 +48,8 @@ public class CreateSchema {
     /**
      * Inserts location data into the database from a specified CSV file.
      *
-     * @param path The path to the CSV file containing location data.
+     * @param path
+     *            The path to the CSV file containing location data.
      */
     public void insertLocations(String path) {
         String insertDataQuery = "INSERT INTO locations (municipality, name, longitude, latitude) VALUES (?, ?, ?, ?);";

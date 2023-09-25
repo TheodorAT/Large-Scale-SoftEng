@@ -11,9 +11,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 /**
- * The LocationResource class provides endpoints for managing locations within
- * the system. The class is part of the REST API, which allows for HTTP
- * communication to interface with trip data and functionalities.
+ * The LocationResource class provides endpoints for managing locations within the system. The class is part of the REST
+ * API, which allows for HTTP communication to interface with trip data and functionalities.
  * 
  * @author Isak Wahlqvist
  */

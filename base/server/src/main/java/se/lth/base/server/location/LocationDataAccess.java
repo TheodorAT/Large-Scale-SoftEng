@@ -8,12 +8,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * The LocationDataAccess class provides data access methods for
- * location-related data in the database.
+ * The LocationDataAccess class provides data access methods for location-related data in the database.
  *
  * This class extends the DataAccess class.
  *
  * @author Isak Wahlqvist
+ * 
  * @see DataAccess
  */
 public class LocationDataAccess extends DataAccess<Location> {

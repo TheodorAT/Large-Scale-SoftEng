@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Date;
 
 /**
- * The TripDataAccess class provides data access methods for trip-related data
- * in the database.
+ * The TripDataAccess class provides data access methods for trip-related data in the database.
  *
  * This class extends the DataAccess class.
  *
  * @author Isak Wahlqvist
+ * 
  * @see DataAccess
  */
 public class TripDataAccess extends DataAccess<Trip> {
@@ -38,8 +38,11 @@ public class TripDataAccess extends DataAccess<Trip> {
     /**
      * Adds a new trip to the database for a specific driver.
      *
-     * @param driverId The ID of the driver adding the trip.
-     * @param trip     The Trip object to be added.
+     * @param driverId
+     *            The ID of the driver adding the trip.
+     * @param trip
+     *            The Trip object to be added.
+     * 
      * @return The newly added Trip object with updated details.
      */
     public Trip addTrip(int driverId, Trip trip) {
@@ -66,7 +69,8 @@ public class TripDataAccess extends DataAccess<Trip> {
      * 
      */
     public List<Trip> availableTrips(int fromLocationId, int toLocationId) {
-        // possible to add parameters below, such as date/time/seats. Needs to be added in method searchTrips
+        // possible to add parameters below, such as date/time/seats. Needs to be added
+        // in method searchTrips
         // (TripResource) as well. (requires also modify respective test method)
         String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ?";
         return query(sql, fromLocationId, toLocationId);
