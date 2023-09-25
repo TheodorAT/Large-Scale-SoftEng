@@ -7,9 +7,13 @@ base.rest = (function () {
   // itself using the JSON object with Object.assign.
   // In this way, we don't have to write: this.id = json.id; this.payload = json.payload etc.
 
-  const Foo = function (json) {
+  const Trip = function (json) {
     Object.assign(this, json);
-    this.createdDate = new Date(this.created);
+    this.startTime = new Date(this.startTime);
+    this.endTime = new Date(this.endTime);
+  };
+  const Location = function (json) {
+    Object.assign(this, json);
   };
 
   const Role = function (role) {
@@ -31,9 +35,10 @@ base.rest = (function () {
   };
 
   // Expose the classes to base module, they are primarily used by the tests.
-  base.Foo = Foo;
   base.User = User;
   base.Role = Role;
+  base.Trip = Trip;
+  base.Location = Location;
 
   // This method extends the functionality of fetch by adding default error handling.
   // Using it is entirely optional.
@@ -170,54 +175,43 @@ base.rest = (function () {
     },
 
     /*
-     * Fetches the foos of the user, either the currently logged in one, or of a specific user (admin only).
-     * userId (optional): a specific user OR if userId is not specified.
-     * returns: an array of Foo
-     * example: const someonesFoos = base.rest.getFoos(1);
+     * Fetches the locations
+     * returns: an array of locations
+     * example: const locations = base.rest.getLocations();
      */
-    getFoos: function (userId) {
-      var postfix = "";
-      if (typeof userId !== "undefined") postfix = "/user/" + userId;
-      return baseFetch("/rest/foo" + postfix)
+    getLocations: function () {
+      return baseFetch("/rest/location/all", { method: "GET" })
         .then((response) => response.json())
-        .then((foos) => foos.map((f) => new Foo(f)));
+        .then((locations) => locations.map((l) => new Location(l)));
     },
 
     /*
-     * Adds foo expects javascript object containing payload
-     * foo: plain javascript object to add
-     * returns: Foo object
-     * example: const myNewFoo = base.rest.addFoo({'payload': 'i wrote this in the input field'});
+     * Adds trip expects javascript object containing payload
+     * trip: plain javascript object to add
+     * returns: Trip object
+     * example: const myTrip = base.rest.createTrip({fromLocationId: "id", toLocationId: "id", startTime: "time", seatCapacity: "seats"});
      */
-    addFoo: function (foo) {
-      return baseFetch("/rest/foo", {
+    createTrip: function (trip) {
+      return baseFetch("/rest/trip", {
         method: "POST",
-        body: JSON.stringify(foo),
+        body: JSON.stringify(trip),
         headers: jsonHeader,
       })
         .then((response) => response.json())
-        .then((f) => new Foo(f));
+        .then((f) => new Trip(f));
     },
 
     /*
-     * Deletes foo with specific integer id
-     * fooId: id to delete
-     * example: base.rest.deleteFoo(10);
+     * Fetches the trips of the driver
+     * returns: an array of Trips
+     * example: const trips = base.rest.getDriverTrips(1);
      */
-    deleteFoo: function (fooId) {
-      return baseFetch("/rest/foo/" + fooId, { method: "DELETE" });
-    },
-
-    /*
-     * Updates foo with specified integer id with a new integer total
-     * fooId: id to update
-     * total: new total to use
-     * example: base.rest.updateFoo(41, 2);
-     */
-    updateFoo: function (fooId, total) {
-      return baseFetch("/rest/foo/" + fooId + "/total/" + total, { method: "POST" }).then(function () {
-        return total;
-      });
+    getDriverTrips: function () {
+      return baseFetch("/rest/trip/driver", {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
     },
   };
 })();

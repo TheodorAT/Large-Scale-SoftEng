@@ -5,3 +5,4 @@ node_modules/
 .classpath
 .settings/
 .project
+base/server/src/main/resources/webassets/labs/
