@@ -12,10 +12,6 @@ base.mainController = (function () {
       partial: "mytrips/my-trips.html",
       controller: base.myTripsController,
     },
-    foo: {
-      partial: "foo/foo.html",
-      controller: base.fooController,
-    },
     admin: {
       partial: "admin/user-admin.html",
       controller: base.userAdminController,
