@@ -74,9 +74,6 @@ public class TripResource {
      * Retrieves a list of trips associated with the current Driver user.
      *
      * HTTP Request Type: GET Path: "trip/driver"
-     *
-     * @param driverId
-     *            The ID of the driver whose trips are to be retrieved.
      * 
      * @return A List of Trip objects representing the driver's trips.
      */
