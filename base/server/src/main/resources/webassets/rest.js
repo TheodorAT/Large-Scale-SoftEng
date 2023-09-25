@@ -201,6 +201,15 @@ base.rest = (function () {
         .then((f) => new Trip(f));
     },
 
+    //TODO: get all trips with user_id, both as passenger and driver
+    /* getAllTrips: function () {
+      return baseFetch("/rest/trip/", {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
+    }, */
+
     /*
      * Fetches the trips of the driver
      * returns: an array of Trips

@@ -62,7 +62,8 @@ base.myTripsController = function () {
     load: function () {
       // Loads all first destinations and then the drivertrips from the server through the REST API, see res.js for definition.
       // It will replace the model with the trips, and then render them through the view.
-      // TODO change to getAllTrips().. preferably that the back-end returns it sorted using SORT BY from database
+
+      // TODO change to getAllTrips()... that should return all trips as passenger and driver. See getAllTrips() in rest.js waiting for back-end
       // should return a trip with information {From,	To,	Time of Departure,Expected Time of Arrival, Seats, Driver, passangers}
       base.rest.getLocations().then(function (l) {
         locations = l;
