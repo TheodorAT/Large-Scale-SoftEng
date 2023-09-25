@@ -6,8 +6,6 @@ import se.lth.base.server.database.BaseDataAccessTest;
 
 import static org.junit.Assert.assertEquals;
 
-import java.sql.Timestamp;
-
 /**
  * @author Isak Wahlqvist
  */

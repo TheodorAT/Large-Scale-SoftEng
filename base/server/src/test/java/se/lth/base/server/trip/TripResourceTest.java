@@ -8,7 +8,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
