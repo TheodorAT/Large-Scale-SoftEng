@@ -7,11 +7,6 @@ base.rest = (function () {
   // itself using the JSON object with Object.assign.
   // In this way, we don't have to write: this.id = json.id; this.payload = json.payload etc.
 
-  const Foo = function (json) {
-    Object.assign(this, json);
-    this.createdDate = new Date(this.created);
-  };
-
   const Trip = function (json) {
     Object.assign(this, json);
     this.startTime = new Date(this.startTime);
@@ -40,7 +35,6 @@ base.rest = (function () {
   };
 
   // Expose the classes to base module, they are primarily used by the tests.
-  base.Foo = Foo;
   base.User = User;
   base.Role = Role;
   base.Trip = Trip;
@@ -207,6 +201,15 @@ base.rest = (function () {
         .then((f) => new Trip(f));
     },
 
+    //TODO: get all trips with user_id, both as passenger and driver
+    /* getAllTrips: function () {
+      return baseFetch("/rest/trip/", {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
+    }, */
+
     /*
      * Fetches the trips of the driver
      * returns: an array of Trips
@@ -219,46 +222,7 @@ base.rest = (function () {
         .then((response) => response.json())
         .then((trips) => trips.map((f) => new Trip(f)));
     },
-
-    /*
-     * Fetches the foos of the user, either the currently logged in one, or of a specific user (admin only).
-     * userId (optional): a specific user OR if userId is not specified.
-     * returns: an array of Foo
-     * example: const someonesFoos = base.rest.getFoos(1);
-     */
-    getFoos: function (userId) {
-      var postfix = "";
-      if (typeof userId !== "undefined") postfix = "/user/" + userId;
-      return baseFetch("/rest/foo" + postfix)
-        .then((response) => response.json())
-        .then((foos) => foos.map((f) => new Foo(f)));
-    },
-
-    /*
-     * Adds foo expects javascript object containing payload
-     * foo: plain javascript object to add
-     * returns: Foo object
-     * example: const myNewFoo = base.rest.addFoo({'payload': 'i wrote this in the input field'});
-     */
-    addFoo: function (foo) {
-      return baseFetch("/rest/foo", {
-        method: "POST",
-        body: JSON.stringify(foo),
-        headers: jsonHeader,
-      })
-        .then((response) => response.json())
-        .then((f) => new Foo(f));
-    },
-
-    /*
-     * Deletes foo with specific integer id
-     * fooId: id to delete
-     * example: base.rest.deleteFoo(10);
-     */
-    deleteFoo: function (fooId) {
-      return baseFetch("/rest/foo/" + fooId, { method: "DELETE" });
-    },
-    /*
+  /*
      * Fetches available shuttles based on search criteria.
      * from: the starting point
      * destination: the destination point
@@ -268,32 +232,20 @@ base.rest = (function () {
      * example: const shuttles = base.rest.getShuttles('City A', 'City B', '2023-09-20 10:00');
      */
 
-    getShuttles: function (form) {
-      const queryParams = new URLSearchParams({
-        fromLocationId: form.fromLocationId,
-        toLocationId: form.toLocationId,
-        //datetime: form.datetime,
-      });
+  getShuttles: function (form) {
+    const queryParams = new URLSearchParams({
+      fromLocationId: form.fromLocationId,
+      toLocationId: form.toLocationId,
+      //datetime: form.datetime,
+    });
 
-      return baseFetch("/rest/trip/search/?" + queryParams.toString(), {
-        method: "GET",
-      })
-          .then((response) => response.json())
-          .then((trips) => trips.map((f) => new Trip(f)));
-    },
+    return baseFetch("/rest/trip/search/?" + queryParams.toString(), {
+      method: "GET",
+    })
+        .then((response) => response.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
+  },
 
 
-
-    /*
-     * Updates foo with specified integer id with a new integer total
-     * fooId: id to update
-     * total: new total to use
-     * example: base.rest.updateFoo(41, 2);
-     */
-    updateFoo: function (fooId, total) {
-      return baseFetch("/rest/foo/" + fooId + "/total/" + total, { method: "POST" }).then(function () {
-        return total;
-      });
-    },
   };
 })();
