@@ -31,15 +31,15 @@ base.registerUserController = function () {
 
       function isValidUsername(username) {
         if (username.length < 3) {
-            return false;
-        }    
+          return false;
+        }
 
         let users = base.rest.getUsers();
         let usernameExists = users.some(function (user) {
-            return user.username == username;
+          return user.username == username;
         });
         return !usernameExists;
-    }
+      }
 
       function isValidPassword(password) {
         return password.length >= 8 && /^(?=.*[^\w\s]).{8,}$/.test(password);
