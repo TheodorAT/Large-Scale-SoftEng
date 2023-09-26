@@ -118,7 +118,7 @@ describe("mainController", function () {
     base.mainController.load();
     userPromise
       .then(function () {
-        expect(base.changeLocation).toHaveBeenCalledWith("/login/login.html");
+        expect(base.changeLocation).toHaveBeenCalledWith("/register/start.html");
       })
       .finally(done);
   });
