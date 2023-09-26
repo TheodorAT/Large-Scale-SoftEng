@@ -10,6 +10,7 @@ base.myTripsController = function () {
   // List of all trip data
   let model = [];
   let locations = [];
+  let currentUser = {};
 
   const MyTripsViewModel = function (_trip) {
     this.trip = _trip;
@@ -38,8 +39,21 @@ base.myTripsController = function () {
       const duration = new Date(end - start).toLocaleTimeString();
       td[4].textContent = duration;
       td[5].textContent = viewModel.trip.seatCapacity;
-      td[6].textContent = "TODO";
-      td[7].textContent = "TODO";
+      td[6].textContent = viewModel.trip.driverId;
+      let now = new Date().getTime();
+      if (viewModel.trip.driverId == currentUser.id && viewModel.trip.startTime > now) {
+        let button = document.createElement("button");
+        button.innerHTML = "Cancel";
+        button.id = viewModel.trip.id;
+        button.classList.add("btn", "btn-danger");
+        //If button already has been added, it needs to be replaced
+        if (td[7].children[0]) {
+          td[7].children[0].remove();
+        }
+        td[7].appendChild(button);
+      } else {
+        td[7].textContent = "passengers";
+      }
     };
   };
 
@@ -49,6 +63,7 @@ base.myTripsController = function () {
       const pt = this.pastTemplate();
       const ut = this.upcomingTemplate();
       model.forEach((d) => d.render(pt, ut));
+      controller.loadButtons();
     },
     pastTemplate: function () {
       return document.getElementById("past-trips-template");
@@ -72,9 +87,22 @@ base.myTripsController = function () {
           view.render();
         });
       });
+      base.rest.getUser().then(function (user) {
+        currentUser = user;
+      });
     },
     getLocationFromId: function (id) {
       return locations.find((location) => location.locationId == id);
+    },
+    loadButtons: function () {
+      const cancelButtons = document.getElementById("mytrips").querySelectorAll("button");
+      cancelButtons.forEach(
+        (b) =>
+          (b.onclick = function (event) {
+            console.log("click", event.target.id);
+            //base.rest.deleteTrip()
+          }),
+      );
     },
   };
 
