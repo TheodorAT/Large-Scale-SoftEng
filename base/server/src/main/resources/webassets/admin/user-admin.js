@@ -93,8 +93,6 @@ base.userAdminController = function () {
         .forEach((activeEl) => activeEl.classList.remove("active"));
       viewModel.listElement.classList.add("active");
 
-      document.getElementById("user-data").querySelector("a").href = "/rest/foo/user/" + viewModel.user.id;
-
       // Set defaults of form values. This will allow the HTML reset button to work by default HTML behaviour.
       document.getElementById("user-id").defaultValue = viewModel.user.id;
       document.getElementById("set-username").defaultValue = viewModel.user.username;
