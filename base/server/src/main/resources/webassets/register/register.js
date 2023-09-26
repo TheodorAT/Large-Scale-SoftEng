@@ -1,3 +1,4 @@
+//Written by Max Emtefall and Justin Hellsten
 var base = base || {};
 
 base.registerUserController = function () {
@@ -72,6 +73,10 @@ base.registerUserController = function () {
     },
   };
   return controller;
+};
+
+base.changeLocation = function (url) {
+  window.location.replace(url);
 };
 
 // user registration controller
