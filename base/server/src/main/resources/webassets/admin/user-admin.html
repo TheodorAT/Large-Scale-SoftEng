@@ -19,7 +19,7 @@
                 <td></td>
                 <td></td>
                 <td>
-                    <button id="delete-user" type="button" class="w-100 btn btn-danger">Delete</button>
+                    <button type="button" class="w-100 btn btn-danger delete-user">Delete</button>
                 </td>
             </tr>
         </template>
@@ -30,6 +30,24 @@
     </button>
 </div>
 
-
+<div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Are you sure you want to delete this user?</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>The user will be deleted immediatly. This action can not be undone. </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger">Yes, delete user</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
