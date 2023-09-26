@@ -18,8 +18,8 @@ describe("driverTripController", function () {
       driverId: 1,
       fromLocationId: 1,
       toLocationId: 2,
-      startTime: 120000,
-      endTime: 140000,
+      startTime: new Date().getTime() + 1000000,
+      endTime: new Date().getTime() + 3000000,
       seatCapacity: 2,
     }),
     new base.Trip({
@@ -27,8 +27,8 @@ describe("driverTripController", function () {
       driverId: 2,
       fromLocationId: 2,
       toLocationId: 3,
-      startTime: 140000,
-      endTime: 16000,
+      startTime: new Date().getTime() + 1000000,
+      endTime: new Date().getTime() + 3000000,
       seatCapacity: 3,
     }),
     new base.Trip({
@@ -36,8 +36,8 @@ describe("driverTripController", function () {
       driverId: 3,
       fromLocationId: 3,
       toLocationId: 4,
-      startTime: 130000,
-      endTime: 170000,
+      startTime: new Date().getTime() + 1000000,
+      endTime: new Date().getTime() + 3000000,
       seatCapacity: 4,
     }),
   ];
@@ -106,7 +106,7 @@ describe("driverTripController", function () {
     });
 
     it("should call submitDriverTrip after button click", function () {
-      const form = { from: "Malmö, Skåne", to: "Lund, Skåne", seats: 1, startTime: "2018-06-12T19:30" };
+      const form = { from: "Malmö, Skåne", to: "Lund, Skåne", seats: 1, startTime: "2024-06-12T19:30" };
       spyOn(controller, "submitDriverTrip");
       spyOn(controller, "getLocationId").and.returnValues(1, 3);
       document.getElementById("from").value = form.from;

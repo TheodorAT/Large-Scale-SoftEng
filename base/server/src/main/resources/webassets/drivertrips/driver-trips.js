@@ -5,6 +5,7 @@
 var base = base || {};
 // Defines the base namespace, if not already declared. Through this pattern it doesn't matter which order
 // the scripts are loaded in.
+
 base.driverTripController = function () {
   "use strict"; // add this to avoid some potential bugs
 
@@ -17,9 +18,12 @@ base.driverTripController = function () {
     const viewModel = this;
 
     this.render = function (template) {
-      this.update(template.content.querySelector("tr"));
-      const clone = document.importNode(template.content, true);
-      template.parentElement.appendChild(clone);
+      let now = new Date().getTime();
+      if (viewModel.trip.startTime > now) {
+        this.update(template.content.querySelector("tr"));
+        const clone = document.importNode(template.content, true);
+        template.parentElement.appendChild(clone);
+      }
     };
     this.update = function (trElement) {
       const td = trElement.children;
@@ -70,6 +74,15 @@ base.driverTripController = function () {
       };
       document.getElementById("to").onkeyup = function (event) {
         controller.filterFunction("to");
+      };
+      let date = new Date();
+      document
+        .getElementById("startTime")
+        .setAttribute("min", date.toLocaleDateString() + "T" + date.getHours() + ":" + date.getMinutes());
+
+      document.getElementById("mytrips").onclick = function (event) {
+        event.preventDefault();
+        base.changeLocation("#/my-trips");
       };
       // Loads all registered trips and destinations from the server through the REST API, see res.js for definition.
       // It will replace the model with the trips, and then render them through the view.

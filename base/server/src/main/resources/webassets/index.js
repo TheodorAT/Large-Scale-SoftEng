@@ -8,6 +8,10 @@ base.mainController = (function () {
       partial: "drivertrips/driver-trips.html",
       controller: base.driverTripController,
     },
+    "my-trips": {
+      partial: "mytrips/my-trips.html",
+      controller: base.myTripsController,
+    },
     admin: {
       partial: "admin/user-admin.html",
       controller: base.userAdminController,
