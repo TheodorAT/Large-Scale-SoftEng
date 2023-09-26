@@ -18,7 +18,7 @@ base.mainController = (function () {
     },
     search: {
       partial: "searchForAvailableShuttles/search.html",
-      controller: base.searchShuttlesController,
+      controller: base.searchTripController,
     },
   };
 

@@ -58,6 +58,7 @@ public class TripResource {
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<Trip> getTripsFromDriver() {
         List<Trip> result = tripDao.getTripsFromDriver(user.getId());
+
         return result;
     }
 }

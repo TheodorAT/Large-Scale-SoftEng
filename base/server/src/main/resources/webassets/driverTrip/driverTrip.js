@@ -21,6 +21,7 @@ base.driverTripController = function () {
       const clone = document.importNode(template.content, true);
       template.parentElement.appendChild(clone);
     };
+
     this.update = function (trElement) {
       const td = trElement.children;
       td[0].textContent = viewModel.trip.id;

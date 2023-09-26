@@ -1,74 +1,91 @@
-<main>
-    <section id="search-section">
-        <h2>Search for Available Shuttles</h2>
-        <form id="search-form" class="form-row pt-4">
-            <div class="form-group col-md-auto">
-                <label for="from-input">From</label>
-                <div class="dropdown">
-                    <input type="text" id="from-input" class="form-control" placeholder="Search origin.."
-                           data-bs-toggle="dropdown" aria-expanded="false" autocomplete="off" />
-                    <ul class="dropdown-menu" id="dropdown-from">
-                    </ul>
-                </div>
-            </div>
-            <div class="form-group col-md-auto">
-                <label for="destination-input">Destination</label>
-                <div class="dropdown">
-                    <input type="text" id="destination-input" class="form-control"
-                           placeholder="Search destination.." data-bs-toggle="dropdown" aria-expanded="false"
-                           autocomplete="off" />
-                    <ul class="dropdown-menu" id="dropdown-destination">
-                    </ul>
-                </div>
-            </div>
-            <div class="form-group col-md-auto">
-                <label for="datetime-input">Start Date & Time</label>
-                <input type="datetime-local" id="datetime-input" class="form-control" required />
-            </div>
-            <div class="form-group d-flex align-items-end">
-                <button id="search-btn" type="submit" class="btn btn-primary">Search</button>
-            </div>
-        </form>
-    </section>
+<div class="container-fluid">
+    <h2>Search for available trips</h2>
 
-    <section id="book-section">
-        <button id="book-trip-btn">Book</button>
-    </section>
+    <form class="form-row pt-4" id="driver-form">
+        <div class="form-group col-md-auto">
+            <label for="from">From</label>
+            <div class="dropdown">
+                <input
+                        required
+                        type="text"
+                        placeholder="Search origin.."
+                        id="from"
+                        class="form-control"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        dropdown-toggle
+                        autocomplete="off"
+                />
+                <ul class="dropdown-menu" id="dropdown-from">
+                </ul>
+            </div>
+        </div>
+        <div class="form-group col-md-auto">
+            <label for="to">To</label>
+            <div class="dropdown">
+                <input
+                        type="text"
+                        required
+                        placeholder="Search destination.."
+                        id="to"
+                        class="form-control"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        dropdown-toggle
+                        autocomplete="off"
+                />
+                <ul class="dropdown-menu" id="dropdown-to">
+                </ul>
+            </div>
+        </div>
+        <div class="form-group col-md-auto">
+            <label for="datetime">Start date & time</label>
+            <input required type="datetime-local" class="form-control" id="datetime" name="datetime" />
+        </div>
+        <div class="form-group d-flex align-items-end">
+            <button id="searchbtn" type="submit" class="btn btn-primary">search</button>
+        </div>
+    </form>
 
-    <section>
-        <table class="table" id="shuttle-list">
-            <thead>
+
+    <h2 class="pt-5">Available trips</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Arrival Time</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Seats Left</th>
+            <th scope="col">Driver</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Car</th>
+            <th scope="col">Baggage</th>
+        </tr>
+        </thead>
+        <tbody>
+        <template id="drivertrip-template">
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">From</th>
-                <th scope="col">To</th>
-                <th scope="col">Start Time</th>
-                <th scope="col">Arrival Time</th>
-                <th scope="col">Duration</th>
-                <th scope="col">Seats Left</th>
-                <th scope="col">Driver</th>
-                <th scope="col">Rating</th>
-                <th scope="col">Car</th>
-                <th scope="col">Baggage</th>
+                <th scope="row"></th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
-            </thead>
-            <tbody>
-            <template id="trips-template">
-                <tr>
-                    <th scope="row"></th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </template>
-            </tbody>
-        </table>
-    </section>
-</main>
+        </template>
+        </tbody>
+    </table>
+</div>
+
+
+
+</div>

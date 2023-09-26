@@ -267,20 +267,22 @@ base.rest = (function () {
      * function will return an array of JavaScript objects, each representing a shuttle
      * example: const shuttles = base.rest.getShuttles('City A', 'City B', '2023-09-20 10:00');
      */
-    /*
-    getShuttles: function (from, destination, datetime) {
+
+    getShuttles: function (form) {
       const queryParams = new URLSearchParams({
-        from: from,
-        destination: destination,
-        datetime: datetime,
+        fromLocationId: form.fromLocationId,
+        toLocationId: form.toLocationId,
+        //datetime: form.datetime,
       });
 
-      return baseFetch("/rest/shuttles?" + queryParams.toString())
+      return baseFetch("/rest/trip/search/?" + queryParams.toString(), {
+        method: "GET",
+      })
           .then((response) => response.json())
-          .then((shuttles) => shuttles.map((shuttle) => Object.assign({}, shuttle)));
+          .then((trips) => trips.map((f) => new Trip(f)));
     },
 
-*/
+
 
     /*
      * Updates foo with specified integer id with a new integer total
