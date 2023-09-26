@@ -24,7 +24,6 @@ const user = function (userData) {
  * @returns The user registration controller object.
  */
 const controller = {
-
   //Loads the controller, adds event listeners.
   load: function () {
     document.getElementById("button").addEventListener("click", function () {
