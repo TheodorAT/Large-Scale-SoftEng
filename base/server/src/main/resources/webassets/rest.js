@@ -201,7 +201,7 @@ base.rest = (function () {
         .then((f) => new Trip(f));
     },
 
-    /* 
+    /*
      * Delete a with a given trip
      * id: trip to delete
      *
