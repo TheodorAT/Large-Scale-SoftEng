@@ -12,7 +12,8 @@ import java.sql.SQLException;
 import java.util.StringTokenizer;
 
 /**
- * Contains helpers for creating the database schema. Each time the server starts
+ * Contains helpers for creating the database schema. Each time the server
+ * starts
  * the @{@link #createSchemaIfNotExists()} method is called.
  *
  * @author Rasmus Ros, rasmus.ros@cs.lth.se
@@ -39,6 +40,7 @@ public class CreateSchema {
     public void createSchema() {
         try (Connection conn = new DataAccess<>(driverUrl, null).getConnection()) {
             runScript(conn);
+            insertLocations("dataleverans/areas.csv");
         } catch (SQLException e) {
             throw new DataAccessException(e, ErrorType.UNKNOWN);
         }
@@ -62,7 +64,6 @@ public class CreateSchema {
                     insertDataStmt.setDouble(4, Double.parseDouble(st.nextToken()));
 
                     insertDataStmt.addBatch();
-                    System.out.println(line);
                 }
 
                 insertDataStmt.executeBatch();
