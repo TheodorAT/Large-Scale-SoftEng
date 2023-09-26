@@ -46,7 +46,7 @@ base.myTripsController = function () {
         button.innerHTML = "Cancel";
         button.id = viewModel.trip.id;
         button.classList.add("btn", "btn-danger");
-        //If button already has been added, it needs to be replaced
+        //If button already has already been added, it needs to be replaced
         if (td[7].children[0]) {
           td[7].children[0].remove();
         }

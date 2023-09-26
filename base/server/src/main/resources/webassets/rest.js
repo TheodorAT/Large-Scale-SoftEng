@@ -201,6 +201,16 @@ base.rest = (function () {
         .then((f) => new Trip(f));
     },
 
+    /* 
+     * Delete a with a given trip
+     * id: trip to delete
+     *
+     * example: base.rest.deleteTrip(1);
+     */
+    deleteTrip: function (tripId) {
+      return baseFetch("/rest/trip/" + tripId, { method: "DELETE" });
+    },
+
     //TODO: get all trips with user_id, both as passenger and driver
     /* getAllTrips: function () {
       return baseFetch("/rest/trip/", {
