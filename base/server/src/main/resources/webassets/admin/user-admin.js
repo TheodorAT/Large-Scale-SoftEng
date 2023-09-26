@@ -41,18 +41,17 @@ base.userAdminController = function () {
       });
 
       // Add a click event listener to the table, delegating the event to the buttons
-document.querySelector('table').addEventListener('click', function(event) {
-  if (event.target && event.target.classList.contains('delete-user')) {
-    // This condition checks if the clicked element has the 'delete-user' class
-    const button = event.target;
-    const myModal = new bootstrap.Modal(document.getElementById("deleteModal"));
-    myModal.show();
-    // You can access the specific button or its parent row if needed:
-    const parentRow = button.closest("tr");
-    console.log(parentRow);
-  }
-});
-
+      document.querySelector("table").addEventListener("click", function (event) {
+        if (event.target && event.target.classList.contains("delete-user")) {
+          // This condition checks if the clicked element has the 'delete-user' class
+          const button = event.target;
+          const myModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+          myModal.show();
+          // You can access the specific button or its parent row if needed:
+          const parentRow = button.closest("tr");
+          console.log(parentRow);
+        }
+      });
     },
   };
   return controller;
