@@ -32,10 +32,9 @@ base.searchTripController = function () {
       td[3].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
       const end = viewModel.trip.endTime;
       td[4].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
-      td[5].textContent=((end-start)/3600000)+"hours";
+      td[5].textContent = (end - start) / 3600000 + "hours";
       td[6].textContent = viewModel.trip.seatCapacity;
       td[7].textContent = viewModel.trip.driverId;
-
     };
   };
 
@@ -118,10 +117,9 @@ base.searchTripController = function () {
       const fromCity = controller.getLocationFromId(from).name;
       const toCity = controller.getLocationFromId(to).name;
 
-
       base.rest.getShuttles(form).then(function (trips) {
-             trips.forEach((trip)=> {
-               console.log(trip);
+        trips.forEach((trip) => {
+          console.log(trip);
           const vm = new TripViewModel(trip);
           model.push(vm); // append the trip to the end of the model array
           vm.render(view.template()); // append the trip to the table
@@ -130,8 +128,6 @@ base.searchTripController = function () {
         document.getElementById("to").value = "";
         document.getElementById("datetime").value = "";
       });
-
-
     },
   };
 
