@@ -10,6 +10,12 @@ import se.lth.base.server.trip.Trip;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
+/**
+ * Tests for TripPassengerResourceTest
+ * 
+ * @author Anton Tingelholm
+ */
+
 public class TripPassengerResourceTest extends BaseResourceTest {
 
     @Before
@@ -17,8 +23,11 @@ public class TripPassengerResourceTest extends BaseResourceTest {
         login(TEST_CREDENTIALS);
     }
 
+    /**
+     * Test for the createTripPassenger() function.
+     */
     @Test
-    public void bookTrip() {
+    public void createTripPassenger() {
 
         Trip t = new Trip(1, 1, 1, 2, 1, 2, 2);
         Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
