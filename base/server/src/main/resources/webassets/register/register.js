@@ -1,7 +1,3 @@
-/*
- * Javascript for regiser user.
- * Author: Max Emtefall, Justin Hellsten
- */
 var base = base || {};
 
 base.registerUserController = function () {
@@ -33,10 +29,16 @@ base.registerUserController = function () {
       const role = document.getElementById("roles").value;
 
       function isValidUsername(username) {
-        //is username taken? needs request from server
+        if (username.length < 3) {
+            return false;
+        }    
 
-        return username.length >= 3;
-      }
+        let users = base.rest.getUsers();
+        let usernameExists = users.some(function (user) {
+            return user.username == username;
+        });
+        return !usernameExists;
+    }
 
       function isValidPassword(password) {
         return password.length >= 8 && /^(?=.*[^\w\s]).{8,}$/.test(password);
@@ -64,8 +66,6 @@ base.registerUserController = function () {
         role: role,
       };
 
-      // register the user though rest api?
-      // does createUser function exist on the rest server?
       base.rest.createUser(new user(userData)).then(function () {
         alert("User registration success!");
       });
