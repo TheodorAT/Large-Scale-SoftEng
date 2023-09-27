@@ -9,7 +9,7 @@ base.searchTripController = function () {
   "use strict"; // add this to avoid some potential bugs
 
   let model = [];
-
+  let currentUser = {};
   let locations = [];
 
   const TripViewModel = function (_trip) {
@@ -20,21 +20,33 @@ base.searchTripController = function () {
       this.update(template.content.querySelector("tr"));
       const clone = document.importNode(template.content, true);
       template.parentElement.appendChild(clone);
+      controller.loadButtons();
     };
     this.update = function (trElement) {
       const td = trElement.children;
       td[0].textContent = viewModel.trip.id;
       let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
       let tolocation = controller.getLocationFromId(viewModel.trip.toLocationId);
-      td[1].textContent = fromlocation.name + ", " + fromlocation.municipality;;
-      td[2].textContent = tolocation.name + ", " + tolocation.municipality;;
+      td[1].textContent = fromlocation.name + ", " + fromlocation.municipality;
+      td[2].textContent = tolocation.name + ", " + tolocation.municipality;
       const start = viewModel.trip.startTime;
       td[3].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
       const end = viewModel.trip.endTime;
       td[4].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
-      td[5].textContent = (end - start) / 3600000 + "hours";
+      td[5].textContent = new Date(end - start).toLocaleTimeString();
       td[6].textContent = viewModel.trip.seatCapacity;
       td[7].textContent = viewModel.trip.driverId;
+      let now = new Date().getTime();
+      // Book Button //
+      //If button already has already been added, it needs to be replaced
+      if (td[11].children[0]) {
+        td[11].children[0].remove();
+      }
+      let button1 = document.createElement("button");
+      button1.innerHTML = "Book";
+      button1.id = viewModel.trip.id;
+      button1.classList.add("btn", "btn-danger");
+      td[11].appendChild(button1);
     };
   };
 
@@ -79,6 +91,13 @@ base.searchTripController = function () {
         controller.setLocations("from", l);
         controller.setLocations("to", l);
       });
+
+      base.rest.getUser().then(function (user) {
+        currentUser = user;
+      });
+    },
+    getLocationId: function (value) {
+      return locations.find((location) => location.name + ", " + location.municipality == value)?.locationId;
     },
     getLocationId: function (value) {
       return locations.find((location) => location.name + ", " + location.municipality == value)?.locationId;
@@ -119,6 +138,16 @@ base.searchTripController = function () {
         }
       }
     },
+    loadButtons: function () {
+      let bookButtons = document.getElementById("search-trip").querySelectorAll("button");
+      bookButtons.forEach(
+        (b) =>
+          (b.onclick = function (event) {
+            console.log("click", event.target.id);
+            //TODO: rest call to booking trip
+          }),
+      );
+    },
     loadTrips: function () {
       const from = document.getElementById("from");
       const to = document.getElementById("to");
@@ -126,16 +155,13 @@ base.searchTripController = function () {
       const toId = controller.getLocationId(to.value.trim());
       const datetime = new Date(document.getElementById("datetime").value).getTime();
       const form = { fromLocationId: fromId, toLocationId: toId, startTime: datetime };
-      model = [];
       base.rest.getShuttles(form).then(function (trips) {
         trips.forEach((trip) => {
-          console.log(trip);
           const vm = new TripViewModel(trip);
           model.push(vm); // append the trip to the end of the model array
           vm.render(view.template()); // append the trip to the table
         });
-        if(trips.length == 0) {
-          console.log("noll")
+        if (trips.length == 0) {
           const myModal = new bootstrap.Modal(document.getElementById("searchModal"));
           myModal.show();
         }
@@ -143,7 +169,6 @@ base.searchTripController = function () {
       document.getElementById("from").classList.remove("is-invalid");
       document.getElementById("to").classList.remove("is-invalid");
       document.getElementById("searchtrip-form").reset();
-
     },
   };
 

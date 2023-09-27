@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div  class="container-fluid">
     <h2>Search for available trips</h2>
 
     <form class="form-row pt-4" id="searchtrip-form">
@@ -47,9 +47,8 @@
         </div>
     </form>
 
-
     <h2 class="pt-5">Available trips</h2>
-    <table class="table">
+    <table id="search-trip" class="table">
         <thead>
         <tr>
             <th scope="col">#</th>
@@ -63,6 +62,7 @@
             <th scope="col">Rating</th>
             <th scope="col">Car</th>
             <th scope="col">Baggage</th>
+            <th scope="col">Book</th>
         </tr>
         </thead>
         <tbody>
@@ -80,10 +80,12 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
         </template>
         </tbody>
     </table>
+</div>
 </div>
 
 <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModal">
@@ -102,9 +104,4 @@
       </div>
     </div>
   </div>
-</div>
-
-
-
-
 </div>
