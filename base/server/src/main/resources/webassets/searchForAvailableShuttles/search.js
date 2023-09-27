@@ -26,8 +26,8 @@ base.searchTripController = function () {
       td[0].textContent = viewModel.trip.id;
       let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
       let tolocation = controller.getLocationFromId(viewModel.trip.toLocationId);
-      td[1].textContent = fromlocation.name;
-      td[2].textContent = tolocation.name;
+      td[1].textContent = fromlocation.name + ", " + fromlocation.municipality;;
+      td[2].textContent = tolocation.name + ", " + tolocation.municipality;;
       const start = viewModel.trip.startTime;
       td[3].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
       const end = viewModel.trip.endTime;
@@ -47,15 +47,24 @@ base.searchTripController = function () {
       model.forEach((d) => d.render(t));
     },
     template: function () {
-      return document.getElementById("drivertrip-template");
+      return document.getElementById("searchtrip-template");
     },
   };
 
   const controller = {
     load: function () {
-      document.getElementById("driver-form").onsubmit = function (event) {
+      document.getElementById("searchtrip-form").onsubmit = function (event) {
         event.preventDefault();
-        controller.submitDriver();
+        // Before submitting, needs to check if locations exists, otherwise mark the input invalid.
+        const from = document.getElementById("from");
+        const to = document.getElementById("to");
+        let f = controller.getLocationId(from.value.trim());
+        let t = controller.getLocationId(to.value.trim());
+        f == undefined ? from.classList.add("is-invalid") : "";
+        t == undefined ? to.classList.add("is-invalid") : "";
+        if (f && t) {
+          controller.loadTrips();
+        }
         return false;
       };
       document.getElementById("from").onkeyup = function (event) {
@@ -71,6 +80,9 @@ base.searchTripController = function () {
         controller.setLocations("to", l);
       });
     },
+    getLocationId: function (value) {
+      return locations.find((location) => location.name + ", " + location.municipality == value)?.locationId;
+    },
     getLocationFromId: function (id) {
       return locations.find((location) => location.locationId == id);
     },
@@ -80,8 +92,7 @@ base.searchTripController = function () {
         let li = document.createElement("li");
         ul.appendChild(li);
         let button = document.createElement("button");
-        button.innerHTML = destinations[i].name;
-        button.value = destinations[i].locationId;
+        button.innerHTML = destinations[i].name + ", " + destinations[i].municipality;
         button.classList.add("dropdown-item");
         li.appendChild(button);
         button.onclick = function (event) {
@@ -91,8 +102,7 @@ base.searchTripController = function () {
       }
     },
     selectLocation: function (location, id) {
-      document.getElementById(id).value = location.innerHTML;
-      document.getElementById(id).name = location.value;
+      document.getElementById(id).value = location.innerHTML.trim();
       document.getElementById("dropdown-" + id).classList.toggle("show");
     },
     filterFunction: function (id) {
@@ -109,14 +119,14 @@ base.searchTripController = function () {
         }
       }
     },
-    submitDriver: function () {
-      const from = document.getElementById("from").name;
-      const to = document.getElementById("to").name;
+    loadTrips: function () {
+      const from = document.getElementById("from");
+      const to = document.getElementById("to");
+      const fromId = controller.getLocationId(from.value.trim());
+      const toId = controller.getLocationId(to.value.trim());
       const datetime = new Date(document.getElementById("datetime").value).getTime();
-      const form = { fromLocationId: from, toLocationId: to, startTime: datetime };
-      const fromCity = controller.getLocationFromId(from).name;
-      const toCity = controller.getLocationFromId(to).name;
-
+      const form = { fromLocationId: fromId, toLocationId: toId, startTime: datetime };
+      model = [];
       base.rest.getShuttles(form).then(function (trips) {
         trips.forEach((trip) => {
           console.log(trip);
@@ -124,10 +134,16 @@ base.searchTripController = function () {
           model.push(vm); // append the trip to the end of the model array
           vm.render(view.template()); // append the trip to the table
         });
-        document.getElementById("from").value = "";
-        document.getElementById("to").value = "";
-        document.getElementById("datetime").value = "";
+        if(trips.length == 0) {
+          console.log("noll")
+          const myModal = new bootstrap.Modal(document.getElementById("searchModal"));
+          myModal.show();
+        }
       });
+      document.getElementById("from").classList.remove("is-invalid");
+      document.getElementById("to").classList.remove("is-invalid");
+      document.getElementById("searchtrip-form").reset();
+
     },
   };
 
