@@ -159,4 +159,20 @@ public class UserDataAccess extends DataAccess<User> {
                 user.getName());
         return new Session(sessionId, user);
     }
+
+    /**
+     * Updates the role of an existing user.
+     *
+     * @param userId
+     *            The ID of the user to update.
+     * @param role
+     *            The new role to assign to the user.
+     * 
+     * @return The updated User object.
+     */
+    public User updateUserRole(int userId, Role role) {
+        String sql = "UPDATE users SET role_id = (SELECT role_id FROM user_role WHERE user_role.role = ?) WHERE user_id = ?";
+        execute(sql, role.name(), userId);
+        return getUser(userId);
+    }
 }
