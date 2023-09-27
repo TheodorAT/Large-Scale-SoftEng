@@ -51,7 +51,7 @@ base.mainController = (function () {
         model.user = user;
         document.getElementById("username").textContent = model.user.username;
         if (user.isNone()) {
-          base.changeLocation("/register/start.html");
+          base.changeLocation("/login/login.html");
         } else if (!user.isAdmin()) {
           document.querySelectorAll("#main-nav li.admin-only").forEach((li) => (li.style.display = "none"));
         }
