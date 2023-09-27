@@ -1,6 +1,5 @@
 /*
- * Model/view/controller for the DriverTrip tab.
- * Author: Bianca Widstam, Amanda Nystedt
+ * Author: emad Issawi, Osama Hajjouz
  */
 var base = base || {};
 // Defines the base namespace, if not already declared. Through this pattern it doesn't matter which order
@@ -43,11 +42,11 @@ base.searchTripController = function () {
       button1.innerHTML = "book";
       button1.id = viewModel.trip.id;
       button1.classList.add("btn", "btn-danger");
-      td[11].appendChild(button1);
-    button1.addEventListener("click", function () {
+      td[8].appendChild(button1);
+    /*button1.addEventListener("click", function () {
       console.log("testtttt"); // Log "testtttt" to the console when the button is clicked
     });
-
+*/
 
 
 
