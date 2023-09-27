@@ -29,10 +29,8 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
     /**
      * Inserts a TripPassenger object in to the database.
      * 
-     * @param int
-     *            tripId
-     * @param int
-     *            passengerId
+     * @param tripId
+     * @param passengerId
      * 
      * @return TripPassenger This returns the TripPassenger object.
      */

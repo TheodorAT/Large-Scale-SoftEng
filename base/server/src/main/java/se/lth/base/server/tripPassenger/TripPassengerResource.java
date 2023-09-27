@@ -29,8 +29,7 @@ public class TripPassengerResource {
      * Calls on the bookTrip function from TripPassengerDataAccess using HTTP, which inserts a TripPassenger object in
      * to the database, with current userId as passengerId.
      * 
-     * @param Trip
-     *            trip
+     * @param trip
      * 
      * @return TripPassenger This returns the TripPassenger objects.
      */
