@@ -12,8 +12,7 @@ import java.sql.SQLException;
 import java.util.StringTokenizer;
 
 /**
- * Contains helpers for creating the database schema. Each time the server
- * starts
+ * Contains helpers for creating the database schema. Each time the server starts
  * the @{@link #createSchemaIfNotExists()} method is called.
  *
  * @author Rasmus Ros, rasmus.ros@cs.lth.se

@@ -20,9 +20,9 @@ base.driverTripController = function () {
     this.render = function (template) {
       let now = new Date().getTime();
       if (viewModel.trip.startTime > now) {
-      this.update(template.content.querySelector("tr"));
-      const clone = document.importNode(template.content, true);
-      template.parentElement.appendChild(clone);
+        this.update(template.content.querySelector("tr"));
+        const clone = document.importNode(template.content, true);
+        template.parentElement.appendChild(clone);
       }
     };
     this.update = function (trElement) {
