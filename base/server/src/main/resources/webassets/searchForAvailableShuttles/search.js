@@ -37,37 +37,19 @@ base.searchTripController = function () {
       td[7].textContent = viewModel.trip.driverId;
       let now = new Date().getTime();
 
-        let button1 = document.createElement("button");
-        button1.innerHTML = "book";
-        button1.id = viewModel.trip.id;
-        button1.classList.add("btn", "btn-danger");
-        /*button.onclick = function (event) {
-        console.log("ssss");
-        console.log("click", event.target.id);
-        //base.rest.bookTrip()
-      }
 
-         */
-      button1.addEventListener('click', function() {
-        console.log("ssss");
-      });
-        td[11].appendChild(button1);
+      // Book Button //
+      let button1 = document.createElement("button");
+      button1.innerHTML = "book";
+      button1.id = viewModel.trip.id;
+      button1.classList.add("btn", "btn-danger");
+      td[11].appendChild(button1);
+    button1.addEventListener("click", function () {
+      console.log("testtttt"); // Log "testtttt" to the console when the button is clicked
+    });
 
 
-        /*
-        const bookButtons = document.getElementById("mytrips").querySelectorAll("button");
-      console.log("Selected buttons:", bookButtons);
-        bookButtons.forEach(
-          (b) =>
-              (b.onclick = function (event) {
-                console.log("ssss");
-                console.log("click", event.target.id);
-                //base.rest.bookTrip()
-              }),
-      );
 
-
-         */
 
     };
   };
@@ -171,17 +153,6 @@ base.searchTripController = function () {
 
 
     },
-/*
-    loadButtons() {
-        const bookButtons = document.getElementById("mytrips").querySelectorAll("button");
-        bookButtons.forEach(
-            (b) =>
-                (b.onclick = function (event) {
-                    console.log("click", event.target.id);
-                    //base.rest.bookTrip()
-                }),
-        );
-    }*/
   };
 
   return controller;
