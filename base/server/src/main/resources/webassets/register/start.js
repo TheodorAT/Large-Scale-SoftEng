@@ -9,7 +9,7 @@ let loginButton = document.getElementById("login-button");
 let createButton = document.getElementById("create-button");
 
 loginButton.addEventListener("click", function () {
-  base.changeLocation("/login/login.html");
+  base.changeLocation("/login/login.html"); // Test
 });
 
 createButton.addEventListener("click", function () {
