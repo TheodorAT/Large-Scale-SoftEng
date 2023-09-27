@@ -11,6 +11,12 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+/**
+ * The TripResource class provides endpoints for managing trips within the system. The class is part of the REST API,
+ * which allows for HTTP communication to interface with trip data and functionalities.
+ * 
+ * @author Isak Wahlqvist
+ */
 @Path("trip")
 public class TripResource {
 
@@ -21,6 +27,16 @@ public class TripResource {
         this.user = (User) context.getProperty(User.class.getSimpleName());
     }
 
+    /**
+     * Creates a new trip for the currently authenticated driver.
+     *
+     * HTTP Request Type: POST Path: "trip"
+     *
+     * @param trip
+     *            The Trip object representing the trip to be created.
+     * 
+     * @return The newly created Trip object.
+     */
     @POST
     @RolesAllowed(Role.Names.DRIVER)
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -46,18 +62,44 @@ public class TripResource {
     @Path("/search") // Will need to update, (update in test as well)
     @Produces(MediaType.APPLICATION_JSON)
     public List<Trip> searchTrips(
-            // possible to add parameters below, such as date/time/seats. Needs to be added in method availableTrips
+            // possible to add parameters below, such as date/time/seats. Needs to be added
+            // in method availableTrips
             // (TripDataAccess) as well. (requires also modify respective test method)
             @QueryParam("fromLocationId") int fromLocationId, @QueryParam("toLocationId") int toLocationId) {
         List<Trip> matchingTrips = tripDao.availableTrips(fromLocationId, toLocationId);
         return matchingTrips;
     }
 
+    /**
+     * Retrieves a list of trips associated with the current Driver user.
+     *
+     * HTTP Request Type: GET Path: "trip/driver"
+     * 
+     * @return A List of Trip objects representing the driver's trips.
+     */
     @Path("driver")
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<Trip> getTripsFromDriver() {
         List<Trip> result = tripDao.getTripsFromDriver(user.getId());
+        return result;
+    }
+
+    /**
+     * Retrieves a list of trips associated with a specific driver.
+     *
+     * HTTP Request Type: GET Path: "trip/driver/{driverId}"
+     *
+     * @param driverId
+     *            The ID of the driver whose trips are to be retrieved.
+     * 
+     * @return A List of Trip objects representing the driver's trips.
+     */
+    @Path("driver/{driverId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public List<Trip> getTripsFromDriver(@PathParam("driverId") int driverId) {
+        List<Trip> result = tripDao.getTripsFromDriver(driverId);
         return result;
     }
 }
