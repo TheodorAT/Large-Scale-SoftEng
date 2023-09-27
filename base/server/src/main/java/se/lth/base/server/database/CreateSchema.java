@@ -45,6 +45,12 @@ public class CreateSchema {
         }
     }
 
+    /**
+     * Inserts location data into the database from a specified CSV file.
+     *
+     * @param path
+     *            The path to the CSV file containing location data.
+     */
     public void insertLocations(String path) {
         String insertDataQuery = "INSERT INTO locations (municipality, name, longitude, latitude) VALUES (?, ?, ?, ?);";
 
