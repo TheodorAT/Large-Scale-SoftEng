@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div  class="container-fluid">
     <h2>Search for available trips</h2>
 
     <form class="form-row pt-4" id="driver-form">
@@ -47,9 +47,8 @@
         </div>
     </form>
 
-
     <h2 class="pt-5">Available trips</h2>
-    <table class="table">
+    <table id="mytrips" class="table">
         <thead>
         <tr>
             <th scope="col">#</th>
@@ -63,12 +62,14 @@
             <th scope="col">Rating</th>
             <th scope="col">Car</th>
             <th scope="col">Baggage</th>
+            <th scope="col">Book</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody >
         <template id="drivertrip-template">
             <tr>
                 <th scope="row"></th>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>

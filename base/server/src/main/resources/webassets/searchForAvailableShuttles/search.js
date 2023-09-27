@@ -9,7 +9,7 @@ base.searchTripController = function () {
   "use strict"; // add this to avoid some potential bugs
 
   let model = [];
-
+  let currentUser={};
   let locations = [];
 
   const TripViewModel = function (_trip) {
@@ -32,9 +32,42 @@ base.searchTripController = function () {
       td[3].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
       const end = viewModel.trip.endTime;
       td[4].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
-      td[5].textContent=((end-start)/3600000)+"hours";
+      td[5].textContent= new Date(end - start).toLocaleTimeString();
       td[6].textContent = viewModel.trip.seatCapacity;
       td[7].textContent = viewModel.trip.driverId;
+      let now = new Date().getTime();
+
+        let button1 = document.createElement("button");
+        button1.innerHTML = "book";
+        button1.id = viewModel.trip.id;
+        button1.classList.add("btn", "btn-danger");
+        /*button.onclick = function (event) {
+        console.log("ssss");
+        console.log("click", event.target.id);
+        //base.rest.bookTrip()
+      }
+
+         */
+      button1.addEventListener('click', function() {
+        console.log("ssss");
+      });
+        td[11].appendChild(button1);
+
+
+        /*
+        const bookButtons = document.getElementById("mytrips").querySelectorAll("button");
+      console.log("Selected buttons:", bookButtons);
+        bookButtons.forEach(
+          (b) =>
+              (b.onclick = function (event) {
+                console.log("ssss");
+                console.log("click", event.target.id);
+                //base.rest.bookTrip()
+              }),
+      );
+
+
+         */
 
     };
   };
@@ -46,6 +79,7 @@ base.searchTripController = function () {
       // See: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template
       const t = this.template();
       model.forEach((d) => d.render(t));
+      //controller.loadButtons();
     },
     template: function () {
       return document.getElementById("drivertrip-template");
@@ -70,6 +104,10 @@ base.searchTripController = function () {
         locations = l;
         controller.setLocations("from", l);
         controller.setLocations("to", l);
+      });
+
+      base.rest.getUser().then(function (user) {
+        currentUser = user;
       });
     },
     getLocationFromId: function (id) {
@@ -133,6 +171,17 @@ base.searchTripController = function () {
 
 
     },
+/*
+    loadButtons() {
+        const bookButtons = document.getElementById("mytrips").querySelectorAll("button");
+        bookButtons.forEach(
+            (b) =>
+                (b.onclick = function (event) {
+                    console.log("click", event.target.id);
+                    //base.rest.bookTrip()
+                }),
+        );
+    }*/
   };
 
   return controller;
