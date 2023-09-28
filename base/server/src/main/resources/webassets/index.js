@@ -5,12 +5,12 @@ base.mainController = (function () {
   const routingTable = {
     // first in table is the default
     "driver-trips": {
-      partial: "driverTrip/driverTrip.html",
+      partial: "drivertrips/driver-trips.html",
       controller: base.driverTripController,
     },
-    foo: {
-      partial: "foo/foo.html",
-      controller: base.fooController,
+    "my-trips": {
+      partial: "mytrips/my-trips.html",
+      controller: base.myTripsController,
     },
     admin: {
       partial: "admin/user-admin.html",
@@ -51,7 +51,7 @@ base.mainController = (function () {
         model.user = user;
         document.getElementById("username").textContent = model.user.username;
         if (user.isNone()) {
-          base.changeLocation("/register/start.html");
+          base.changeLocation("/login/login.html");
         } else if (!user.isAdmin()) {
           document.querySelectorAll("#main-nav li.admin-only").forEach((li) => (li.style.display = "none"));
         }

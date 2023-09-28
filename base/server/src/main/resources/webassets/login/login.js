@@ -7,9 +7,12 @@ base.loginController = (function () {
   const controller = {
     load: function () {
       document.getElementById("login-form").onsubmit = function (event) {
-        event.preventDefault;
+        event.preventDefault();
         controller.loginUser();
         return false;
+      };
+      document.getElementById("register").onclick = function () {
+        base.changeLocation("/register/register.html");
       };
       base.rest.getUser().then(function (user) {
         if (!user.isNone()) {
