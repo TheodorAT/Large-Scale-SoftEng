@@ -29,14 +29,14 @@ public class TripPassengerResource {
      * Calls on the bookTrip function from TripPassengerDataAccess using HTTP, which inserts a TripPassenger object in
      * to the database, with current userId as passengerId.
      * 
-     * @param trip
+     * @param tripId
      * 
      * @return TripPassenger This returns the TripPassenger objects.
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public TripPassenger createTripPassenger(Trip trip) {
-        return tripPassengerDao.bookTrip(trip.getId(), user.getId());
+    public TripPassenger createTripPassenger(int tripId) {
+        return tripPassengerDao.bookTrip(tripId, user.getId());
     }
 
 }

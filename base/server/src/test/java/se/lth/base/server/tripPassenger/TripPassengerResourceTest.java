@@ -33,10 +33,12 @@ public class TripPassengerResourceTest extends BaseResourceTest {
         Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
         target("trip").request().post(e, Trip.class);
 
-        TripPassenger tripPassenger = target("tripPassenger").request().post(e, TripPassenger.class);
+        int tripId = t.getId();
+        Entity<Integer> ti = Entity.entity(tripId, MediaType.APPLICATION_JSON);
+        TripPassenger tripPassenger = target("tripPassenger").request().post(ti, TripPassenger.class);
 
         assertEquals((Integer) TEST.getId(), tripPassenger.getPassengerId());
-        assertEquals((Integer) 1, tripPassenger.getTripId());
+        assertEquals(tripId, tripPassenger.getTripId());
 
     }
 
