@@ -82,17 +82,11 @@ base.registerController = (function () {
       base.rest.createUser(userData)
         .then(res => {
           // user registered successfully
-          const successMessage = document.getElementById('success-message');
-          successMessage.style.display = 'block';
+          localStorage.setItem("userJustCreated", "true"); // used in login.js to determine if notification should appear
+          base.changeLocation("/login/login.html");
         }).catch(err => {
           //This is handled by the alert in rest.js
         });
-
-      alert("TODO: add user " + JSON.stringify(userData)); // TODO: make call to the API
-      let userCreated = true; // TODO: modify this variable based on the response from the API
-      if (userCreated) {
-        base.changeLocation("/login/login.html");
-      }
     },
     initOnLoad: function () {
       document.addEventListener("DOMContentLoaded", base.registerController.load);
