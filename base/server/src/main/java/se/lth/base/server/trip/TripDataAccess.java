@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+
+import org.eclipse.jetty.server.session.Session;
+
 import java.util.Date;
 
 /**
@@ -54,6 +57,14 @@ public class TripDataAccess extends DataAccess<Trip> {
                 new Timestamp(trip.getStartTime()), new Timestamp(end_time), trip.getSeatCapacity());
         return new Trip(trip_id, driverId, trip.getFromLocationId(), trip.getToLocationId(), trip.getStartTime(),
                 end_time, trip.getSeatCapacity());
+    }
+
+    /**
+     * 
+     */
+    public void deleteTrip(Trip currentTrip){
+        // Determine which role the person who want to cancel has 
+        // Depending on that -- either remove a seat or cancel the entire trip
     }
 
     /**
