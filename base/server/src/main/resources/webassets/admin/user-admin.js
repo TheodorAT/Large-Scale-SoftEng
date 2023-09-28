@@ -22,10 +22,8 @@ base.userAdminController = function () {
     };
   };
   const view = {
-    // Creates HTML for each trip in model
+    // Creates HTML for each user in model
     render: function () {
-      // A template element is a special element used only to add dynamic content multiple times.
-      // See: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template
       const t = this.template();
       model.forEach((d) => d.render(t));
     },
@@ -53,36 +51,26 @@ base.userAdminController = function () {
           if (parentRow) {
             // Find the specific column (e.g., first column)
             const userIdDataCell = parentRow.querySelector(".user-id-data");
-
             if (userIdDataCell) {
               // Access the text content of the column
               userIdColumnValue = userIdDataCell.textContent;
-
               // Do something with the column value
               console.log("UserID of the selected row: ", userIdColumnValue);
             }
           }
         }
       });
-
-      document.getElementById("modal-delete-user").onclick = function (event) {
-        controller.adminDeleteUser(userIdColumnValue);
-      };
-
+      document.getElementById("modal-delete-user").onclick = () => controller.adminDeleteUser(userIdColumnValue);
       document.getElementById("new-admin").onclick = function (event) {
         const myModal = new bootstrap.Modal(document.getElementById("modalAddUser"));
         myModal.show();
       };
-      document.getElementById("modal-add-admin").onclick = function (event) {
-        controller.addAdminUser();
-      };
+      document.getElementById("modal-add-admin").onclick = () => controller.addAdminUser();
     },
-    //TODO: update view after deleting user without having to refresh the page
+    //TODO: update view after deleting user without having to refresh the page, error handling
     adminDeleteUser: function (id) {
       base.rest.deleteUser(id);
     },
-
-    //TODO: Implement addAdminUsers
     addAdminUser: function () {
       const name = document.getElementById("new-name");
       const username = document.getElementById("new-username");

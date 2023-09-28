@@ -3,7 +3,6 @@
  * Author: Rasmus Ros, rasmus.ros@cs.lth.se
  */
 
-/*
 describe("user specs", function () {
   const none = new base.User({ username: "-", role: "NONE", id: 0 });
   const admin = new base.User({ username: "Admin", role: "ADMIN", id: 1 });
@@ -21,7 +20,7 @@ describe("user specs", function () {
       expect(none.isNone()).toBe(true);
     });
   });
-
+  /*
   describe("Role class", function () {
     it("label should be capitalized", function () {
       expect(none.role.label).toBe("None");
@@ -134,16 +133,16 @@ describe("user specs", function () {
       it("should be possible to delete a selected user", function (done) {
         const deleteUserPromise = Promise.resolve({});
         spyOn(base.rest, "deleteUser").and.returnValue(deleteUserPromise);
-        document.getElementById("delete-user").click();
+        document.getElementById("modal-delete-user").click();
         deleteUserPromise
           .then(function () {
-            const items = document.querySelectorAll("#user-list button");
+            const items = document.querySelectorAll("#user-table");
             expect(items.length).toBe(2);
           })
           .finally(done);
       });
     });
-
+/*
     describe("edit user", function () {
       it("should allow editing of password after change button is pressed", function () {
         const input = document.getElementById("set-password");
@@ -218,3 +217,4 @@ describe("user specs", function () {
   });
 });
 */
+});
