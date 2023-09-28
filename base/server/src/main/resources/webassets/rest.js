@@ -53,9 +53,9 @@ base.rest = (function () {
     config = config || {};
     // Setting 'same-origin' make sure that cookies are sent to the server (which it would not otherwise)
     config.credentials = "same-origin";
-
     return fetch(url, config)
       .then(function (response) {
+        console.log(response);
         if (!response.ok) {
           return new Promise((resolve) => resolve(response.json())).then(function (errorJson) {
             const status = errorJson.status;
@@ -67,6 +67,7 @@ base.rest = (function () {
       })
       .catch(function (error) {
         alert(error);
+        console.log(error);
         throw error;
       });
   };
@@ -107,9 +108,7 @@ base.rest = (function () {
         method: "POST",
         body: JSON.stringify(user),
         headers: jsonHeader
-      }).then(res => {
-        console.log("this happened", res);
-      });
+      })
     },
 
     /*

@@ -29,8 +29,6 @@ base.registerUserController = function () {
     },
     submitUser: function () {
 
-      console.log("HIT ME")
-
       const username = document.getElementById("username-input").value;
       const password = document.getElementById("password-input").value;
       const firstName = document.getElementById("first-name-input").value;
@@ -38,6 +36,8 @@ base.registerUserController = function () {
       const email = document.getElementById("email-input").value;
       const phoneNumber = document.getElementById("phone-input").value;
       const role = document.getElementById("roles").value;
+
+      console.log(role);
 
       function isValidUsername(username) {
         if (username.length < 3) {
@@ -70,12 +70,14 @@ base.registerUserController = function () {
       const userData = {
         username: username,
         password: password,
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phoneNumber: phoneNumber,
         role: role,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        phone_number: phoneNumber,
       };
+
+      console.log(userData);
 
       base.rest.createUser(userData)
         .then(res => {

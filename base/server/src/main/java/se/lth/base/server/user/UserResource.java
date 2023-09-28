@@ -80,7 +80,6 @@ public class UserResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    @RolesAllowed(Role.Names.ADMIN)
     public User createUser(Credentials credentials) {
         if (!credentials.hasPassword() || !credentials.validPassword()) {
             // TODO: Update valid password to check for at least one non-letter character
