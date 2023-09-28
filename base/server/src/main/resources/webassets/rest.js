@@ -55,7 +55,6 @@ base.rest = (function () {
     config.credentials = "same-origin";
     return fetch(url, config)
       .then(function (response) {
-        console.log(response);
         if (!response.ok) {
           return new Promise((resolve) => resolve(response.json())).then(function (errorJson) {
             const status = errorJson.status;
@@ -67,7 +66,6 @@ base.rest = (function () {
       })
       .catch(function (error) {
         alert(error);
-        console.log(error);
         throw error;
       });
   };

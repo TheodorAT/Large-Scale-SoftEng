@@ -37,8 +37,6 @@ base.registerUserController = function () {
       const phoneNumber = document.getElementById("phone-input").value;
       const role = document.getElementById("roles").value;
 
-      console.log(role);
-
       function isValidUsername(username) {
         if (username.length < 3) {
             return false;
@@ -77,13 +75,11 @@ base.registerUserController = function () {
         phone_number: phoneNumber,
       };
 
-      console.log(userData);
-
       base.rest.createUser(userData)
         .then(res => {
-          console.log(res);
+          // user registered successfully
         }).catch(err => {
-          console.log("Shit happened", err);
+          // error happened, see err
         });
     },
   };
