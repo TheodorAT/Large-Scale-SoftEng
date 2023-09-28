@@ -16,11 +16,6 @@ base.registerUserController = function () {
 
   const controller = {
     load: function () {
-      // document.getElementById("button").addEventListener("click", function (event) {
-      //   event.preventDefault;
-      //   controller.submitUser();
-      //   return false;
-      // });
       document.getElementById("Register-User").onsubmit = function (event) {
         event.preventDefault;
         controller.submitUser();
