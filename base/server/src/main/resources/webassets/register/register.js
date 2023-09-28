@@ -45,8 +45,10 @@ base.registerUserController = function () {
       base.rest.createUser(userData)
         .then(res => {
           // user registered successfully
+          const successMessage = document.getElementById('success-message');
+          successMessage.style.display = 'block';
         }).catch(err => {
-          // error happened, see err
+          //This is handled by the alert in rest.js
         });
     },
   };
