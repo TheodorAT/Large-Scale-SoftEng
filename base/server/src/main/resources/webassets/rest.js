@@ -102,6 +102,16 @@ base.rest = (function () {
       });
     },
 
+    createUser: function (user) {
+      return baseFetch("/rest/user/", {
+        method: "POST",
+        body: JSON.stringify(user),
+        headers: jsonHeader
+      }).then(res => {
+        console.log("this happened", res);
+      });
+    },
+
     /*
      * Logout the current user.
      *

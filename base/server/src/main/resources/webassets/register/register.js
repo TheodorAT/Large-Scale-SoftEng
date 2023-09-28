@@ -16,11 +16,21 @@ base.registerUserController = function () {
 
   const controller = {
     load: function () {
-      document.getElementById("button").addEventListener("click", function () {
+      // document.getElementById("button").addEventListener("click", function (event) {
+      //   event.preventDefault;
+      //   controller.submitUser();
+      //   return false;
+      // });
+      document.getElementById("Register-User").onsubmit = function (event) {
+        event.preventDefault;
         controller.submitUser();
-      });
+        return false;
+      };
     },
     submitUser: function () {
+
+      console.log("HIT ME")
+
       const username = document.getElementById("username-input").value;
       const password = document.getElementById("password-input").value;
       const firstName = document.getElementById("first-name-input").value;
@@ -45,17 +55,17 @@ base.registerUserController = function () {
         return password.length >= 8 && /^(?=.*[^\w\s]).{8,}$/.test(password);
       }
 
-      if (!isValidUsername(username)) {
-        alert("Username is invalid.");
-        return;
-      }
+      // if (!isValidUsername(username)) {
+      //   alert("Username is invalid.");
+      //   return;
+      // }
 
-      if (!isValidPassword(password)) {
-        alert(
-          "Password is invalid. It must be at least 8 characters long and contain at least one non letter character.",
-        );
-        return;
-      }
+      // if (!isValidPassword(password)) {
+      //   alert(
+      //     "Password is invalid. It must be at least 8 characters long and contain at least one non letter character.",
+      //   );
+      //   return;
+      // }
 
       const userData = {
         username: username,
@@ -67,9 +77,12 @@ base.registerUserController = function () {
         role: role,
       };
 
-      base.rest.createUser(new user(userData)).then(function () {
-        alert("User registration success!");
-      });
+      base.rest.createUser(userData)
+        .then(res => {
+          console.log(res);
+        }).catch(err => {
+          console.log("Shit happened", err);
+        });
     },
   };
   return controller;
