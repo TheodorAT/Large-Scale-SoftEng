@@ -60,7 +60,7 @@ public class UserDataAccess extends DataAccess<User> {
         int userId = insert(
                 "INSERT INTO users(role_id, username, password_hash, salt, first_name, last_name, email, phone_number) VALUES (("
                         + "SELECT role_id FROM user_role WHERE user_role.role=?),?,?,?,?,?,?,?)",
-                credentials.getRole(), credentials.getUsername(), credentials.generatePasswordHash(salt), salt,
+                credentials.getRole().name(), credentials.getUsername(), credentials.generatePasswordHash(salt), salt,
                 credentials.getFirstName(), credentials.getLastName(), credentials.getEmail(),
                 credentials.getPhoneNumber());
         return new User(userId, credentials.getRole(), credentials.getUsername(), credentials.getFirstName(),
