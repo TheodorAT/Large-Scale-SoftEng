@@ -37,34 +37,6 @@ base.registerUserController = function () {
       const phoneNumber = document.getElementById("phone-input").value;
       const role = document.getElementById("roles").value;
 
-      function isValidUsername(username) {
-        if (username.length < 3) {
-            return false;
-        }    
-
-        let users = base.rest.getUsers();
-        let usernameExists = users.some(function (user) {
-            return user.username == username;
-        });
-        return !usernameExists;
-    }
-
-      function isValidPassword(password) {
-        return password.length >= 8 && /^(?=.*[^\w\s]).{8,}$/.test(password);
-      }
-
-      // if (!isValidUsername(username)) {
-      //   alert("Username is invalid.");
-      //   return;
-      // }
-
-      // if (!isValidPassword(password)) {
-      //   alert(
-      //     "Password is invalid. It must be at least 8 characters long and contain at least one non letter character.",
-      //   );
-      //   return;
-      // }
-
       const userData = {
         username: username,
         password: password,
