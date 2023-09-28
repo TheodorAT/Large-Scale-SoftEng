@@ -30,7 +30,7 @@ base.loginController = (function () {
           document.getElementById("success-message").classList.remove("slide-down");
           document.getElementById("success-message").classList.add("fade-out");
         }, 3000);
-      } 
+      }
     },
     loginUser: function () {
       const username = document.getElementById("username").value;

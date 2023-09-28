@@ -40,7 +40,6 @@ base.registerController = (function () {
      * Validation then submit user registration data.
      */
     submitUser: function () {
-
       const username = document.getElementById("username-input").value;
       const password = document.getElementById("password-input").value;
       const firstName = document.getElementById("first-name-input").value;
@@ -79,12 +78,14 @@ base.registerController = (function () {
         phone_number: phoneNumber,
       };
 
-      base.rest.createUser(userData)
-        .then(res => {
+      base.rest
+        .createUser(userData)
+        .then((res) => {
           // user registered successfully
           localStorage.setItem("userJustCreated", "true"); // used in login.js to determine if notification should appear
           base.changeLocation("/login/login.html");
-        }).catch(err => {
+        })
+        .catch((err) => {
           //This is handled by the alert in rest.js
         });
     },

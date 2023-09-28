@@ -99,8 +99,8 @@ base.rest = (function () {
       return baseFetch("/rest/user/", {
         method: "POST",
         body: JSON.stringify(user),
-        headers: jsonHeader
-      })
+        headers: jsonHeader,
+      });
     },
 
     /*
