@@ -198,4 +198,27 @@ public class UserResourceTest extends BaseResourceTest {
         User newUser = target("user").request().post(Entity.json(newCredentials), User.class);
         return newUser;
     }
+
+    @Test
+    public void updateUserRoleAsAdmin() {
+        login(ADMIN_CREDENTIALS);
+        User user = target("user").path(Integer.toString(TEST.getId())).path("changerole").path(Role.ADMIN.toString())
+                .request().put(Entity.json(""), User.class);
+        assertEquals(Role.ADMIN, user.getRole());
+    }
+
+    @Test(expected = ForbiddenException.class)
+    public void updateUserRoleAsUserToAdmin() {
+        login(TEST_CREDENTIALS);
+        User user = target("user").path(Integer.toString(TEST.getId())).path("changerole").path(Role.ADMIN.toString())
+                .request().put(Entity.json(""), User.class);
+    }
+
+    @Test
+    public void updateUserRole() {
+        login(TEST_CREDENTIALS);
+        User user = target("user").path(Integer.toString(TEST.getId())).path("changerole").path(Role.DRIVER.toString())
+                .request().put(Entity.json(""), User.class);
+        assertEquals(Role.DRIVER, user.getRole());
+    }
 }
