@@ -1,7 +1,9 @@
 var base = base || {};
+
 base.changeLocation = function (url) {
   window.location.replace(url);
 };
+
 base.loginController = (function () {
   "use strict";
   const controller = {
