@@ -64,8 +64,8 @@ public class TripResource {
     @GET
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Trip> searchTrips(
-            @QueryParam("fromLocationId") int fromLocationId, @QueryParam("toLocationId") int toLocationId, @QueryParam("startTime") long startTime) {
+    public List<Trip> searchTrips(@QueryParam("fromLocationId") int fromLocationId,
+            @QueryParam("toLocationId") int toLocationId, @QueryParam("startTime") long startTime) {
         List<Trip> matchingTrips = tripDao.availableTrips(fromLocationId, toLocationId, startTime);
         return matchingTrips;
     }
