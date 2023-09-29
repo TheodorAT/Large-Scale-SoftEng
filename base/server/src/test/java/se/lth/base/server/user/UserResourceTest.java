@@ -7,6 +7,7 @@ import se.lth.base.server.user.Role;
 import se.lth.base.server.user.User;
 import se.lth.base.server.user.UserResource;
 
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
@@ -221,4 +222,26 @@ public class UserResourceTest extends BaseResourceTest {
                 .request().put(Entity.json(""), User.class);
         assertEquals(Role.DRIVER, user.getRole());
     }
+
+    @Test
+    public void changeUserPassword(){
+        login(TEST_CREDENTIALS);
+        Credentials newPassword = new Credentials("Test", "newPassword123", Role.USER);
+        User user = target("user").path("password").request().put(Entity.json(newPassword),User.class);
+        logout();
+        login(newPassword);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void changeUserInvalidPassword(){
+        login(TEST_CREDENTIALS);
+        Credentials newPassword = new Credentials("Test", "pass", Role.USER);
+        User user = target("user").path("password").request().put(Entity.json(newPassword),User.class);
+        logout();
+        login(newPassword);
+    }
 }
+
+
+
+
