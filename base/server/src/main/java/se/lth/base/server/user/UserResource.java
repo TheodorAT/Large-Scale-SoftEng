@@ -169,6 +169,7 @@ public class UserResource {
         return userDao.updateUserRole(userId, role);
     }
 
+<<<<<<< HEAD
     /**
      * Updates the password of the current user.
      *
@@ -182,6 +183,20 @@ public class UserResource {
      *             throws if the new password is invalid.
      * 
      */
+=======
+
+    /**
+    * Updates the password of the current user.
+    *
+    * @param newCredentials The new credentials containing the user's new password.
+    *
+    * @return Response indicating the result of the password update operation. 
+    *         If successful, it returns the updated user object in the response body.
+    *
+    * @throws WebApplicationException throws if the new password is invalid.
+    *     
+    */
+>>>>>>> d565d02 ([ETS-1310] added a user resource method to update/change the password for the connected user. Handles HTTP put request)
     @Path("password")
     @PUT
     @RolesAllowed(Role.Names.USER)
@@ -194,7 +209,11 @@ public class UserResource {
 
         // Get the current user ID
         int currentUserId = ((Session) context.getProperty(Session.class.getSimpleName())).getUser().getId();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> d565d02 ([ETS-1310] added a user resource method to update/change the password for the connected user. Handles HTTP put request)
         // Update the user password in the database
         User updatedUser = userDao.updateUserPassword(currentUserId, newCredentials);
 
