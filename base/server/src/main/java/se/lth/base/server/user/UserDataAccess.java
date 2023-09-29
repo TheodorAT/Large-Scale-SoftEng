@@ -187,24 +187,14 @@ public class UserDataAccess extends DataAccess<User> {
      * @return The updated User object.
      */
     public User updateUserPassword(int userId, Credentials newCredentials) {
-<<<<<<< HEAD
-        // valid password already get checked in resource method so maybe remove here?
-        if (newCredentials.hasPassword() && newCredentials.validPassword()) {
-=======
         //valid password already get checked in resource method so maybe remove here?
         if (newCredentials.hasPassword() && newCredentials.validPassword()){
->>>>>>> 281886c ([ETS-1310] added a change password method to generate and update new salt and hash for new password related to the connected user and then update in database)
             long salt = Credentials.generateSalt();
             execute("UPDATE users SET password_hash = ?, salt = ? WHERE user_id = ?",
                     newCredentials.generatePasswordHash(salt), salt, userId);
         }
-<<<<<<< HEAD
-        // throws an exception in user resource if user puts in invalid passowrd, is that enough?
-        // currently it is returning the User with or without changed password.
-=======
         //throws an exception in user resource if user puts in invalid passowrd, is that enough?
         //currently it is returning the User with or without changed password.
->>>>>>> 281886c ([ETS-1310] added a change password method to generate and update new salt and hash for new password related to the connected user and then update in database)
         return getUser(userId);
     }
 }
