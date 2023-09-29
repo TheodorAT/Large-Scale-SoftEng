@@ -230,24 +230,20 @@ public class UserResourceTest extends BaseResourceTest {
     }
 
     @Test
-    public void changeUserPassword(){
+    public void changeUserPassword() {
         login(TEST_CREDENTIALS);
         Credentials newPassword = new Credentials("Test", "newPassword123", Role.USER);
-        User user = target("user").path("password").request().put(Entity.json(newPassword),User.class);
+        User user = target("user").path("password").request().put(Entity.json(newPassword), User.class);
         logout();
         login(newPassword);
     }
 
     @Test(expected = BadRequestException.class)
-    public void changeUserInvalidPassword(){
+    public void changeUserInvalidPassword() {
         login(TEST_CREDENTIALS);
         Credentials newPassword = new Credentials("Test", "pass", Role.USER);
-        User user = target("user").path("password").request().put(Entity.json(newPassword),User.class);
+        User user = target("user").path("password").request().put(Entity.json(newPassword), User.class);
         logout();
         login(newPassword);
     }
 }
-
-
-
-
