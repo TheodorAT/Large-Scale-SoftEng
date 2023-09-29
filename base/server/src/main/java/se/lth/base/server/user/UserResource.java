@@ -169,4 +169,36 @@ public class UserResource {
         }
         return userDao.updateUserRole(userId, role);
     }
+
+
+    /**
+    * Updates the password of the current user.
+    *
+    * @param newCredentials The new credentials containing the user's new password.
+    *
+    * @return Response indicating the result of the password update operation. 
+    *         If successful, it returns the updated user object in the response body.
+    *
+    * @throws WebApplicationException throws if the new password is invalid.
+    *     
+    */
+    @Path("password")
+    @PUT
+    @RolesAllowed(Role.Names.USER)
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response updatePassword(Credentials newCredentials) {
+        // Check if the new password is valid, otherwise throws new exception
+        if (!newCredentials.validPassword()) {
+            throw new WebApplicationException("New password is invalid", Response.Status.BAD_REQUEST);
+        }
+
+        // Get the current user ID
+        int currentUserId = ((Session) context.getProperty(Session.class.getSimpleName())).getUser().getId();
+        
+        // Update the user password in the database
+        User updatedUser = userDao.updateUserPassword(currentUserId, newCredentials);
+
+        return Response.ok(updatedUser).build();
+    }
+
 }
