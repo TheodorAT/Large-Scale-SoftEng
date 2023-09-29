@@ -229,5 +229,28 @@ base.rest = (function () {
         .then((response) => response.json())
         .then((trips) => trips.map((f) => new Trip(f)));
     },
+    /*
+     * Fetches available shuttles based on search criteria.
+     * from: the starting point
+     * destination: the destination point
+     * datetime: the desired departure datetime
+     *
+     * function will return an array of JavaScript objects, each representing a shuttle
+     * example: const shuttles = base.rest.getShuttles('City A', 'City B', '2023-09-20 10:00');
+     */
+
+    getShuttles: function (form) {
+      const queryParams = new URLSearchParams({
+        fromLocationId: form.fromLocationId,
+        toLocationId: form.toLocationId,
+        //datetime: form.datetime,
+      });
+
+      return baseFetch("/rest/trip/search/?" + queryParams.toString(), {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
+    },
   };
 })();
