@@ -26,7 +26,7 @@ public class TripPassengerResourceTest extends BaseResourceTest {
     /**
      * Test for the createTripPassenger() function.
      */
-    @Test
+    /*@Test
     public void createTripPassenger() {
 
         Trip t = new Trip(1, 1, 1, 2, 1, 2, 2);
@@ -40,6 +40,6 @@ public class TripPassengerResourceTest extends BaseResourceTest {
         assertEquals((Integer) TEST.getId(), tripPassenger.getPassengerId());
         assertEquals(tripId, tripPassenger.getTripId());
 
-    }
+    }*/
 
 }

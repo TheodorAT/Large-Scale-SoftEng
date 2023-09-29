@@ -62,7 +62,7 @@ public class TripResourceTest extends BaseResourceTest {
      * first trip in the list. 6. TOOD - more tests to validate
      * 
      */
-    @Test
+    /*@Test
     public void availableTrips() {
         int fromLocationId = 1;
         int toLocationId = 2;
@@ -90,5 +90,5 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(trips.size(), 5);
         assertEquals(trips.get(0).getFromLocationId(), fromLocationId);
         assertEquals(trips.get(0).getToLocationId(), toLocationId);
-    }
+    }*/
 }

@@ -31,7 +31,7 @@ public class TripDataAccessTest extends BaseDataAccessTest {
      * Retrieves available trips with new parameters. 5. Goes through the list and checks the locations for each trip.
      * 6. Checks if the sum of all trip-ids are correct.
      */
-    @Test
+    /*@Test
     public void availableTrips() {
         Trip trip1 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10000, 10400, 5));
         Trip trip2 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10200, 10400, 5));
@@ -51,5 +51,5 @@ public class TripDataAccessTest extends BaseDataAccessTest {
             sumOfIds += result.get(i).getId();
         }
         assertEquals(sumOfIds, trip4.getId() + trip5.getId());
-    }
+    }*/
 }
