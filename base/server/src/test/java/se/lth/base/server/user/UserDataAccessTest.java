@@ -1,6 +1,8 @@
 package se.lth.base.server.user;
 
 import org.junit.Test;
+
+import javassist.NotFoundException;
 import se.lth.base.server.Config;
 import se.lth.base.server.database.BaseDataAccessTest;
 import se.lth.base.server.database.DataAccessException;
@@ -8,6 +10,8 @@ import se.lth.base.server.user.*;
 
 import java.util.List;
 import java.util.UUID;
+
+import javax.ws.rs.BadRequestException;
 
 import static junit.framework.TestCase.*;
 import static org.junit.Assert.assertNotEquals;
@@ -173,5 +177,25 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         userDao.updateUserRole(2, Role.ADMIN);
         User user = userDao.getUser(2);
         assertEquals(Role.ADMIN, user.getRole());
+    }
+
+    @Test
+    public void changePassword(){
+        User user = userDao
+                .addUser(new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se", "+4600000001"));
+        Session session1 = userDao.authenticate(new Credentials("Sven", "password", Role.USER ));
+        Credentials newCredentials = new Credentials("Sven","newPassword123123", Role.USER);
+        userDao.updateUserPassword(user.getId(), newCredentials);
+        Session session2 = userDao.authenticate(newCredentials);
+    }
+
+    @Test(expected = DataAccessException.class)
+    public void changeInvalidPassword(){
+        User user = userDao
+                .addUser(new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se", "+4600000001"));
+        Session session1 = userDao.authenticate(new Credentials("Sven", "password", Role.USER ));
+        Credentials newCredentials = new Credentials("Sven","pass", Role.USER);
+        userDao.updateUserPassword(user.getId(), newCredentials);
+        Session session2 = userDao.authenticate(newCredentials);
     }
 }
