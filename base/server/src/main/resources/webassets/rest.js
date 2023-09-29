@@ -47,7 +47,6 @@ base.rest = (function () {
     config = config || {};
     // Setting 'same-origin' make sure that cookies are sent to the server (which it would not otherwise)
     config.credentials = "same-origin";
-
     return fetch(url, config)
       .then(function (response) {
         if (!response.ok) {
@@ -92,6 +91,14 @@ base.rest = (function () {
       return baseFetch("/rest/user/login?remember=" + rememberMe, {
         method: "POST",
         body: JSON.stringify(loginObj),
+        headers: jsonHeader,
+      });
+    },
+
+    createUser: function (user) {
+      return baseFetch("/rest/user/", {
+        method: "POST",
+        body: JSON.stringify(user),
         headers: jsonHeader,
       });
     },

@@ -6,3 +6,4 @@ node_modules/
 .settings/
 .project
 base/server/src/main/resources/webassets/labs/
+.vscode/settings.json

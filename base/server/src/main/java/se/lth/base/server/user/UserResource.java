@@ -80,7 +80,6 @@ public class UserResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    @RolesAllowed(Role.Names.ADMIN)
     public User createUser(Credentials credentials) {
         if (!credentials.hasPassword() || !credentials.validPassword()) {
             // TODO: Update valid password to check for at least one non-letter character
@@ -136,5 +135,37 @@ public class UserResource {
         if (!userDao.deleteUser(userId)) {
             throw new WebApplicationException("User not found", Response.Status.NOT_FOUND);
         }
+    }
+
+    /**
+     * Changes the role of a user, identified by their user ID.
+     * 
+     * This endpoint can only be accessed by an administrator or a user changing their own role. The role of a user is
+     * updated to the new specified role. A user is not allowed to change their role to ADMIN.
+     * 
+     * @param userId
+     *            the ID of the user whose role is to be changed.
+     * @param role
+     *            the new role to be assigned to the user.
+     * 
+     * @throws WebApplicationException
+     *             with a FORBIDDEN status if:
+     *             <ul>
+     *             <li>The user is not an admin and is trying to change another users role</li>
+     *             <li>The user is trying to change their role to ADMIN</li>
+     *             </ul>
+     */
+    @Path("{id}/changerole/{role}")
+    @PUT
+    public User updateUserRole(@PathParam("id") int userId, @PathParam("role") Role role) {
+        User currentUser = currentUser();
+        if (userId != currentUser.getId() && !currentUser.getRole().equals(Role.ADMIN)) {
+            throw new WebApplicationException("You don't have permission to change role", Response.Status.FORBIDDEN);
+        }
+
+        if (role == Role.ADMIN && userId == currentUser.getId()) {
+            throw new WebApplicationException("You can't change your own role to admin", Response.Status.FORBIDDEN);
+        }
+        return userDao.updateUserRole(userId, role);
     }
 }
