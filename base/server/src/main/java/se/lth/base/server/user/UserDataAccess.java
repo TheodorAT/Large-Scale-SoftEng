@@ -175,4 +175,26 @@ public class UserDataAccess extends DataAccess<User> {
         execute(sql, role.name(), userId);
         return getUser(userId);
     }
+
+    /**
+     * Updates the password of an existing user.
+     *
+     * @param userId
+     *            The ID of the user to update.
+     * @param newCredentials
+     *            A credential object containing the new password
+     * 
+     * @return The updated User object.
+     */
+    public User updateUserPassword(int userId, Credentials newCredentials) {
+        //valid password already get checked in resource method so maybe remove here?
+        if (newCredentials.hasPassword() && newCredentials.validPassword()){
+            long salt = Credentials.generateSalt();
+            execute("UPDATE users SET password_hash = ?, salt = ? WHERE user_id = ?",
+                    newCredentials.generatePasswordHash(salt), salt, userId);
+        }
+        //throws an exception in user resource if user puts in invalid passowrd, is that enough?
+        //currently it is returning the User with or without changed password.
+        return getUser(userId);
+    }
 }
