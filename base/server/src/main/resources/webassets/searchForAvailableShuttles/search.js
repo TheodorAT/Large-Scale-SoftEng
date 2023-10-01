@@ -144,6 +144,7 @@ base.searchTripController = function () {
           (b.onclick = function (event) {
             console.log("click", event.target.id);
             //TODO: rest call to booking trip
+            alert("TODO: rest call to booking trip");
           }),
       );
     },

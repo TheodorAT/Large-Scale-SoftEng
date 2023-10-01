@@ -67,8 +67,9 @@ base.userAdminController = function () {
       };
       document.getElementById("modal-add-admin").onclick = () => controller.addAdminUser();
     },
-    //TODO: update view after deleting user without having to refresh the page, error handling
     adminDeleteUser: function (id) {
+      //TODO: update view after deleting user without having to refresh the page, error handling
+      alert("TODO: update view after deleting user without having to refresh the page, error handling");
       base.rest.deleteUser(id);
     },
     addAdminUser: function () {
@@ -78,6 +79,7 @@ base.userAdminController = function () {
       //TODO: assign the user an admin role
       //const credentials = {username, password, role};
       // TODO: add admin, Call the REST API to add admin user
+      alert("TODO: add admin, Call the REST API to add admin user");
       //base.rest.addUser(credentials);
       console.log(
         "Added user with name, username and password:" + " " + name.value + " " + username.value + " " + password.value,
