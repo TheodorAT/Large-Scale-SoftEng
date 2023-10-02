@@ -31,7 +31,7 @@ base.myTripsController = function () {
       let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
       let tolocation = controller.getLocationFromId(viewModel.trip.toLocationId);
       td[0].textContent = fromlocation.name + ", " + fromlocation.municipality;
-      td[1].textContent = tolocation.name + ", " + fromlocation.municipality;
+      td[1].textContent = tolocation.name + ", " + tolocation.municipality;
       const start = viewModel.trip.startTime;
       td[2].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
       const end = viewModel.trip.endTime;
@@ -51,8 +51,6 @@ base.myTripsController = function () {
           td[7].children[0].remove();
         }
         td[7].appendChild(button);
-      } else {
-        td[7].textContent = "passengers";
       }
     };
   };
@@ -71,6 +69,13 @@ base.myTripsController = function () {
     upcomingTemplate: function () {
       return document.getElementById("upcoming-trips-template");
     },
+    createCancelledButtons: function (id) {
+      let badge = document.createElement("span");
+      badge.innerHTML = "Cancelled";
+      badge.id = id;
+      badge.classList.add("badge", "bg-danger");
+      document.getElementById(id).replaceWith(badge);
+    }
   };
 
   const controller = {
@@ -100,6 +105,7 @@ base.myTripsController = function () {
         (b) =>
           (b.onclick = function (event) {
             console.log("click", event.target.id);
+            view.createCancelledButtons(event.target.id);
             //base.rest.deleteTrip()
           }),
       );
