@@ -8,6 +8,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * Used to interact with the TripPassengerDataAccess class through HTTP calls.
@@ -37,6 +38,20 @@ public class TripPassengerResource {
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public TripPassenger createTripPassenger(int tripId) {
         return tripPassengerDao.bookTrip(tripId, user.getId());
+    }
+
+    /**
+     * Cancels a drivers trip, given tripId
+     * 
+     */
+    @Path("{tripId}")
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public void cancelPassengerTrip(@PathParam("tripId") int tripId){
+        if(!tripPassengerDao.cancelPassengerTrip(this.user.getId(), tripId)){
+            throw new WebApplicationException("Not found trip",
+            Response.Status.NOT_FOUND);
+        }
     }
 
 }

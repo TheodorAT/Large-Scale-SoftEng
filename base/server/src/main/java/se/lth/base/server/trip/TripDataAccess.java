@@ -63,7 +63,7 @@ public class TripDataAccess extends DataAccess<Trip> {
      * 
      */
     public boolean cancelDriverTrip(int driverId, int tripId){
-        String sql = "DELETE FROM trips WHERE trip_id = ? AND driver_id = ?";
+        String sql = "DELETE FROM trips WHERE driver_id = ? AND trip_id = ?";
         return execute(sql, driverId, tripId) > 0;
     }
 

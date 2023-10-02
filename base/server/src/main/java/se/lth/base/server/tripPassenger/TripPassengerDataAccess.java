@@ -38,4 +38,12 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
         insert("INSERT INTO trip_passengers (trip_id, user_id) VALUES (?, ?)", tripId, passengerId);
         return new TripPassenger(tripId, passengerId);
     }
+
+    /**
+     * 
+     */
+    public boolean cancelPassengerTrip(int passengerId, int tripId){
+        String sql = "DELETE FROM trip_passenger WHERE user_id = ? AND trip_id = ?";
+        return execute(sql, passengerId, tripId) > 0;
+    }
 }
