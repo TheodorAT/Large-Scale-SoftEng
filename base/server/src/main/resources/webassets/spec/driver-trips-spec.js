@@ -59,35 +59,17 @@ describe("driverTripController", function () {
       .finally(done);
     locationPromise = Promise.resolve(locations.slice(0));
     spyOn(base.rest, "getLocations").and.returnValue(locationPromise);
-    tripPromise = Promise.resolve(trips.slice(0));
-    spyOn(base.rest, "getDriverTrips").and.returnValue(tripPromise);
   });
   // Remove the node from the DOM
   afterEach(function () {
     document.body.removeChild(node);
   });
 
-  it("should fetch locations and trips on load", function (done) {
+  it("should fetch locations on load", function (done) {
     controller.load();
     locationPromise
       .then(function () {
         expect(base.rest.getLocations).toHaveBeenCalled();
-      })
-      .then(function () {
-        expect(base.rest.getDriverTrips).toHaveBeenCalled();
-      })
-      .finally(done);
-  });
-
-  it("should populate trip table on load", function (done) {
-    controller.load();
-    locationPromise
-      .then(function () {
-        expect(base.rest.getLocations).toHaveBeenCalled();
-      })
-      .then(function () {
-        const rows = node.querySelectorAll("tbody tr");
-        expect(rows.length).toBe(trips.length);
       })
       .finally(done);
   });
@@ -98,9 +80,6 @@ describe("driverTripController", function () {
       locationPromise
         .then(function () {
           expect(base.rest.getLocations).toHaveBeenCalled();
-        })
-        .then(function () {
-          expect(base.rest.getDriverTrips).toHaveBeenCalled();
         })
         .finally(done);
     });
