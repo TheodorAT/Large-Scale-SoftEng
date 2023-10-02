@@ -167,4 +167,11 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         System.out.println(session1);
         System.out.println(session2);
     }
+
+    @Test
+    public void updateUserRole() {
+        userDao.updateUserRole(2, Role.ADMIN);
+        User user = userDao.getUser(2);
+        assertEquals(Role.ADMIN, user.getRole());
+    }
 }

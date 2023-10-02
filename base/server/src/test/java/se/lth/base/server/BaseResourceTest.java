@@ -5,7 +5,6 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.After;
 import org.junit.Before;
 import se.lth.base.server.database.CreateSchema;
-import se.lth.base.server.user.UserResource;
 import se.lth.base.server.providers.JsonProvider;
 import se.lth.base.server.user.*;
 
@@ -25,6 +24,8 @@ public class BaseResourceTest extends JerseyTest {
     protected static final User TEST = new User(2, Role.USER, "Test", "TestUser", "TestUser", "test@user.se",
             "+4600000000");
     protected static final Credentials TEST_CREDENTIALS = new Credentials("Test", "password", Role.USER);
+    protected static final Credentials TEST_CREDENTIALS_REGISTER = new Credentials("RandomUsername", "RandomPassword",
+            Role.USER, "RandomFirstName", "RandomLastName", "random@example.com", "+4600000000");
 
     protected static final User DRIVER = new User(3, Role.DRIVER, "Driver_Test", "TestDriver", "TestDriver",
             "test@driver.se", "+4600000000");

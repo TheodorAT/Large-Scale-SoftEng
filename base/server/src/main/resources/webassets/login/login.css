@@ -47,3 +47,19 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.fixed-top {
+  position: fixed;
+  top: -100px;
+  width: 100%;
+  transition: top 0.5s;
+}
+
+.slide-down {
+  top: 0;
+}
+
+.fade-out {
+  opacity: 1;
+  transition: opacity 2s;
+}
