@@ -97,3 +97,24 @@ VALUES
      'Admin_last_name', 'Admin_email', 'Admin_phone_number'),
     (2, 'Test', 5336889820313124494, '144141f3-c868-85e8-0243-805ca28cdabd', 'Test_first_name', 
     'Test_last_name', 'Test_email', 'Test_phone_number');
+
+INSERT INTO locations(municipality, name, latitude, longitude)
+VALUES
+    ('a', 'a', 55.4055555555556, 11.8458333333333),
+    ('b', 'b', 55.4333333333333, 11.7916666666667),
+    ('c', 'c', 55.4333333333333, 11.7916666666667),
+    ('d', 'd', 55.4333333333333, 11.7916666666667);
+
+INSERT INTO trips (driver_id, from_location_id, to_location_id, start_time, end_time, seat_capacity)
+    VALUES
+    (1, 1, 2, '2024-01-02 00:00:10', '2024-01-02 00:00:20', 3),
+    (2, 2, 3, '2024-01-03 00:00:10', '2024-01-03 00:00:20', 3),
+    (1, 3, 4, '2024-01-04 00:00:10', '2024-01-04 00:00:20', 3),
+    (2, 4, 1, '2024-01-05 00:00:10', '2024-01-05 00:00:20', 4);
+
+INSERT INTO trip_passengers(trip_id, user_id)
+VALUES
+    (1, 2),
+    (2, 1),
+    (3, 2),
+    (4, 1);

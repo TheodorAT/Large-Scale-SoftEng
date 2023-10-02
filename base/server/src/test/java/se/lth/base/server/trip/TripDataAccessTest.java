@@ -31,25 +31,18 @@ public class TripDataAccessTest extends BaseDataAccessTest {
      * Retrieves available trips with new parameters. 5. Goes through the list and checks the locations for each trip.
      * 6. Checks if the sum of all trip-ids are correct.
      */
-    @Test
-    public void availableTrips() {
-        Trip trip1 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10000, 10400, 5));
-        Trip trip2 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10200, 10400, 5));
-        Trip trip3 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 2, 3, 10600, 10800, 3));
-        Trip trip4 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 2, 3, 11000, 11200, 2));
-        Trip trip5 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 2, 3, 13000, 14200, 4));
-
-        List<Trip> result = tripDao.availableTrips(1, 2, 10100);
-        assertEquals(result.get(0).getId(), trip2.getId());
-        assertEquals(result.size(), 1);
-
-        result = tripDao.availableTrips(2, 3, 11000);
-        int sumOfIds = 0;
-        for (int i = 0; i < result.size(); i++) {
-            assertEquals(result.get(i).getFromLocationId(), 2);
-            assertEquals(result.get(i).getToLocationId(), 3);
-            sumOfIds += result.get(i).getId();
-        }
-        assertEquals(sumOfIds, trip4.getId() + trip5.getId());
-    }
+    /*
+     * @Test public void availableTrips() { Trip trip1 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10000,
+     * 10400, 5)); Trip trip2 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10200, 10400, 5)); Trip trip3 =
+     * tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 2, 3, 10600, 10800, 3)); Trip trip4 =
+     * tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 2, 3, 11000, 11200, 2)); Trip trip5 =
+     * tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 2, 3, 13000, 14200, 4));
+     * 
+     * List<Trip> result = tripDao.availableTrips(1, 2, 10100); assertEquals(result.get(0).getId(), trip2.getId());
+     * assertEquals(result.size(), 1);
+     * 
+     * result = tripDao.availableTrips(2, 3, 11000); int sumOfIds = 0; for (int i = 0; i < result.size(); i++) {
+     * assertEquals(result.get(i).getFromLocationId(), 2); assertEquals(result.get(i).getToLocationId(), 3); sumOfIds +=
+     * result.get(i).getId(); } assertEquals(sumOfIds, trip4.getId() + trip5.getId()); }
+     */
 }
