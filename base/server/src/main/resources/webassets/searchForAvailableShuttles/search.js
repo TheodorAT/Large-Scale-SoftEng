@@ -1,31 +1,26 @@
 /*
- * Model/view/controller for the DriverTrip tab.
- * Author: Bianca Widstam, Amanda Nystedt
+ * Author: emad Issawi, Osama Hajjouz
  */
 var base = base || {};
 // Defines the base namespace, if not already declared. Through this pattern it doesn't matter which order
 // the scripts are loaded in.
-
-base.driverTripController = function () {
+base.searchTripController = function () {
   "use strict"; // add this to avoid some potential bugs
 
   let model = [];
-
+  let currentUser = {};
   let locations = [];
 
-  const DriverTripViewModel = function (_trip) {
+  const TripViewModel = function (_trip) {
     this.trip = _trip;
     const viewModel = this;
 
     this.render = function (template) {
-      let now = new Date().getTime();
-      if (viewModel.trip.startTime > now) {
-        this.update(template.content.querySelector("tr"));
-        const clone = document.importNode(template.content, true);
-        template.parentElement.appendChild(clone);
-      }
+      this.update(template.content.querySelector("tr"));
+      const clone = document.importNode(template.content, true);
+      template.parentElement.appendChild(clone);
+      controller.loadButtons();
     };
-
     this.update = function (trElement) {
       const td = trElement.children;
       td[0].textContent = viewModel.trip.id;
@@ -33,11 +28,24 @@ base.driverTripController = function () {
       let tolocation = controller.getLocationFromId(viewModel.trip.toLocationId);
       td[1].textContent = fromlocation.name + ", " + fromlocation.municipality;
       td[2].textContent = tolocation.name + ", " + tolocation.municipality;
-      td[3].textContent = viewModel.trip.seatCapacity;
       const start = viewModel.trip.startTime;
-      td[4].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
+      td[3].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
       const end = viewModel.trip.endTime;
-      td[5].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
+      td[4].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
+      td[5].textContent = new Date(end - start).toLocaleTimeString();
+      td[6].textContent = viewModel.trip.seatCapacity;
+      td[7].textContent = viewModel.trip.driverId;
+      let now = new Date().getTime();
+      // Book Button //
+      //If button already has already been added, it needs to be replaced
+      if (td[8].children[0]) {
+        td[8].children[0].remove();
+      }
+      let button1 = document.createElement("button");
+      button1.innerHTML = "Book";
+      button1.id = viewModel.trip.id;
+      button1.classList.add("btn", "btn-danger");
+      td[8].appendChild(button1);
     };
   };
 
@@ -50,13 +58,13 @@ base.driverTripController = function () {
       model.forEach((d) => d.render(t));
     },
     template: function () {
-      return document.getElementById("drivertrip-template");
+      return document.getElementById("searchtrip-template");
     },
   };
 
   const controller = {
     load: function () {
-      document.getElementById("driver-form").onsubmit = function (event) {
+      document.getElementById("searchtrip-form").onsubmit = function (event) {
         event.preventDefault();
         // Before submitting, needs to check if locations exists, otherwise mark the input invalid.
         const from = document.getElementById("from");
@@ -66,7 +74,7 @@ base.driverTripController = function () {
         f == undefined ? from.classList.add("is-invalid") : "";
         t == undefined ? to.classList.add("is-invalid") : "";
         if (f && t) {
-          controller.submitDriverTrip();
+          controller.loadTrips();
         }
         return false;
       };
@@ -76,26 +84,19 @@ base.driverTripController = function () {
       document.getElementById("to").onkeyup = function (event) {
         controller.filterFunction("to");
       };
-      let date = new Date();
-      document
-        .getElementById("startTime")
-        .setAttribute("min", date.toLocaleDateString() + "T" + date.getHours() + ":" + date.getMinutes());
 
-      document.getElementById("mytrips").onclick = function (event) {
-        event.preventDefault();
-        base.changeLocation("#/my-trips");
-      };
-      // Loads all registered trips and destinations from the server through the REST API, see res.js for definition.
-      // It will replace the model with the trips, and then render them through the view.
       base.rest.getLocations().then(function (l) {
         locations = l;
         controller.setLocations("from", l);
         controller.setLocations("to", l);
-        base.rest.getDriverTrips().then(function (trips) {
-          model = trips.map((t) => new DriverTripViewModel(t));
-          view.render();
-        });
       });
+
+      base.rest.getUser().then(function (user) {
+        currentUser = user;
+      });
+    },
+    getLocationId: function (value) {
+      return locations.find((location) => location.name + ", " + location.municipality == value)?.locationId;
     },
     getLocationId: function (value) {
       return locations.find((location) => location.name + ", " + location.municipality == value)?.locationId;
@@ -136,37 +137,38 @@ base.driverTripController = function () {
         }
       }
     },
-    submitDriverTrip: function () {
+    loadButtons: function () {
+      let bookButtons = document.getElementById("search-trip").querySelectorAll("button");
+      bookButtons.forEach(
+        (b) =>
+          (b.onclick = function (event) {
+            console.log("click", event.target.id);
+            //TODO: rest call to booking trip
+            alert("TODO: rest call to booking trip");
+          }),
+      );
+    },
+    loadTrips: function () {
       const from = document.getElementById("from");
       const to = document.getElementById("to");
       const fromId = controller.getLocationId(from.value.trim());
       const toId = controller.getLocationId(to.value.trim());
-      const seats = document.getElementById("seats").value;
-      const startTime = new Date(document.getElementById("startTime").value).getTime();
-      const form = { fromLocationId: fromId, toLocationId: toId, startTime: startTime, seatCapacity: seats };
-      document.getElementById("registeredTripsModal").textContent =
-        "From: " +
-        from.value +
-        " To: " +
-        to.value +
-        " Date: " +
-        new Date(startTime).toLocaleDateString() +
-        " Number of available seats: " +
-        seats;
-
-      //Call the REST API to register trip, see file rest.js for definitions.
-      base.rest.createTrip(form).then(function (trip) {
-        // Trip is the response from the server, it will have this form:
-        // { driverId: "int", fromLocationId: "int", toLocationId: "int",startTime: "date", endTime: "date", seatCapacity :"int", };
-        const vm = new DriverTripViewModel(trip);
-        model.push(vm); // append the trip to the end of the model array
-        vm.render(view.template()); // append the trip to the table
-        document.getElementById("from").classList.remove("is-invalid");
-        document.getElementById("to").classList.remove("is-invalid");
-        document.getElementById("driver-form").reset();
-        const myModal = new bootstrap.Modal(document.getElementById("driverModal"));
-        myModal.show();
+      const datetime = new Date(document.getElementById("datetime").value).getTime();
+      const form = { fromLocationId: fromId, toLocationId: toId, startTime: datetime };
+      base.rest.getShuttles(form).then(function (trips) {
+        trips.forEach((trip) => {
+          const vm = new TripViewModel(trip);
+          model.push(vm); // append the trip to the end of the model array
+          vm.render(view.template()); // append the trip to the table
+        });
+        if (trips.length == 0) {
+          const myModal = new bootstrap.Modal(document.getElementById("searchModal"));
+          myModal.show();
+        }
       });
+      document.getElementById("from").classList.remove("is-invalid");
+      document.getElementById("to").classList.remove("is-invalid");
+      document.getElementById("searchtrip-form").reset();
     },
   };
 

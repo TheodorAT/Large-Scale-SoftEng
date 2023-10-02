@@ -47,7 +47,6 @@ base.rest = (function () {
     config = config || {};
     // Setting 'same-origin' make sure that cookies are sent to the server (which it would not otherwise)
     config.credentials = "same-origin";
-
     return fetch(url, config)
       .then(function (response) {
         if (!response.ok) {
@@ -92,6 +91,14 @@ base.rest = (function () {
       return baseFetch("/rest/user/login?remember=" + rememberMe, {
         method: "POST",
         body: JSON.stringify(loginObj),
+        headers: jsonHeader,
+      });
+    },
+
+    createUser: function (user) {
+      return baseFetch("/rest/user/", {
+        method: "POST",
+        body: JSON.stringify(user),
         headers: jsonHeader,
       });
     },
@@ -227,6 +234,29 @@ base.rest = (function () {
      */
     getDriverTrips: function () {
       return baseFetch("/rest/trip/driver", {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
+    },
+    /*
+     * Fetches available shuttles based on search criteria.
+     * from: the starting point
+     * destination: the destination point
+     * datetime: the desired departure datetime
+     *
+     * function will return an array of JavaScript objects, each representing a shuttle
+     * example: const shuttles = base.rest.getShuttles('City A', 'City B', '2023-09-20 10:00');
+     */
+
+    getShuttles: function (form) {
+      const queryParams = new URLSearchParams({
+        fromLocationId: form.fromLocationId,
+        toLocationId: form.toLocationId,
+        //datetime: form.datetime,
+      });
+
+      return baseFetch("/rest/trip/search/?" + queryParams.toString(), {
         method: "GET",
       })
         .then((response) => response.json())
