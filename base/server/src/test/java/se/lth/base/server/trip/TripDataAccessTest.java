@@ -5,6 +5,7 @@ import se.lth.base.server.Config;
 import se.lth.base.server.database.BaseDataAccessTest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -51,5 +52,18 @@ public class TripDataAccessTest extends BaseDataAccessTest {
             sumOfIds += result.get(i).getId();
         }
         assertEquals(sumOfIds, trip4.getId() + trip5.getId());
+    }
+
+    @Test
+    public void cancelTrips(){
+        Trip trip1 = tripDao.addTrip(TEST.getId(), new Trip(1, 1, 1, 2, 10000, 10400, 5));
+        Trip trip2 = tripDao.addTrip(TEST.getId(), new Trip(2, 1, 1, 2, 10000, 10400, 5));
+        Trip trip3 = tripDao.addTrip(TEST.getId(), new Trip(3, 1, 1, 2, 10000, 10400, 5));
+
+        List<Trip> resultBefore = tripDao.availableTrips(1, 2, 10000);
+        assertEquals(resultBefore.size(), 3); 
+        assertTrue(tripDao.cancelDriverTrip(TEST.getId(),3));
+        List<Trip> resultAfter = tripDao.availableTrips(1, 2, 10000);
+        assertEquals(resultAfter.size(), 2); 
     }
 }
