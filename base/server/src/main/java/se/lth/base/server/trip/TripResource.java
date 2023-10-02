@@ -113,25 +113,9 @@ public class TripResource {
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public void cancelDriverTrip(@PathParam("tripId") int tripId){
-        List<Trip> driverTrips = tripDao.getTripsFromDriver(this.user.getId());
-        
-        if(doesListContainsTripId(driverTrips, tripId)){
-            if(!tripDao.cancelDriverTrip(this.user.getId(), tripId)){
-                throw new WebApplicationException("Not found trip",
-                Response.Status.NOT_FOUND);
-            }
-        }else{ //We cant cancel other peoples trips
-            throw new WebApplicationException("You cant delete other people's trips",
-                    Response.Status.FORBIDDEN);
+        if(!tripDao.cancelDriverTrip(this.user.getId(), tripId)){
+            throw new WebApplicationException("Not found trip",
+            Response.Status.NOT_FOUND);
         }
-    }
-
-    private Boolean doesListContainsTripId(List<Trip> trips, int tripId){
-        for (Trip trip : trips) {
-            if (trip.getId() == tripId) {
-                return true; 
-            }
-        }
-        return false; 
     }
 }
