@@ -110,14 +110,14 @@ base.driverTripController = function () {
         // Trip is the response from the server, it will have this form:
         // { driverId: "int", fromLocationId: "int", toLocationId: "int",startTime: "date", endTime: "date", seatCapacity :"int", };
         document.getElementById("registeredTripsModal").textContent =
-        "From: " +
-        from.value +
-        " To: " +
-        to.value +
-        " Date: " +
-        new Date(startTime).toLocaleDateString() +
-        " Number of available seats: " +
-        seats;
+          "From: " +
+          from.value +
+          " To: " +
+          to.value +
+          " Date: " +
+          new Date(startTime).toLocaleDateString() +
+          " Number of available seats: " +
+          seats;
         document.getElementById("from").classList.remove("is-invalid");
         document.getElementById("to").classList.remove("is-invalid");
         document.getElementById("driver-form").reset();

@@ -75,7 +75,7 @@ base.myTripsController = function () {
       badge.id = id;
       badge.classList.add("badge", "bg-danger");
       document.getElementById(id).replaceWith(badge);
-    }
+    },
   };
 
   const controller = {
