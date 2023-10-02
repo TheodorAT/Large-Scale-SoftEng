@@ -62,9 +62,9 @@ public class TripDataAccess extends DataAccess<Trip> {
     /**
      * 
      */
-    public void deleteTrip(Trip currentTrip){
-        // Determine which role the person who want to cancel has 
-        // Depending on that -- either remove a seat or cancel the entire trip
+    public boolean cancelDriverTrip(int driverId, int tripId){
+        String sql = "DELETE FROM trips WHERE trip_id = ? AND driver_id = ?";
+        return execute(sql, driverId, tripId) > 0;
     }
 
     /**
