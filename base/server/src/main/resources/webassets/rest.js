@@ -243,7 +243,7 @@ base.rest = (function () {
       const queryParams = new URLSearchParams({
         fromLocationId: form.fromLocationId,
         toLocationId: form.toLocationId,
-        //datetime: form.datetime,
+        startTime: form.startTime,
       });
 
       return baseFetch("/rest/trip/search/?" + queryParams.toString(), {
