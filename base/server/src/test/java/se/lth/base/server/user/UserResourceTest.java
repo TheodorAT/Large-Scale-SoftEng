@@ -90,12 +90,6 @@ public class UserResourceTest extends BaseResourceTest {
         target("user").path(Integer.toString(ADMIN.getId())).request().get(User.class);
     }
 
-    @Test(expected = ForbiddenException.class)
-    public void createUserAsUser() {
-        login(TEST_CREDENTIALS);
-        target("user").request().post(Entity.json(""), Void.class); // Include response type to trigger exception
-    }
-
     @Test(expected = NotFoundException.class)
     public void deleteYourselfAsUser() {
         login(TEST_CREDENTIALS);

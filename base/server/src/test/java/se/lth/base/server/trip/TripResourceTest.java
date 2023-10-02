@@ -66,8 +66,9 @@ public class TripResourceTest extends BaseResourceTest {
     public void availableTrips() {
         int fromLocationId = 1;
         int toLocationId = 2;
-        Trip trip1 = new Trip(1, 1, fromLocationId, toLocationId, 10200, 12600, 4);
-        Trip trip2 = new Trip(1, 1, fromLocationId + 1, toLocationId + 1, 10200, 12600, 4);
+        Trip trip1 = new Trip(1, 1, fromLocationId, toLocationId, 10200, 0, 4);
+        Trip trip2 = new Trip(1, 1, fromLocationId, toLocationId, 10000, 0, 4);
+        Trip trip3 = new Trip(1, 1, fromLocationId + 1, toLocationId + 1, 10200, 0, 4);
 
         for (int i = 0; i < 5; i++) {
             target("trip").request().post(Entity.entity(trip1, MediaType.APPLICATION_JSON), Trip.class);
@@ -75,11 +76,13 @@ public class TripResourceTest extends BaseResourceTest {
             // adding other trips to the database
             if (i % 2 != 0) {
                 target("trip").request().post(Entity.entity(trip2, MediaType.APPLICATION_JSON), Trip.class);
+                target("trip").request().post(Entity.entity(trip3, MediaType.APPLICATION_JSON), Trip.class);
             }
         }
-
+        // Adding the trips with start location 1 and end location 2 that starts on or after 10200
         List<Trip> trips = target("trip/search").queryParam("fromLocationId", fromLocationId)
-                .queryParam("toLocationId", toLocationId).request().get(new GenericType<List<Trip>>() {
+                .queryParam("toLocationId", toLocationId).queryParam("startTime", 10200).request()
+                .get(new GenericType<List<Trip>>() {
                 });
 
         assertNotNull(trips);

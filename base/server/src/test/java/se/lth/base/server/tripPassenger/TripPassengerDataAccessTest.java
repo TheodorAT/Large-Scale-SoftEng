@@ -8,7 +8,11 @@ import se.lth.base.server.trip.TripDataAccess;
 
 import static org.junit.Assert.assertEquals;
 
-import java.sql.Timestamp;
+/**
+ * Tests for TripPassengerDataAccess
+ * 
+ * @author Anton Tingelholm
+ */
 
 public class TripPassengerDataAccessTest extends BaseDataAccessTest {
 
@@ -16,6 +20,9 @@ public class TripPassengerDataAccessTest extends BaseDataAccessTest {
             Config.instance().getDatabaseDriver());
     private TripDataAccess tripDao = new TripDataAccess(Config.instance().getDatabaseDriver());
 
+    /**
+     * Test method for the bookTrip() function.
+     */
     @Test
     public void bookTrip() {
         Trip trip = new Trip(1, 1, 1, 2, 1, 2, 2);

@@ -76,15 +76,15 @@ public class TripDataAccess extends DataAccess<Trip> {
      * @param toLocationId
      *            ID of destination.
      * 
+     * @param startTime
+     *            Start time of trips to search for
+     * 
      * @return A list of Trip objects (available trips matching the parameters).
      * 
      */
-    public List<Trip> availableTrips(int fromLocationId, int toLocationId) {
-        // possible to add parameters below, such as date/time/seats. Needs to be added
-        // in method searchTrips
-        // (TripResource) as well. (requires also modify respective test method)
-        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ?";
-        return query(sql, fromLocationId, toLocationId);
+    public List<Trip> availableTrips(int fromLocationId, int toLocationId, long startTime) {
+        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ? AND start_time >= ?";
+        return query(sql, fromLocationId, toLocationId, new Timestamp(startTime));
     }
 
     public List<Trip> getTripsFromDriver(int driverId) {

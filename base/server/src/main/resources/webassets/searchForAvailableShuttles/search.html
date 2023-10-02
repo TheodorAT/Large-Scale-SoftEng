@@ -1,0 +1,104 @@
+<!-- author: Emad aldeen issawi, Osama Hajjouz -->
+
+<div  class="container-fluid">
+
+
+    <h2>Search for available trips</h2>
+
+    <form class="form-row pt-4" id="searchtrip-form">
+        <div class="form-group col-md-auto">
+            <label for="from">From</label>
+            <div class="dropdown">
+                <input
+                        required
+                        type="text"
+                        placeholder="Search origin.."
+                        id="from"
+                        class="form-control"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        dropdown-toggle
+                        autocomplete="off"
+                />
+                <ul class="dropdown-menu" id="dropdown-from">
+                </ul>
+            </div>
+        </div>
+        <div class="form-group col-md-auto">
+            <label for="to">To</label>
+            <div class="dropdown">
+                <input
+                        type="text"
+                        required
+                        placeholder="Search destination.."
+                        id="to"
+                        class="form-control"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        dropdown-toggle
+                        autocomplete="off"
+                />
+                <ul class="dropdown-menu" id="dropdown-to">
+                </ul>
+            </div>
+        </div>
+        <div class="form-group col-md-auto">
+            <label for="datetime">Start date & time</label>
+            <input required type="datetime-local" class="form-control" id="datetime" name="datetime" />
+        </div>
+        <div class="form-group d-flex align-items-end">
+            <button id="searchbtn" type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+
+    <h2 class="pt-5">Available trips</h2>
+    <table id="search-trip" class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Arrival Time</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Seats Left</th>
+            <th scope="col">Driver</th>
+            <th scope="col">Book</th>
+        </tr>
+        </thead>
+        <tbody>
+        <template id="searchtrip-template">
+            <tr>
+                <th scope="row"></th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </template>
+        </tbody>
+    </table>
+</div>
+</div>
+
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="driverModalTitle">No trips available!</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="searchTripModal">Try again later!</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
