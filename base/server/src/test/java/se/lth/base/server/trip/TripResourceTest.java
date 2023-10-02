@@ -26,17 +26,29 @@ public class TripResourceTest extends BaseResourceTest {
 
     @Test
     public void addTrip() {
+        logout();
+        login(DRIVER_CREDENTIALS);
         Trip t = new Trip(1, 1, 1, 2, 10200, 0, 4);
 
         Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
 
         Trip trip = target("trip").request().post(e, Trip.class);
 
-        assertEquals(TEST.getId(), trip.getDriverId());
+        assertEquals(DRIVER.getId(), trip.getDriverId());
         assertEquals(10200, trip.getStartTime());
 
         // End time is 1 hour after start time
         assertEquals(3610200, trip.getEndTime());
+    }
+
+    @Test(expected = javax.ws.rs.ForbiddenException.class)
+    public void addTripAsPassenger() {
+        Trip t = new Trip(1, 1, 1, 2, 10200, 0, 4);
+
+        Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
+
+        Trip trip = target("trip").request().post(e, Trip.class);
+
     }
 
     /*
@@ -64,6 +76,8 @@ public class TripResourceTest extends BaseResourceTest {
      */
     @Test
     public void availableTrips() {
+        logout();
+        login(DRIVER_CREDENTIALS);
         int fromLocationId = 1;
         int toLocationId = 2;
         Trip trip1 = new Trip(1, 1, fromLocationId, toLocationId, 10200, 12600, 4);
@@ -77,6 +91,9 @@ public class TripResourceTest extends BaseResourceTest {
                 target("trip").request().post(Entity.entity(trip2, MediaType.APPLICATION_JSON), Trip.class);
             }
         }
+
+        logout();
+        login(TEST_CREDENTIALS);
 
         List<Trip> trips = target("trip/search").queryParam("fromLocationId", fromLocationId)
                 .queryParam("toLocationId", toLocationId).request().get(new GenericType<List<Trip>>() {

@@ -26,6 +26,10 @@ public class BaseResourceTest extends JerseyTest {
             "+4600000000");
     protected static final Credentials TEST_CREDENTIALS = new Credentials("Test", "password", Role.USER);
 
+    protected static final User DRIVER = new User(3, Role.DRIVER, "Driver_Test", "TestDriver", "TestDriver",
+            "test@driver.se", "+4600000000");
+    protected static final Credentials DRIVER_CREDENTIALS = new Credentials("Driver", "password", Role.DRIVER);
+
     private static final String IN_MEM_DRIVER_URL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
 
     static {
