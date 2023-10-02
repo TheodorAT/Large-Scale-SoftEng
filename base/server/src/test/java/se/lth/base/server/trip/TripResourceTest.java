@@ -91,4 +91,36 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(trips.get(0).getFromLocationId(), fromLocationId);
         assertEquals(trips.get(0).getToLocationId(), toLocationId);
     }
+
+    @Test
+    public void cancelDriverTrip(){
+        int fromLocationId = 1;
+        int toLocationId = 2;
+        Trip trip1 = new Trip(1, TEST.getId(), fromLocationId, toLocationId, 10200, 0, 4);
+        Trip trip2 = new Trip(2, TEST.getId(), fromLocationId, toLocationId, 10200, 0, 4);
+        Trip trip3 = new Trip(3, TEST.getId(), fromLocationId, toLocationId, 10200, 0, 4);
+
+        target("trip").request().post(Entity.entity(trip1, MediaType.APPLICATION_JSON), Trip.class);
+        target("trip").request().post(Entity.entity(trip2, MediaType.APPLICATION_JSON), Trip.class);
+        target("trip").request().post(Entity.entity(trip3, MediaType.APPLICATION_JSON), Trip.class);
+
+        List<Trip> trips = target("trip/search").queryParam("fromLocationId", fromLocationId)
+                .queryParam("toLocationId", toLocationId).queryParam("startTime", 10200).request()
+                .get(new GenericType<List<Trip>>() {
+                });
+
+        assertEquals(trips.size(), 3);
+
+        target("trip/driver").path(Integer.toString(3)).request().delete(Void.class);
+
+        List<Trip> trips2 = target("trip/search").queryParam("fromLocationId", fromLocationId)
+                .queryParam("toLocationId", toLocationId).queryParam("startTime", 10200).request()
+                .get(new GenericType<List<Trip>>() {
+                });
+
+        assertEquals(trips2.size(), 2);
+
+
+
+    }
 }
