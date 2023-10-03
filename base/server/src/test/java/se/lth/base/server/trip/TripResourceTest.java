@@ -96,7 +96,8 @@ public class TripResourceTest extends BaseResourceTest {
 
         logout();
         login(TEST_CREDENTIALS);
-        // Adding the trips with start location 1 and end location 2 that starts on or after 10200
+        // Adding the trips with start location 1 and end location 2 that starts on or
+        // after 10200
         List<Trip> trips = target("trip/search").queryParam("fromLocationId", fromLocationId)
                 .queryParam("toLocationId", toLocationId).queryParam("startTime", 10200).request()
                 .get(new GenericType<List<Trip>>() {

@@ -23,9 +23,13 @@ public class TripPassengerDataAccessTest extends BaseDataAccessTest {
     /**
      * Test method for the bookTrip() function.
      */
-    /*
-     * @Test public void bookTrip() { Trip trip = new Trip(1, 1, 1, 2, 1, 2, 2); tripDao.addTrip(1, trip); TripPassenger
-     * tripPassenger = tripPassengerDao.bookTrip(trip.getId(), TEST.getId()); assertEquals(TEST.getId(),
-     * tripPassenger.getPassengerId()); assertEquals(1, tripPassenger.getTripId()); }
-     */
+    @Test
+    public void bookTrip() {
+        Trip trip = new Trip(1, 1, 1, 2, 1, 2, 2);
+        tripDao.addTrip(1, trip);
+        TripPassenger tripPassenger = tripPassengerDao.bookTrip(trip.getId(), TEST.getId());
+        assertEquals(TEST.getId(), tripPassenger.getPassengerId());
+        assertEquals(1, tripPassenger.getTripId());
+    }
+
 }
