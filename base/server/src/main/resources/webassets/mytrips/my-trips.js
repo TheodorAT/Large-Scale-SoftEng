@@ -44,10 +44,10 @@ base.myTripsController = function () {
       //TODO: check status if cancelled add status button with "Cancelled".
       if (viewModel.trip.startTime > now) {
         let button = view.createCancelButton(viewModel.trip.id);
-        td[7].replaceWith(button);
+        td[7].children[0] ? td[7].children[0].replaceWith(button) : td[7].appendChild(button);
       } else {
         let status = view.createStatusButtons(viewModel.trip.id, "Completed", "bg-success");
-        td[7].replaceWith(status);
+        td[7].children[0] ? td[7].children[0].replaceWith(status) : td[7].appendChild(status);
       }
     };
   };
