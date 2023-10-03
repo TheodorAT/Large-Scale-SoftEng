@@ -77,7 +77,7 @@ public class TripDataAccess extends DataAccess<Trip> {
     /**
      * Retrieves a list of created trips belonging to the driverId.
      * 
-     * @param passengerId
+     * @param driverId
      *            ID of driver
      * 
      * @return A list of all trips created by the driver.
