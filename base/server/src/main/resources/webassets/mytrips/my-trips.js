@@ -41,16 +41,17 @@ base.myTripsController = function () {
       td[5].textContent = viewModel.trip.seatCapacity;
       td[6].textContent = viewModel.trip.driverId;
       let now = new Date().getTime();
+      //TODO: check status if cancelled add status button with "Cancelled".
       if (viewModel.trip.startTime > now) {
-        let button = document.createElement("button");
-        button.innerHTML = "Cancel";
-        button.id = viewModel.trip.id;
-        button.classList.add("btn", "btn-danger");
+        let button = view.createCancelButton(viewModel.trip.id);
         //If button already has already been added, it needs to be replaced
         if (td[7].children[0]) {
           td[7].children[0].remove();
         }
         td[7].appendChild(button);
+      } else {
+        let status = view.createStatusButtons(viewModel.trip.id, "Completed", "bg-success");
+        td[7].appendChild(status);
       }
     };
   };
@@ -69,12 +70,19 @@ base.myTripsController = function () {
     upcomingTemplate: function () {
       return document.getElementById("upcoming-trips-template");
     },
-    createCancelledButtons: function (id) {
+    createCancelButton: function (id) {
+      let button = document.createElement("button");
+      button.innerHTML = "Cancel";
+      button.id = id;
+      button.classList.add("btn", "btn-danger");
+      return button;
+    },
+    createStatusButtons: function (id, title, type) {
       let badge = document.createElement("span");
-      badge.innerHTML = "Cancelled";
+      badge.innerHTML = title;
       badge.id = id;
-      badge.classList.add("badge", "bg-danger");
-      document.getElementById(id).replaceWith(badge);
+      badge.classList.add("badge", type);
+      return badge;
     },
   };
 
@@ -91,17 +99,20 @@ base.myTripsController = function () {
         currentUser = array[0];
         locations = array[1];
         console.log(currentUser);
-        if (currentUser.role.name == "DRIVER") {
+        let role = currentUser.role.name;
+        //Admin gets all trips, should not be possible to book yourself as passenger if you are a driver, therefor no duplicates
+        if (role == "DRIVER" || role == "ADMIN") {
           base.rest.getDriverTrips().then(function (trips) {
             model = trips.map((f) => new MyTripsViewModel(f));
             view.render();
           });
-        } else if (currentUser.role.name == "USER") {
+        }
+        if (role == "USER" || role == "ADMIN") {
           base.rest.getPassengerTrips().then(function (trips) {
             model = trips.map((f) => new MyTripsViewModel(f));
             view.render();
           });
-        } // else if admin, get all trips?
+        }
       });
     },
     getLocationFromId: function (id) {
@@ -112,9 +123,16 @@ base.myTripsController = function () {
       cancelButtons.forEach(
         (b) =>
           (b.onclick = function (event) {
-            console.log("click", event.target.id);
-            view.createCancelledButtons(event.target.id);
-            //base.rest.cancelTrip(), update trip status?
+            let badge = view.createStatusButtons(event.target.id, "Cancelled", "bg-danger");
+            document.getElementById(event.target.id).replaceWith(badge);
+            //If user, delete passengerTrip and remove row
+            //If driver, update status to cancelled
+            if (currentUser.role.name == "USER") {
+              let tripRow = document.getElementById(event.target.id).parentNode.parentNode;
+              //base.rest.deletePassengerTrip() TODO: waiting for back-end
+              tripRow.remove();
+            }
+            //else: base.rest.cancelDriverTrip(), update trip status? TODO: waiting for back-end
           }),
       );
     },
