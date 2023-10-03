@@ -45,13 +45,10 @@ base.myTripsController = function () {
       if (viewModel.trip.startTime > now) {
         let button = view.createCancelButton(viewModel.trip.id);
         //If button already has already been added, it needs to be replaced
-        if (td[7].children[0]) {
-          td[7].children[0].remove();
-        }
-        td[7].appendChild(button);
+        td[7].children[0].replaceWith(button);
       } else {
         let status = view.createStatusButtons(viewModel.trip.id, "Completed", "bg-success");
-        td[7].appendChild(status);
+        td[7].replaceWith(status);
       }
     };
   };
@@ -98,7 +95,6 @@ base.myTripsController = function () {
       Promise.all([userPromise, locationPromise]).then(function (array) {
         currentUser = array[0];
         locations = array[1];
-        console.log(currentUser);
         let role = currentUser.role.name;
         //Admin gets all trips, should not be possible to book yourself as passenger if you are a driver, therefor no duplicates
         if (role == "DRIVER" || role == "ADMIN") {
