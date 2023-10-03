@@ -15,13 +15,11 @@ public class TripDataAccessTest extends BaseDataAccessTest {
 
     private TripDataAccess tripDao = new TripDataAccess(Config.instance().getDatabaseDriver());
 
-/*     @Test
-    public void addTrip() {
-        Trip data = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10200, 10500, 5));
-        assertEquals(TEST.getId(), data.getDriverId());
-        assertEquals(10200, data.getStartTime());
-        assertEquals(5, data.getSeatCapacity());
-    } */
+    /*
+     * @Test public void addTrip() { Trip data = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10200, 10500, 5));
+     * assertEquals(TEST.getId(), data.getDriverId()); assertEquals(10200, data.getStartTime()); assertEquals(5,
+     * data.getSeatCapacity()); }
+     */
 
     /**
      * Test method for retrieving available trips from the database.

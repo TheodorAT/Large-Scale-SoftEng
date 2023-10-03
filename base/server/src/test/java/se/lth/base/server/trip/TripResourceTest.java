@@ -24,20 +24,17 @@ public class TripResourceTest extends BaseResourceTest {
         login(TEST_CREDENTIALS);
     }
 
- /*    @Test
-    public void addTrip() {
-        Trip t = new Trip(1, 1, 1, 2, 10200, 0, 4);
-
-        Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
-
-        Trip trip = target("trip").request().post(e, Trip.class);
-
-        assertEquals(TEST.getId(), trip.getDriverId());
-        assertEquals(10200, trip.getStartTime());
-
-        // End time is 1 hour after start time
-        assertEquals(3610200, trip.getEndTime());
-    } */
+    /*
+     * @Test public void addTrip() { Trip t = new Trip(1, 1, 1, 2, 10200, 0, 4);
+     * 
+     * Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
+     * 
+     * Trip trip = target("trip").request().post(e, Trip.class);
+     * 
+     * assertEquals(TEST.getId(), trip.getDriverId()); assertEquals(10200, trip.getStartTime());
+     * 
+     * // End time is 1 hour after start time assertEquals(3610200, trip.getEndTime()); }
+     */
 
     /*
      * @Test public void getAllTripsFromDriverId() { Trip t = new Trip(1, 1, 1, 2, 10200, 12600, 4);
