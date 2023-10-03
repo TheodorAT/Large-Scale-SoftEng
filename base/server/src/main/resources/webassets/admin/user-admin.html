@@ -51,40 +51,42 @@
     </div>
   </div>
 
-  <div class="modal fade" id="modalAddUser" tabindex="-1" role="dialog" aria-labelledby="modalAddUser"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="modalAddUser" tabindex="-1" role="dialog" aria-labelledby="modalAddUser" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header text-center">
-        <h1 class="modal-title fs-5">Add New Administrator</h4>
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" >Add New Administrator</h5>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <div class="md-form mb-5">
-          <i class="fas fa-user prefix grey-text"></i>
-          <input type="text" id="new-name" class="form-control validate">
-          <label data-error="wrong" data-success="right" for="new-name">Name</label>
+      <form id="addForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="input-firstname">First name</label>
+            <input type="text" class="form-control" id="input-firstname" required>
+          </div>
+          <div class="form-group">
+            <label for="input-lastname">Last name</label>
+            <input type="text" class="form-control" id="input-lastname" required>
+          </div>
+          <div class="form-group">
+            <label for="input-username">Username</label>
+            <input type="text" class="form-control" id="input-username" required minlength="3">
+          </div>
+          <div class="form-group">
+            <label for="input-email">Email address</label>
+            <input type="email" class="form-control" id="input-email" aria-describedby="emailHelp" required>
+          </div>
+          <div class="form-group">
+            <label for="input-password">Password</label>
+            <input type="password" class="form-control" id="input-password" placeholder="Minimum 8 characters" required minlength="8">
+          </div>
         </div>
-        <div class="md-form mb-5">
-          <i class="fas fa-envelope prefix grey-text"></i>
-          <input type="text" id="new-username" class="form-control validate">
-          <label data-error="wrong" data-success="right" for="new-username">Username</label>
+        <div class="form-group d-flex justify-content-center">
+          <button type="submit" class="btn btn-success" data-dismiss="modal">Add New Administrator</button>
         </div>
-
-        <div class="md-form mb-4">
-          <i class="fas fa-lock prefix grey-text"></i>
-          <input type="password" id="new-password" class="form-control validate">
-          <label data-error="wrong" data-success="right" for="new-password">Password</label>
-        </div>
-
-      </div>
-      <div class="modal-footer d-flex justify-content-center">
-        <button class="btn btn-secondary" id="modal-add-admin"data-bs-dismiss="modal">Add New Administrator</button>
-      </div>
+      </form>
     </div>
   </div>
 </div>
-</div>
-
