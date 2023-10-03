@@ -74,27 +74,30 @@ public class TripDataAccess extends DataAccess<Trip> {
         return query(sql, fromLocationId, toLocationId, new Timestamp(startTime));
     }
 
+    /**
+     * Retrieves a list of created trips belonging to the driverId.
+     * 
+     * @param passengerId
+     *            ID of driver
+     * 
+     * @return A list of all trips created by the driver.
+     */
     public List<Trip> getTripsFromDriver(int driverId) {
         String sql = "SELECT * FROM trips WHERE driver_id = ?";
         return query(sql, driverId);
     }
 
+    /**
+     * Retrieves a list of booked trips belonging to the passengerId.
+     * 
+     * @param passengerId
+     *            ID of passenger
+     * 
+     * @return A list of all trips booked by the passenger.
+     */
     public List<Trip> getTripsAsPassenger(int passengerId) {
         String sql = "SELECT trips.* FROM trips JOIN trip_passengers ON trips.trip_id = trip_passengers.trip_id WHERE trip_passengers.user_id = ?";
         return query(sql, passengerId);
     }
-
-    /*
-     * public List<Trip> getAllTrips(int driverId) { List<Trip> all_trips = new ArrayList<Trip>();
-     * 
-     * String sql_driver = "SELECT * FROM trips WHERE driver_id = ?"; List<Trip> driver_trips = query(sql_driver,
-     * driverId); all_trips.addAll(driver_trips);
-     * 
-     * String sql_passenger =
-     * "SELECT trips.* FROM trips JOIN trip_passengers ON trips.trip_id = trip_passengers.trip_id WHERE trip_passengers.user_id = ?"
-     * ; List<Trip> passenger_trips = query(sql_passenger, driverId); all_trips.addAll(passenger_trips);
-     * 
-     * return all_trips; }
-     */
 
 }
