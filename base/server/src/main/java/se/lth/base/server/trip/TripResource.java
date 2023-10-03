@@ -90,7 +90,7 @@ public class TripResource {
      *
      * HTTP Request Type: GET Path: "trip/passenger/{passengerId}"
      *
-     * @param driverId
+     * @param passengerId
      *            The ID of the passenger whose trips are to be retrieved.
      * 
      * @return A List of Trip objects representing the passenger's trips.
