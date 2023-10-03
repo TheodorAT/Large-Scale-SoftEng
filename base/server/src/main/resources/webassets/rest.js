@@ -239,6 +239,19 @@ base.rest = (function () {
         .then((response) => response.json())
         .then((trips) => trips.map((f) => new Trip(f)));
     },
+
+    /*
+     * Fetches the trips of the passenger
+     * returns: an array of Trips
+     * example: const trips = base.rest.getPassengerTrips(1);
+     */
+    getPassengerTrips: function () {
+      return baseFetch("/rest/trip/passenger", {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
+    },
     /*
      * Fetches available shuttles based on search criteria.
      * from: the starting point

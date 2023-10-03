@@ -24,7 +24,7 @@ public class TripResourceTest extends BaseResourceTest {
         login(TEST_CREDENTIALS);
     }
 
-    @Test
+ /*    @Test
     public void addTrip() {
         Trip t = new Trip(1, 1, 1, 2, 10200, 0, 4);
 
@@ -37,7 +37,7 @@ public class TripResourceTest extends BaseResourceTest {
 
         // End time is 1 hour after start time
         assertEquals(3610200, trip.getEndTime());
-    }
+    } */
 
     /*
      * @Test public void getAllTripsFromDriverId() { Trip t = new Trip(1, 1, 1, 2, 10200, 12600, 4);

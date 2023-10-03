@@ -41,7 +41,7 @@ base.myTripsController = function () {
       td[5].textContent = viewModel.trip.seatCapacity;
       td[6].textContent = viewModel.trip.driverId;
       let now = new Date().getTime();
-      if (viewModel.trip.driverId == currentUser.id && viewModel.trip.startTime > now) {
+      if (viewModel.trip.startTime > now) {
         let button = document.createElement("button");
         button.innerHTML = "Cancel";
         button.id = viewModel.trip.id;
@@ -83,17 +83,25 @@ base.myTripsController = function () {
       // Loads all first destinations and then the drivertrips from the server through the REST API, see res.js for definition.
       // It will replace the model with the trips, and then render them through the view.
 
-      // TODO change to getAllTrips()... that should return all trips as passenger and driver. See getAllTrips() in rest.js waiting for back-end
       // should return a trip with information {From,	To,	Time of Departure,Expected Time of Arrival, Seats, Driver, passangers}
-      base.rest.getLocations().then(function (l) {
-        locations = l;
-        base.rest.getDriverTrips().then(function (trips) {
-          model = trips.map((f) => new MyTripsViewModel(f));
-          view.render();
-        });
-      });
-      base.rest.getUser().then(function (user) {
-        currentUser = user;
+
+      let userPromise = base.rest.getUser();
+      let locationPromise = base.rest.getLocations();
+      Promise.all([userPromise, locationPromise]).then(function (array) {
+        currentUser = array[0];
+        locations = array[1];
+        console.log(currentUser);
+        if (currentUser.role.name == "DRIVER") {
+          base.rest.getDriverTrips().then(function (trips) {
+            model = trips.map((f) => new MyTripsViewModel(f));
+            view.render();
+          });
+        } else if (currentUser.role.name == "USER") {
+          base.rest.getPassengerTrips().then(function (trips) {
+            model = trips.map((f) => new MyTripsViewModel(f));
+            view.render();
+          });
+        } // else if admin, get all trips?
       });
     },
     getLocationFromId: function (id) {
@@ -106,7 +114,7 @@ base.myTripsController = function () {
           (b.onclick = function (event) {
             console.log("click", event.target.id);
             view.createCancelledButtons(event.target.id);
-            //base.rest.deleteTrip()
+            //base.rest.cancelTrip(), update trip status?
           }),
       );
     },
