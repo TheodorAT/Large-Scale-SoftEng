@@ -66,6 +66,13 @@ base.searchTripController = function () {
     load: function () {
       document.getElementById("searchtrip-form").onsubmit = function (event) {
         event.preventDefault();
+        const template = document.getElementById('searchtrip-template');
+        const parentElement = template.parentElement;
+        const rows = parentElement.querySelectorAll('tr');
+        rows.forEach(row => {
+          parentElement.removeChild(row);
+        });
+
         // Before submitting, needs to check if locations exists, otherwise mark the input invalid.
         const from = document.getElementById("from");
         const to = document.getElementById("to");
