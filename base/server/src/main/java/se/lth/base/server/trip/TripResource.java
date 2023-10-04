@@ -97,6 +97,7 @@ public class TripResource {
      */
     @Path("passenger/{passengerId}")
     @GET
+    @RolesAllowed(Role.Names.ADMIN)
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<Trip> getTripsAsPassenger(@PathParam("passengerId") int passengerId) {
         List<Trip> result = tripDao.getTripsAsPassenger(passengerId);
@@ -131,6 +132,7 @@ public class TripResource {
      */
     @Path("driver/{driverId}")
     @GET
+    @RolesAllowed(Role.Names.ADMIN)
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<Trip> getTripsFromDriver(@PathParam("driverId") int driverId) {
         List<Trip> result = tripDao.getTripsFromDriver(driverId);
