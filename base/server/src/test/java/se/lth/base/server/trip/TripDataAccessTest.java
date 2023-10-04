@@ -9,6 +9,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+
 /**
  * @author Isak Wahlqvist
  * @author Anton Tingelholm
@@ -100,4 +103,16 @@ public class TripDataAccessTest extends BaseDataAccessTest {
         assertEquals(trips.get(1).getId(), trip2.getId());
     }
 
+    @Test
+    public void availableTripsAfter1Day() {
+        Trip[] trips = new Trip[5];
+        for (int i = 0; i < 5; i++) {
+            // Seperate trips start time by 6 hours (21600000 ms)
+            trips[i] = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, i * 21600000, i * 21600000 + 10400, 5));
+        }
+
+        List<Trip> result = tripDao.availableTrips(1, 2, 10100);
+
+        assertEquals(4, result.size());
+    }
 }

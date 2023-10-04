@@ -248,4 +248,32 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(t2.getId(), trips.get(1).getId());
     }
 
+    @Test
+    public void availableTripsAfter1Day() {
+        logout();
+        login(DRIVER_CREDENTIALS);
+        int fromLocationId = 1;
+        int toLocationId = 2;
+
+        for (int i = 0; i < 5; i++) {
+            // Seperate trips start time by 6 hours (21600000 ms)
+            Trip trip = new Trip(1, 1, fromLocationId, toLocationId, i * 21600000, 0, 4);
+            target("trip").request().post(Entity.entity(trip, MediaType.APPLICATION_JSON), Trip.class);
+        }
+
+        logout();
+        login(TEST_CREDENTIALS);
+        // Adding the trips with start location 1 and end location 2 that starts on or
+        // after 10200
+        List<Trip> trips = target("trip/search").queryParam("fromLocationId", fromLocationId)
+                .queryParam("toLocationId", toLocationId).queryParam("startTime", 10200).request()
+                .get(new GenericType<List<Trip>>() {
+                });
+
+        assertNotNull(trips);
+        assertFalse(trips.isEmpty());
+        assertEquals(4, trips.size());
+        assertEquals(fromLocationId, trips.get(0).getFromLocationId());
+        assertEquals(toLocationId, trips.get(0).getToLocationId());
+    }
 }
