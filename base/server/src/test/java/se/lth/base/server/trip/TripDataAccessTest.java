@@ -8,6 +8,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+
 /**
  * @author Isak Wahlqvist
  */
@@ -33,7 +36,6 @@ public class TripDataAccessTest extends BaseDataAccessTest {
      */
     @Test
     public void availableTrips() {
-        Trip trip1 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10000, 10400, 5));
         Trip trip2 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10200, 10400, 5));
         Trip trip3 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 2, 3, 10600, 10800, 3));
         Trip trip4 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 2, 3, 11000, 11200, 2));
@@ -51,5 +53,18 @@ public class TripDataAccessTest extends BaseDataAccessTest {
             sumOfIds += result.get(i).getId();
         }
         assertEquals(sumOfIds, trip4.getId() + trip5.getId());
+    }
+
+    @Test
+    public void availableTripsAfter1Day() {
+        Trip[] trips = new Trip[5];
+        for (int i = 0; i < 5; i++) {
+            // Seperate trips start time by 6 hours (21600000 ms)
+            trips[i] = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, i * 21600000, i * 21600000 + 10400, 5));
+        }
+
+        List<Trip> result = tripDao.availableTrips(1, 2, 10100);
+
+        assertEquals(4, result.size());
     }
 }
