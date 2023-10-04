@@ -44,7 +44,6 @@ describe("driverTripController", function () {
   //(int locationId, String municipality, String name, double latitude, double longitude)
 
   let node;
-  let tripPromise;
   let locationPromise;
 
   // Creates the controller by loading the driver-trip.html and put it in the node variable
