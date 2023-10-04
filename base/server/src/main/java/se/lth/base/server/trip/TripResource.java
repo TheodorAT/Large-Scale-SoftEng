@@ -99,7 +99,7 @@ public class TripResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<Trip> getTripsAsPassenger(@PathParam("passengerId") int passengerId) {
-        List<Trip> result = tripDao.getTripsFromDriver(passengerId);
+        List<Trip> result = tripDao.getTripsAsPassenger(passengerId);
         return result;
     }
 
