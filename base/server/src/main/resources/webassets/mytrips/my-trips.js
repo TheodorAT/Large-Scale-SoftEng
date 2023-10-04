@@ -128,7 +128,7 @@ base.myTripsController = function () {
               tripRow.remove();
             }
             //else: base.rest.cancelDriverTrip(), update trip status? TODO: waiting for back-end
-          }),
+          })
       );
     },
   };
