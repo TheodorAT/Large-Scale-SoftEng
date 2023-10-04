@@ -142,9 +142,9 @@ base.searchTripController = function () {
       bookButtons.forEach(
         (b) =>
           (b.onclick = function (event) {
-            console.log("click", event.target.id);
-            //TODO: rest call to booking trip
-            alert("TODO: rest call to booking trip");
+            base.rest.bookTrip(event.target.id);
+            //TODO: display modals and handle if booking was not possible but made this temporary for testing
+            alert("Trip booked, need to display modal");
           }),
       );
     },

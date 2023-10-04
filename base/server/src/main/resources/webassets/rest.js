@@ -12,6 +12,9 @@ base.rest = (function () {
     this.startTime = new Date(this.startTime);
     this.endTime = new Date(this.endTime);
   };
+  const TripPassenger = function (json) {
+    Object.assign(this, json);
+  };
   const Location = function (json) {
     Object.assign(this, json);
   };
@@ -39,6 +42,7 @@ base.rest = (function () {
   base.Role = Role;
   base.Trip = Trip;
   base.Location = Location;
+  base.TripPassenger = TripPassenger;
 
   // This method extends the functionality of fetch by adding default error handling.
   // Using it is entirely optional.
@@ -208,14 +212,25 @@ base.rest = (function () {
         .then((f) => new Trip(f));
     },
 
-    //TODO: get all trips with user_id, both as passenger and driver
-    /* getAllTrips: function () {
-      return baseFetch("/rest/trip/", {
-        method: "GET",
-      })
-        .then((response) => response.json())
-        .then((trips) => trips.map((f) => new Trip(f)));
-    }, */
+    /*
+     * Delete a with a given trip
+     * id: trip to delete
+     *
+     * example: base.rest.deleteTrip(1);
+     */
+    deleteTrip: function (tripId) {
+      return baseFetch("/rest/trip/" + tripId, { method: "DELETE" });
+    },
+
+    /*TODO: need back-end funtion for this
+     * Delete a passenger from trip
+     * id: trip to delete passenger from
+     *
+     * example: base.rest.deletePassengerTrip(1);
+     */
+    deletePassengerTrip: function (tripId) {
+      return baseFetch("/rest/passengerTrip/" + tripId, { method: "DELETE" });
+    },
 
     /*
      * Fetches the trips of the driver
@@ -224,6 +239,34 @@ base.rest = (function () {
      */
     getDriverTrips: function () {
       return baseFetch("/rest/trip/driver", {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
+    },
+
+    /*
+     * Books a trip
+     * returns: a TripPassenger
+     * example: const trips = base.rest.bookTrip(1);
+     */
+    bookTrip: function (trip) {
+      return baseFetch("/rest/tripPassenger", {
+        method: "POST",
+        body: JSON.stringify(trip),
+        headers: jsonHeader,
+      })
+        .then((response) => response.json())
+        .then((f) => new TripPassenger(f));
+    },
+
+    /*
+     * Fetches the trips of the passenger
+     * returns: an array of Trips
+     * example: const trips = base.rest.getPassengerTrips(1);
+     */
+    getPassengerTrips: function () {
+      return baseFetch("/rest/trip/passenger", {
         method: "GET",
       })
         .then((response) => response.json())

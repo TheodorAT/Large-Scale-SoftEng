@@ -7,8 +7,6 @@ import java.util.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Date;
 
 /**
  * The TripDataAccess class provides data access methods for trip-related data in the database.
@@ -79,9 +77,30 @@ public class TripDataAccess extends DataAccess<Trip> {
         return query(sql, fromLocationId, toLocationId, new Timestamp(startTime), new Timestamp(endTime));
     }
 
+    /**
+     * Retrieves a list of created trips belonging to the driverId.
+     * 
+     * @param driverId
+     *            ID of driver
+     * 
+     * @return A list of all trips created by the driver.
+     */
     public List<Trip> getTripsFromDriver(int driverId) {
         String sql = "SELECT * FROM trips WHERE driver_id = ?";
         return query(sql, driverId);
+    }
+
+    /**
+     * Retrieves a list of booked trips belonging to the passengerId.
+     * 
+     * @param passengerId
+     *            ID of passenger
+     * 
+     * @return A list of all trips booked by the passenger.
+     */
+    public List<Trip> getTripsAsPassenger(int passengerId) {
+        String sql = "SELECT trips.* FROM trips JOIN trip_passengers ON trips.trip_id = trip_passengers.trip_id WHERE trip_passengers.user_id = ?";
+        return query(sql, passengerId);
     }
 
 }

@@ -31,4 +31,5 @@ public class TripPassengerDataAccessTest extends BaseDataAccessTest {
         assertEquals(TEST.getId(), tripPassenger.getPassengerId());
         assertEquals(1, tripPassenger.getTripId());
     }
+
 }

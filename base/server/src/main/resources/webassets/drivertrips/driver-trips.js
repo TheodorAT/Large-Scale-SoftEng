@@ -9,48 +9,13 @@ var base = base || {};
 base.driverTripController = function () {
   "use strict"; // add this to avoid some potential bugs
 
-  let model = [];
-
   let locations = [];
 
-  const DriverTripViewModel = function (_trip) {
-    this.trip = _trip;
-    const viewModel = this;
-
-    this.render = function (template) {
-      let now = new Date().getTime();
-      if (viewModel.trip.startTime > now) {
-        this.update(template.content.querySelector("tr"));
-        const clone = document.importNode(template.content, true);
-        template.parentElement.appendChild(clone);
-      }
-    };
-
-    this.update = function (trElement) {
-      const td = trElement.children;
-      td[0].textContent = viewModel.trip.id;
-      let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
-      let tolocation = controller.getLocationFromId(viewModel.trip.toLocationId);
-      td[1].textContent = fromlocation.name + ", " + fromlocation.municipality;
-      td[2].textContent = tolocation.name + ", " + tolocation.municipality;
-      td[3].textContent = viewModel.trip.seatCapacity;
-      const start = viewModel.trip.startTime;
-      td[4].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
-      const end = viewModel.trip.endTime;
-      td[5].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
-    };
-  };
-
   const view = {
-    // Creates HTML for each trip in model
+    // Opens the modal/dialog
     render: function () {
-      // A template element is a special element used only to add dynamic content multiple times.
-      // See: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template
-      const t = this.template();
-      model.forEach((d) => d.render(t));
-    },
-    template: function () {
-      return document.getElementById("drivertrip-template");
+      const myModal = new bootstrap.Modal(document.getElementById("driverModal"));
+      myModal.show();
     },
   };
 
@@ -85,16 +50,12 @@ base.driverTripController = function () {
         event.preventDefault();
         base.changeLocation("#/my-trips");
       };
-      // Loads all registered trips and destinations from the server through the REST API, see res.js for definition.
+      // Loads all locations from the server through the REST API, see res.js for definition.
       // It will replace the model with the trips, and then render them through the view.
       base.rest.getLocations().then(function (l) {
         locations = l;
         controller.setLocations("from", l);
         controller.setLocations("to", l);
-        base.rest.getDriverTrips().then(function (trips) {
-          model = trips.map((t) => new DriverTripViewModel(t));
-          view.render();
-        });
       });
     },
     getLocationId: function (value) {
@@ -144,28 +105,23 @@ base.driverTripController = function () {
       const seats = document.getElementById("seats").value;
       const startTime = new Date(document.getElementById("startTime").value).getTime();
       const form = { fromLocationId: fromId, toLocationId: toId, startTime: startTime, seatCapacity: seats };
-      document.getElementById("registeredTripsModal").textContent =
-        "From: " +
-        from.value +
-        " To: " +
-        to.value +
-        " Date: " +
-        new Date(startTime).toLocaleDateString() +
-        " Number of available seats: " +
-        seats;
-
       //Call the REST API to register trip, see file rest.js for definitions.
       base.rest.createTrip(form).then(function (trip) {
         // Trip is the response from the server, it will have this form:
         // { driverId: "int", fromLocationId: "int", toLocationId: "int",startTime: "date", endTime: "date", seatCapacity :"int", };
-        const vm = new DriverTripViewModel(trip);
-        model.push(vm); // append the trip to the end of the model array
-        vm.render(view.template()); // append the trip to the table
+        document.getElementById("registeredTripsModal").textContent =
+          "From: " +
+          from.value +
+          " To: " +
+          to.value +
+          " Date: " +
+          new Date(startTime).toLocaleDateString() +
+          " Number of available seats: " +
+          seats;
         document.getElementById("from").classList.remove("is-invalid");
         document.getElementById("to").classList.remove("is-invalid");
         document.getElementById("driver-form").reset();
-        const myModal = new bootstrap.Modal(document.getElementById("driverModal"));
-        myModal.show();
+        view.render();
       });
     },
   };

@@ -3,6 +3,7 @@ package se.lth.base.server.trip;
 import org.junit.Test;
 import se.lth.base.server.Config;
 import se.lth.base.server.database.BaseDataAccessTest;
+import se.lth.base.server.tripPassenger.TripPassengerDataAccess;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,10 +14,13 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * @author Isak Wahlqvist
+ * @author Anton Tingelholm
  */
 public class TripDataAccessTest extends BaseDataAccessTest {
 
     private TripDataAccess tripDao = new TripDataAccess(Config.instance().getDatabaseDriver());
+    private TripPassengerDataAccess tripPassengerDao = new TripPassengerDataAccess(
+            Config.instance().getDatabaseDriver());
 
     @Test
     public void addTrip() {
@@ -34,8 +38,10 @@ public class TripDataAccessTest extends BaseDataAccessTest {
      * Retrieves available trips with new parameters. 5. Goes through the list and checks the locations for each trip.
      * 6. Checks if the sum of all trip-ids are correct.
      */
+
     @Test
     public void availableTrips() {
+        Trip trip1 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10000, 10400, 5));
         Trip trip2 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10200, 10400, 5));
         Trip trip3 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 2, 3, 10600, 10800, 3));
         Trip trip4 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 2, 3, 11000, 11200, 2));
@@ -53,6 +59,48 @@ public class TripDataAccessTest extends BaseDataAccessTest {
             sumOfIds += result.get(i).getId();
         }
         assertEquals(sumOfIds, trip4.getId() + trip5.getId());
+    }
+
+    /**
+     * Test method for retrieving all trips belonging to a driver.
+     * 
+     * Test procedure: 1. Create sample of trips and add them to the database. 2. Retrieve list of trips belonging to
+     * driver with Test ID. 3. Check that length of list equals number of added trips. 4. Check that trip IDs match.
+     * 
+     */
+
+    @Test
+    public void getTripsFromDriver() {
+        Trip trip1 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10000, 10400, 5));
+        Trip trip2 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10200, 10400, 5));
+
+        List<Trip> trips = tripDao.getTripsFromDriver(TEST.getId());
+        assertEquals(trips.size(), 2);
+        assertEquals(trips.get(0).getId(), trip1.getId());
+        assertEquals(trips.get(1).getId(), trip2.getId());
+    }
+
+    /**
+     * Test method for retrieving all trips belonging to a passenger.
+     * 
+     * Test procedure: 1. Create sample of trips and add them to the database. 2. Book trips with test ID. 3. Retrieve
+     * list of trips booked with Test ID. 3. Check that length of list equals number of booked trips. 4. Check that trip
+     * IDs match.
+     */
+
+    @Test
+    public void getTripsAsPassenger() {
+
+        Trip trip1 = tripDao.addTrip(DRIVER.getId(), new Trip(-1, -1, 1, 2, 10000, 10400, 5));
+        Trip trip2 = tripDao.addTrip(DRIVER.getId(), new Trip(-1, -1, 1, 2, 10200, 10400, 5));
+
+        tripPassengerDao.bookTrip(trip1.getId(), TEST.getId());
+        tripPassengerDao.bookTrip(trip2.getId(), TEST.getId());
+
+        List<Trip> trips = tripDao.getTripsAsPassenger(TEST.getId());
+        assertEquals(trips.size(), 2);
+        assertEquals(trips.get(0).getId(), trip1.getId());
+        assertEquals(trips.get(1).getId(), trip2.getId());
     }
 
     @Test
