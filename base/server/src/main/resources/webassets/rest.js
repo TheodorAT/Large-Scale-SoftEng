@@ -147,10 +147,10 @@ base.rest = (function () {
      *
      * example: let user = base.rest.addUser(2, {'username': 'Test2', 'password': 'password2', 'role': 'USER');
      */
-    addUser: function (credentials) {
+    addUser: function (user) {
       return baseFetch("/rest/user", {
         method: "POST",
-        body: JSON.stringify(credentials),
+        body: JSON.stringify(user),
         headers: jsonHeader,
       })
         .then((response) => response.json())
