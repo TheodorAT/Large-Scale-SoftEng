@@ -57,7 +57,7 @@ public class TripDataAccess extends DataAccess<Trip> {
     }
 
     /**
-     * Retrieves a list of available trips based on the parameters.
+     * Retrieves a list of available trips based on the parameters. Within a 24 hour period.
      * 
      * @param fromLocationId
      *            ID of starting location.
@@ -72,8 +72,11 @@ public class TripDataAccess extends DataAccess<Trip> {
      * 
      */
     public List<Trip> availableTrips(int fromLocationId, int toLocationId, long startTime) {
-        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ? AND start_time >= ?";
-        return query(sql, fromLocationId, toLocationId, new Timestamp(startTime));
+
+        // End time is 24 hours after start time
+        long endTime = startTime + 86400000;
+        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ? AND start_time >= ? AND start_time <= ?";
+        return query(sql, fromLocationId, toLocationId, new Timestamp(startTime), new Timestamp(endTime));
     }
 
     public List<Trip> getTripsFromDriver(int driverId) {
