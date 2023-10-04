@@ -25,6 +25,9 @@ public abstract class BaseDataAccessTest {
             "+4600000000");
     protected static final Credentials TEST_CREDENTIALS = new Credentials("Test", "password", Role.USER, "User", "User",
             "user@user010.se", "+4600000001");
+    protected static final User DRIVER = new User(3, Role.DRIVER, "Driver_Test", "TestDriver", "TestDriver",
+            "test@driver.se", "+4600000000");
+    protected static final Credentials DRIVER_CREDENTIALS = new Credentials("Driver", "password", Role.DRIVER);
 
     static {
         Config.instance().setDatabaseDriver(IN_MEM_DRIVER_URL);
