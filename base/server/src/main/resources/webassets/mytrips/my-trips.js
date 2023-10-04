@@ -130,8 +130,8 @@ base.myTripsController = function () {
             } else {
               //base.rest.cancelDriverTrip(), update trip status? TODO: waiting for back-end
               alert("base.rest.cancelDriverTrip(), update trip status? TODO: waiting for back-end");
-            } 
-          })
+            }
+          }),
       );
     },
   };
