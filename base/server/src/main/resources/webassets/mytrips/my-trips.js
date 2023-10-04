@@ -125,9 +125,12 @@ base.myTripsController = function () {
             if (currentUser.role.name == "USER") {
               let tripRow = document.getElementById(event.target.id).parentNode.parentNode;
               //base.rest.deletePassengerTrip() TODO: waiting for back-end
+              alert("base.rest.deletePassengerTrip() TODO: waiting for back-end");
               tripRow.remove();
-            }
-            //else: base.rest.cancelDriverTrip(), update trip status? TODO: waiting for back-end
+            } else {
+              //base.rest.cancelDriverTrip(), update trip status? TODO: waiting for back-end
+              alert("base.rest.cancelDriverTrip(), update trip status? TODO: waiting for back-end");
+            } 
           })
       );
     },
