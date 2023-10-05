@@ -139,8 +139,15 @@ base.searchTripController = function () {
       bookButtons.forEach(
         (b) =>
           (b.onclick = function (event) {
-            console.log("click", event.target.id);
-            //TODO: rest call to booking trip
+            //console.log("click", event.target.id);
+            const tripId = event.target.id;
+            base.rest.bookTrip(tripId)
+                .then((bookedTrip) => {
+                  alert("Trip booked successfully!");
+                })
+                .catch((error) => {
+                  alert("Failed to book trip: " + error.message);
+                });
           }),
       );
     },

@@ -34,6 +34,7 @@ public class TripPassengerResource {
      * @return TripPassenger This returns the TripPassenger objects.
      */
     @POST
+    @Path("/book")
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public TripPassenger createTripPassenger(int tripId) {
         return tripPassengerDao.bookTrip(tripId, user.getId());

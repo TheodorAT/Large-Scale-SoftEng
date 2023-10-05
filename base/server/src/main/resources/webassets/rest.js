@@ -34,6 +34,11 @@ base.rest = (function () {
     };
   };
 
+  const TripPassenger = function (tripId, passengerId) {
+    this.tripId = tripId;
+    this.passengerId = passengerId;
+  }
+
   // Expose the classes to base module, they are primarily used by the tests.
   base.User = User;
   base.Role = Role;
@@ -251,6 +256,30 @@ base.rest = (function () {
       })
         .then((response) => response.json())
         .then((trips) => trips.map((f) => new Trip(f)));
+    },
+
+    /*
+     * Books a trip for the current user/passenger.
+     * tripId: ID of the trip to be booked.
+     *
+     * function will return a TripPassenger object.
+     * example: const bookedTrip = base.rest.bookTrip(1);
+     */
+    bookTrip: function (tripId) {
+      return baseFetch("/rest/tripPassenger/book", {
+        method: "POST",
+        body: JSON.stringify(tripId),
+        headers: jsonHeader,
+      })
+          .then((tripPassengerData) => {
+            const tripId = tripPassengerData.tripId; // Extract tripId from the response
+            const passengerId = tripPassengerData.passengerId; // Extract passengerId from the response
+            return new TripPassenger(tripId, passengerId); // Create a new TripPassenger instance
+          })
+          .catch((error) => {
+            console.error("Book Trip Error:", error);
+            throw error;
+          });
     },
   };
 })();
