@@ -1,5 +1,7 @@
 package se.lth.base.server.tripPassenger;
 
+import se.lth.base.server.trip.Trip;
+import se.lth.base.server.trip.TripDataAccess;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -37,5 +39,12 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
     public TripPassenger bookTrip(int tripId, int passengerId) {
         insert("INSERT INTO trip_passengers (trip_id, user_id) VALUES (?, ?)", tripId, passengerId);
         return new TripPassenger(tripId, passengerId);
+    }
+
+    public int getAvailableSeats(Trip trip) {
+        String sql = "SELECT COUNT(*) FROM trip_passengers WHERE trip_id = ?";
+        int bookedSeats = count(sql, trip.getId());
+        int availableSeats = trip.getSeatCapacity() - bookedSeats;
+        return availableSeats;
     }
 }

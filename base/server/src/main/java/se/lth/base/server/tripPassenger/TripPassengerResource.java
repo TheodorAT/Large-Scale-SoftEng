@@ -39,4 +39,10 @@ public class TripPassengerResource {
         return tripPassengerDao.bookTrip(tripId, user.getId());
     }
 
+    @Path("/availableSeats")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public int getAvailableSeats(Trip trip) {
+        return tripPassengerDao.getAvailableSeats(trip);
+    }
 }
