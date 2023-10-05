@@ -186,17 +186,18 @@ public class UserResource {
     @PUT
     @RolesAllowed(Role.Names.USER)
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response updatePassword(Credentials newCredentials) {
+    public Response updatePassword(Credentials oldCredentials, Credentials newCredentials) {
         // Check if the new password is valid, otherwise throws new exception
         if (!newCredentials.validPassword()) {
             throw new WebApplicationException("New password is invalid", Response.Status.BAD_REQUEST);
         }
 
         // Get the current user ID
-        int currentUserId = ((Session) context.getProperty(Session.class.getSimpleName())).getUser().getId();
+        //int currentUserId = ((Session) context.getProperty(Session.class.getSimpleName())).getUser().getId();
+        int currentUserId = user.getId();
 
         // Update the user password in the database
-        User updatedUser = userDao.updateUserPassword(currentUserId, newCredentials);
+        User updatedUser = userDao.updateUserPassword(currentUserId, oldCredentials, newCredentials);
 
         return Response.ok(updatedUser).build();
     }
