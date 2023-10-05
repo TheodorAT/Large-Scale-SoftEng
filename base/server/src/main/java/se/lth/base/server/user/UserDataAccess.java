@@ -177,14 +177,13 @@ public class UserDataAccess extends DataAccess<User> {
     }
 
     /**
-     * Updates the password of an existing user.
+     * Updates a user's password in the database based on the provided credentials.
      *
-     * @param userId
-     *            The ID of the user to update.
-     * @param newCredentials
-     *            A credential object containing the new password
-     * 
-     * @return The updated User object.
+     * @param userId         The unique identifier of the user whose password is being updated.
+     * @param oldCredentials The old credentials, including the username and old password.
+     * @param newCredentials The new credentials, including the new password.
+     * @return The updated User object, including user details with or without the changed password.
+     * @throws DataAccessException If there are errors in accessing or updating the database.
      */
     public User updateUserPassword(int userId, Credentials oldCredentials, Credentials newCredentials) {
 
