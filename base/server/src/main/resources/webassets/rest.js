@@ -37,7 +37,7 @@ base.rest = (function () {
   const TripPassenger = function (tripId, passengerId) {
     this.tripId = tripId;
     this.passengerId = passengerId;
-  }
+  };
 
   // Expose the classes to base module, they are primarily used by the tests.
   base.User = User;
@@ -271,15 +271,15 @@ base.rest = (function () {
         body: JSON.stringify(tripId),
         headers: jsonHeader,
       })
-          .then((tripPassengerData) => {
-            const tripId = tripPassengerData.tripId; // Extract tripId from the response
-            const passengerId = tripPassengerData.passengerId; // Extract passengerId from the response
-            return new TripPassenger(tripId, passengerId); // Create a new TripPassenger instance
-          })
-          .catch((error) => {
-            console.error("Book Trip Error:", error);
-            throw error;
-          });
+        .then((tripPassengerData) => {
+          const tripId = tripPassengerData.tripId; // Extract tripId from the response
+          const passengerId = tripPassengerData.passengerId; // Extract passengerId from the response
+          return new TripPassenger(tripId, passengerId); // Create a new TripPassenger instance
+        })
+        .catch((error) => {
+          console.error("Book Trip Error:", error);
+          throw error;
+        });
     },
   };
 })();

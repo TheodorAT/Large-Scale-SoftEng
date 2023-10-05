@@ -141,13 +141,14 @@ base.searchTripController = function () {
           (b.onclick = function (event) {
             //console.log("click", event.target.id);
             const tripId = event.target.id;
-            base.rest.bookTrip(tripId)
-                .then((bookedTrip) => {
-                  alert("Trip booked successfully!");
-                })
-                .catch((error) => {
-                  alert("Failed to book trip: " + error.message);
-                });
+            base.rest
+              .bookTrip(tripId)
+              .then((bookedTrip) => {
+                alert("Trip booked successfully!");
+              })
+              .catch((error) => {
+                alert("Failed to book trip: " + error.message);
+              });
           }),
       );
     },
