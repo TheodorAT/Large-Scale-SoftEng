@@ -175,5 +175,6 @@ base.searchTripController = function () {
     },
   };
 
+
   return controller;
 };
