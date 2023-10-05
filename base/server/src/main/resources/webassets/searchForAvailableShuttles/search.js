@@ -66,10 +66,10 @@ base.searchTripController = function () {
     load: function () {
       document.getElementById("searchtrip-form").onsubmit = function (event) {
         event.preventDefault();
-        const template = document.getElementById('searchtrip-template');
+        const template = document.getElementById("searchtrip-template");
         const parentElement = template.parentElement;
-        const rows = parentElement.querySelectorAll('tr');
-        rows.forEach(row => {
+        const rows = parentElement.querySelectorAll("tr");
+        rows.forEach((row) => {
           parentElement.removeChild(row);
         });
 
@@ -174,7 +174,5 @@ base.searchTripController = function () {
       document.getElementById("searchtrip-form").reset();
     },
   };
-
-
   return controller;
 };
