@@ -235,9 +235,9 @@ public class UserResourceTest extends BaseResourceTest {
         Map<String, Credentials> credentialsMap = new HashMap<>();
         credentialsMap.put("oldCredentials", TEST_CREDENTIALS);
         credentialsMap.put("newCredentials", newPassword);
-        
+
         target("user").path("password").request().put(Entity.json(credentialsMap));
-    
+
         logout();
         login(newPassword);
     }

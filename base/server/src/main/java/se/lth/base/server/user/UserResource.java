@@ -173,14 +173,16 @@ public class UserResource {
     /**
      * Updates a user's password via a PUT request to the "password" resource.
      *
-     * @param credentialsMap A Map containing old and new credentials.
-     *          
+     * @param credentialsMap
+     *            A Map containing old and new credentials.
+     * 
      *
      * @return Response object indicating the result of the operation.
-     *        
+     * 
      *
-     * @throws WebApplicationException If there's an error during password update.
-     *           
+     * @throws WebApplicationException
+     *             If there's an error during password update.
+     * 
      * 
      */
     @Path("password")
@@ -197,7 +199,7 @@ public class UserResource {
         }
 
         // Get the current user ID
-        //int currentUserId = ((Session) context.getProperty(Session.class.getSimpleName())).getUser().getId();
+        // int currentUserId = ((Session) context.getProperty(Session.class.getSimpleName())).getUser().getId();
         int currentUserId = user.getId();
 
         // Update the user password in the database

@@ -181,32 +181,36 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     @Test
     public void changePassword() {
-        Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se", "+4600000001");
+        Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se",
+                "+4600000001");
         User user = userDao.addUser(oldCredentials);
         Session session1 = userDao.authenticate(new Credentials("Sven", "password", Role.USER));
         Credentials newCredentials = new Credentials("Sven", "newPassword123123", Role.USER);
-        userDao.updateUserPassword(user.getId(),oldCredentials, newCredentials);
+        userDao.updateUserPassword(user.getId(), oldCredentials, newCredentials);
         Session session2 = userDao.authenticate(newCredentials);
     }
 
     @Test(expected = DataAccessException.class)
     public void changePasswordIncorrectOldCredentials() {
-        Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se", "+4600000001");
+        Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se",
+                "+4600000001");
         User user = userDao.addUser(oldCredentials);
         Session session1 = userDao.authenticate(new Credentials("Sven", "password", Role.USER));
-        Credentials incorrectOldCredentials = new Credentials("Sven", "wrongPassword", Role.USER, "User", "User", "user@user3.se", "+4600000001");
+        Credentials incorrectOldCredentials = new Credentials("Sven", "wrongPassword", Role.USER, "User", "User",
+                "user@user3.se", "+4600000001");
         Credentials newCredentials = new Credentials("Sven", "newPassword123123", Role.USER);
-        userDao.updateUserPassword(user.getId(),incorrectOldCredentials, newCredentials);
+        userDao.updateUserPassword(user.getId(), incorrectOldCredentials, newCredentials);
         Session session2 = userDao.authenticate(newCredentials);
     }
 
     @Test(expected = DataAccessException.class)
     public void changeInvalidPassword() {
-        Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se", "+4600000001");
+        Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se",
+                "+4600000001");
         User user = userDao.addUser(oldCredentials);
         Session session1 = userDao.authenticate(new Credentials("Sven", "password", Role.USER));
         Credentials newCredentials = new Credentials("Sven", "pass", Role.USER);
-        userDao.updateUserPassword(user.getId(),oldCredentials, newCredentials);
+        userDao.updateUserPassword(user.getId(), oldCredentials, newCredentials);
         Session session2 = userDao.authenticate(newCredentials);
     }
 }
