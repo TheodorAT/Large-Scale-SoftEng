@@ -13,6 +13,7 @@ import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -168,4 +169,43 @@ public class UserResource {
         }
         return userDao.updateUserRole(userId, role);
     }
+
+    /**
+     * Updates a user's password via a PUT request to the "password" resource.
+     *
+     * @param credentialsMap
+     *            A Map containing old and new credentials.
+     * 
+     *
+     * @return Response object indicating the result of the operation.
+     * 
+     *
+     * @throws WebApplicationException
+     *             If there's an error during password update.
+     * 
+     * 
+     */
+    @Path("password")
+    @PUT
+    @RolesAllowed(Role.Names.USER)
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response updatePassword(Map<String, Credentials> credentialsMap) {
+        Credentials newCredentials = credentialsMap.get("newCredentials");
+        Credentials oldCredentials = credentialsMap.get("oldCredentials");
+
+        // Check if the new password is valid, otherwise throws new exception
+        if (!newCredentials.validPassword()) {
+            throw new WebApplicationException("New password is invalid", Response.Status.BAD_REQUEST);
+        }
+
+        // Get the current user ID
+        // int currentUserId = ((Session) context.getProperty(Session.class.getSimpleName())).getUser().getId();
+        int currentUserId = user.getId();
+
+        // Update the user password in the database
+        User updatedUser = userDao.updateUserPassword(currentUserId, oldCredentials, newCredentials);
+
+        return Response.ok(updatedUser).build();
+    }
+
 }
