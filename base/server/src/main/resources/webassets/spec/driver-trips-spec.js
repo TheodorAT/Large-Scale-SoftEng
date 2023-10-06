@@ -11,40 +11,10 @@ const locations = [
 ];
 
 describe("driverTripController", function () {
-  // (int id, int driverId, int fromLocationId, int toLocationId, long startTime, long endTime,int seatCapacity)
-  const trips = [
-    new base.Trip({
-      id: 1,
-      driverId: 1,
-      fromLocationId: 1,
-      toLocationId: 2,
-      startTime: new Date().getTime() + 1000000,
-      endTime: new Date().getTime() + 3000000,
-      seatCapacity: 2,
-    }),
-    new base.Trip({
-      id: 2,
-      driverId: 2,
-      fromLocationId: 2,
-      toLocationId: 3,
-      startTime: new Date().getTime() + 1000000,
-      endTime: new Date().getTime() + 3000000,
-      seatCapacity: 3,
-    }),
-    new base.Trip({
-      id: 3,
-      driverId: 3,
-      fromLocationId: 3,
-      toLocationId: 4,
-      startTime: new Date().getTime() + 1000000,
-      endTime: new Date().getTime() + 3000000,
-      seatCapacity: 4,
-    }),
-  ];
+  // (int id, int driverId, int fromLocationId, int toLocationId, long startTime, long endTime,int seatCapacity
   //(int locationId, String municipality, String name, double latitude, double longitude)
 
   let node;
-  let tripPromise;
   let locationPromise;
 
   // Creates the controller by loading the driver-trip.html and put it in the node variable
