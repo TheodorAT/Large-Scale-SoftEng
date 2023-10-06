@@ -37,10 +37,10 @@ base.rest = (function () {
     };
   };
 
-  const TripPassenger = function (tripId, passengerId) {
-    this.tripId = tripId;
-    this.passengerId = passengerId;
-  };
+  // const TripPassenger = function (tripId, passengerId) {
+  //   this.tripId = tripId;
+  //   this.passengerId = passengerId;
+  // };
 
   // Expose the classes to base module, they are primarily used by the tests.
   base.User = User;
@@ -309,7 +309,7 @@ base.rest = (function () {
      * example: const bookedTrip = base.rest.bookTrip(1);
      */
     bookTrip: function (tripId) {
-      return baseFetch("/rest/tripPassenger/book", {
+      return baseFetch("/rest/tripPassenger", {
         method: "POST",
         body: JSON.stringify(tripId),
         headers: jsonHeader,
