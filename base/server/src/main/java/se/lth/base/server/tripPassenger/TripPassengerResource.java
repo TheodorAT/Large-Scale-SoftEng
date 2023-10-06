@@ -52,5 +52,4 @@ public class TripPassengerResource {
             throw new WebApplicationException("Not found trip", Response.Status.NOT_FOUND);
         }
     }
-
 }
