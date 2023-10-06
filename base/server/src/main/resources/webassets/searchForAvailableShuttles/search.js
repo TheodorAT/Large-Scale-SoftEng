@@ -66,6 +66,13 @@ base.searchTripController = function () {
     load: function () {
       document.getElementById("searchtrip-form").onsubmit = function (event) {
         event.preventDefault();
+        const template = document.getElementById("searchtrip-template");
+        const parentElement = template.parentElement;
+        const rows = parentElement.querySelectorAll("tr");
+        rows.forEach((row) => {
+          parentElement.removeChild(row);
+        });
+
         // Before submitting, needs to check if locations exists, otherwise mark the input invalid.
         const from = document.getElementById("from");
         const to = document.getElementById("to");
@@ -94,9 +101,6 @@ base.searchTripController = function () {
       base.rest.getUser().then(function (user) {
         currentUser = user;
       });
-    },
-    getLocationId: function (value) {
-      return locations.find((location) => location.name + ", " + location.municipality == value)?.locationId;
     },
     getLocationId: function (value) {
       return locations.find((location) => location.name + ", " + location.municipality == value)?.locationId;
@@ -153,8 +157,8 @@ base.searchTripController = function () {
       const to = document.getElementById("to");
       const fromId = controller.getLocationId(from.value.trim());
       const toId = controller.getLocationId(to.value.trim());
-      const datetime = new Date(document.getElementById("datetime").value).getTime();
-      const form = { fromLocationId: fromId, toLocationId: toId, startTime: datetime };
+      const startTime = new Date(document.getElementById("datetime").value).getTime();
+      const form = { fromLocationId: fromId, toLocationId: toId, startTime: startTime };
       base.rest.getShuttles(form).then(function (trips) {
         trips.forEach((trip) => {
           const vm = new TripViewModel(trip);
@@ -171,6 +175,5 @@ base.searchTripController = function () {
       document.getElementById("searchtrip-form").reset();
     },
   };
-
   return controller;
 };
