@@ -35,7 +35,7 @@ public class TripPassengerResourceTest extends BaseResourceTest {
 
         int tripId = t.getId();
         Entity<Integer> ti = Entity.entity(tripId, MediaType.APPLICATION_JSON);
-        TripPassenger tripPassenger = target("tripPassenger").request().post(ti, TripPassenger.class);
+        TripPassenger tripPassenger = target("tripPassenger/book").request().post(ti, TripPassenger.class);
 
         assertEquals((Integer) TEST.getId(), tripPassenger.getPassengerId());
         assertEquals(tripId, tripPassenger.getTripId());
