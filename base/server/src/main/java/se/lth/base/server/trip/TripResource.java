@@ -72,7 +72,41 @@ public class TripResource {
     }
 
     /**
-     * Retrieves a list of trips associated with the current Driver user.
+     * Retrieves a list of trips where the current user is a passenger.
+     *
+     * HTTP Request Type: GET Path: "trip/passenger"
+     * 
+     * @return A List of Trip objects representing the users passenger trips.
+     */
+    @Path("passenger")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public List<Trip> getTripsAsPassenger() {
+        List<Trip> result = tripDao.getTripsAsPassenger(user.getId());
+        return result;
+    }
+
+    /**
+     * Retrieves a list of trips where a specific user is a passenger.
+     *
+     * HTTP Request Type: GET Path: "trip/passenger/{passengerId}"
+     *
+     * @param passengerId
+     *            The ID of the passenger whose trips are to be retrieved.
+     * 
+     * @return A List of Trip objects representing the passenger's trips.
+     */
+    @Path("passenger/{passengerId}")
+    @GET
+    @RolesAllowed(Role.Names.ADMIN)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public List<Trip> getTripsAsPassenger(@PathParam("passengerId") int passengerId) {
+        List<Trip> result = tripDao.getTripsAsPassenger(passengerId);
+        return result;
+    }
+
+    /**
+     * Retrieves a list of trips where the current user is the driver.
      *
      * HTTP Request Type: GET Path: "trip/driver"
      * 
@@ -88,7 +122,7 @@ public class TripResource {
     }
 
     /**
-     * Retrieves a list of trips associated with a specific driver.
+     * Retrieves a list of trips where a specific user is the driver.
      *
      * HTTP Request Type: GET Path: "trip/driver/{driverId}"
      *
@@ -99,6 +133,7 @@ public class TripResource {
      */
     @Path("driver/{driverId}")
     @GET
+    @RolesAllowed(Role.Names.ADMIN)
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<Trip> getTripsFromDriver(@PathParam("driverId") int driverId) {
         List<Trip> result = tripDao.getTripsFromDriver(driverId);

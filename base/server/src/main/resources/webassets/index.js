@@ -20,6 +20,10 @@ base.mainController = (function () {
       partial: "admin/user-admin.html",
       controller: base.userAdminController,
     },
+    settings: {
+      partial: "settings/settings.html",
+      controller: base.settingsController,
+    },
   };
 
   const model = {

@@ -69,6 +69,7 @@ public class TripDataAccess extends DataAccess<Trip> {
 
     /**
      * Retrieves a list of available trips based on the parameters.
+     * Retrieves a list of available trips based on the parameters. Within a 24 hour period.
      * 
      * @param fromLocationId
      *            ID of starting location.
@@ -83,13 +84,37 @@ public class TripDataAccess extends DataAccess<Trip> {
      * 
      */
     public List<Trip> availableTrips(int fromLocationId, int toLocationId, long startTime) {
-        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ? AND start_time >= ?";
-        return query(sql, fromLocationId, toLocationId, new Timestamp(startTime));
+
+        // End time is 24 hours after start time
+        long endTime = startTime + 86400000;
+        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ? AND start_time >= ? AND start_time <= ?";
+        return query(sql, fromLocationId, toLocationId, new Timestamp(startTime), new Timestamp(endTime));
     }
 
+    /**
+     * Retrieves a list of created trips belonging to the driverId.
+     * 
+     * @param driverId
+     *            ID of driver
+     * 
+     * @return A list of all trips created by the driver.
+     */
     public List<Trip> getTripsFromDriver(int driverId) {
         String sql = "SELECT * FROM trips WHERE driver_id = ?";
         return query(sql, driverId);
+    }
+
+    /**
+     * Retrieves a list of booked trips belonging to the passengerId.
+     * 
+     * @param passengerId
+     *            ID of passenger
+     * 
+     * @return A list of all trips booked by the passenger.
+     */
+    public List<Trip> getTripsAsPassenger(int passengerId) {
+        String sql = "SELECT trips.* FROM trips JOIN trip_passengers ON trips.trip_id = trip_passengers.trip_id WHERE trip_passengers.user_id = ?";
+        return query(sql, passengerId);
     }
 
 }

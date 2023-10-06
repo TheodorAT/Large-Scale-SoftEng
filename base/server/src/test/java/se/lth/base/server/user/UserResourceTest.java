@@ -2,11 +2,13 @@ package se.lth.base.server.user;
 
 import org.junit.Test;
 import se.lth.base.server.BaseResourceTest;
+import se.lth.base.server.database.DataAccessException;
 import se.lth.base.server.user.Credentials;
 import se.lth.base.server.user.Role;
 import se.lth.base.server.user.User;
 import se.lth.base.server.user.UserResource;
 
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
@@ -14,7 +16,10 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -220,5 +225,49 @@ public class UserResourceTest extends BaseResourceTest {
         User user = target("user").path(Integer.toString(TEST.getId())).path("changerole").path(Role.DRIVER.toString())
                 .request().put(Entity.json(""), User.class);
         assertEquals(Role.DRIVER, user.getRole());
+    }
+
+    @Test
+    public void changeUserPassword() {
+        login(TEST_CREDENTIALS);
+        Credentials newPassword = new Credentials("Test", "newPassword123", Role.USER);
+
+        Map<String, Credentials> credentialsMap = new HashMap<>();
+        credentialsMap.put("oldCredentials", TEST_CREDENTIALS);
+        credentialsMap.put("newCredentials", newPassword);
+
+        target("user").path("password").request().put(Entity.json(credentialsMap));
+
+        logout();
+        login(newPassword);
+    }
+
+    @Test(expected = DataAccessException.class)
+    public void changeUserInvalidNewPassword() {
+        login(TEST_CREDENTIALS);
+        Credentials newPassword = new Credentials("Test", "pass", Role.USER);
+
+        Map<String, Credentials> credentialsMap = new HashMap<>();
+        credentialsMap.put("oldCredentials", TEST_CREDENTIALS);
+        credentialsMap.put("newCredentials", newPassword);
+
+        target("user").path("password").request().put(Entity.json(credentialsMap));
+        logout();
+        login(newPassword);
+    }
+
+    @Test(expected = DataAccessException.class)
+    public void changeUserInvalidOldPassword() {
+        login(TEST_CREDENTIALS);
+        Credentials wrongOldPassword = new Credentials("Test", "Wrongpassword", Role.USER);
+        Credentials newPassword = new Credentials("Test", "pass", Role.USER);
+
+        Map<String, Credentials> credentialsMap = new HashMap<>();
+        credentialsMap.put("oldCredentials", wrongOldPassword);
+        credentialsMap.put("newCredentials", newPassword);
+
+        target("user").path("password").request().put(Entity.json(credentialsMap));
+        logout();
+        login(newPassword);
     }
 }
