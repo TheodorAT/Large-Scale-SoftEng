@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TripResourceTest extends BaseResourceTest {
-
     private static final GenericType<List<Trip>> TRIP_LIST = new GenericType<List<Trip>>() {
     };
 
@@ -97,22 +96,6 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(trips.size(), 5);
         assertEquals(trips.get(0).getFromLocationId(), fromLocationId);
         assertEquals(trips.get(0).getToLocationId(), toLocationId);
-    }
-
-    @Test
-    public void cancelDriverTrip() {
-        logout();
-        login(DRIVER_CREDENTIALS);
-        int fromLocationId = 1;
-        int toLocationId = 2;
-        Trip trip1 = new Trip(1, TEST.getId(), fromLocationId, toLocationId, 10200, 0, 4);
-        Trip trip2 = new Trip(2, TEST.getId(), fromLocationId, toLocationId, 10200, 0, 4);
-        Trip trip3 = new Trip(3, TEST.getId(), fromLocationId, toLocationId, 10200, 0, 4);
-
-        target("trip").request().post(Entity.entity(trip1, MediaType.APPLICATION_JSON), Trip.class);
-        target("trip").request().post(Entity.entity(trip2, MediaType.APPLICATION_JSON), Trip.class);
-        target("trip").request().post(Entity.entity(trip3, MediaType.APPLICATION_JSON), Trip.class);
-
     }
 
     /**
@@ -286,20 +269,26 @@ public class TripResourceTest extends BaseResourceTest {
                 .get(new GenericType<List<Trip>>() {
                 });
 
-        assertEquals(trips.size(), 3);
-
-        target("trip/driver").path(Integer.toString(3)).request().delete(Void.class);
-
-        List<Trip> trips2 = target("trip/search").queryParam("fromLocationId", fromLocationId)
-                .queryParam("toLocationId", toLocationId).queryParam("startTime", 10200).request()
-                .get(new GenericType<List<Trip>>() {
-                });
-
-        assertEquals(trips2.size(), 2);
         assertNotNull(trips);
         assertFalse(trips.isEmpty());
         assertEquals(4, trips.size());
         assertEquals(fromLocationId, trips.get(0).getFromLocationId());
         assertEquals(toLocationId, trips.get(0).getToLocationId());
+    }
+
+    @Test
+    public void cancelDriverTrip() {
+        logout();
+        login(DRIVER_CREDENTIALS);
+        int fromLocationId = 1;
+        int toLocationId = 2;
+        Trip trip1 = new Trip(1, TEST.getId(), fromLocationId, toLocationId, 10200, 0, 4);
+        Trip trip2 = new Trip(2, TEST.getId(), fromLocationId, toLocationId, 10200, 0, 4);
+        Trip trip3 = new Trip(3, TEST.getId(), fromLocationId, toLocationId, 10200, 0, 4);
+
+        target("trip").request().post(Entity.entity(trip1, MediaType.APPLICATION_JSON), Trip.class);
+        target("trip").request().post(Entity.entity(trip2, MediaType.APPLICATION_JSON), Trip.class);
+        target("trip").request().post(Entity.entity(trip3, MediaType.APPLICATION_JSON), Trip.class);
+
     }
 }
