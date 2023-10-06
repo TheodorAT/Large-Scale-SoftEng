@@ -42,7 +42,7 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
     /**
      * 
      */
-    public boolean cancelPassengerTrip(int passengerId, int tripId){
+    public boolean cancelPassengerTrip(int passengerId, int tripId) {
         String sql = "DELETE FROM trip_passengers WHERE user_id = ? AND trip_id = ?";
         return execute(sql, passengerId, tripId) > 0;
     }

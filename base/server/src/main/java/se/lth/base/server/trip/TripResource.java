@@ -112,10 +112,9 @@ public class TripResource {
     @Path("driver/{tripId}")
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public void cancelDriverTrip(@PathParam("tripId") int tripId){
-        if(!tripDao.cancelDriverTrip(this.user.getId(), tripId)){
-            throw new WebApplicationException("Not found trip",
-            Response.Status.NOT_FOUND);
+    public void cancelDriverTrip(@PathParam("tripId") int tripId) {
+        if (!tripDao.cancelDriverTrip(this.user.getId(), tripId)) {
+            throw new WebApplicationException("Not found trip", Response.Status.NOT_FOUND);
         }
     }
 }

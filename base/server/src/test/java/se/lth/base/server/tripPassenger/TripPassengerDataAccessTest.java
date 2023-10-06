@@ -35,7 +35,7 @@ public class TripPassengerDataAccessTest extends BaseDataAccessTest {
     }
 
     @Test
-    public void cancelPassengerTrips(){
+    public void cancelPassengerTrips() {
         Trip trip = new Trip(1, 1, 1, 2, 1, 2, 2);
         tripDao.addTrip(1, trip);
         TripPassenger tripPassenger = tripPassengerDao.bookTrip(trip.getId(), TEST.getId());

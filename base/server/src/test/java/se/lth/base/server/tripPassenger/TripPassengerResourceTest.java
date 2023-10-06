@@ -44,7 +44,7 @@ public class TripPassengerResourceTest extends BaseResourceTest {
     }
 
     @Test
-    public void cancelPassengerTrip(){
+    public void cancelPassengerTrip() {
         Trip t = new Trip(1, 1, 1, 2, 1, 2, 2);
         Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
         target("trip").request().post(e, Trip.class);

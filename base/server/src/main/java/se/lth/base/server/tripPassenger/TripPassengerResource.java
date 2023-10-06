@@ -47,10 +47,9 @@ public class TripPassengerResource {
     @Path("{tripId}")
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public void cancelPassengerTrip(@PathParam("tripId") int tripId){
-        if(!tripPassengerDao.cancelPassengerTrip(this.user.getId(), tripId)){
-            throw new WebApplicationException("Not found trip",
-            Response.Status.NOT_FOUND);
+    public void cancelPassengerTrip(@PathParam("tripId") int tripId) {
+        if (!tripPassengerDao.cancelPassengerTrip(this.user.getId(), tripId)) {
+            throw new WebApplicationException("Not found trip", Response.Status.NOT_FOUND);
         }
     }
 

@@ -93,7 +93,7 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     @Test
-    public void cancelDriverTrip(){
+    public void cancelDriverTrip() {
         int fromLocationId = 1;
         int toLocationId = 2;
         Trip trip1 = new Trip(1, TEST.getId(), fromLocationId, toLocationId, 10200, 0, 4);
@@ -119,8 +119,6 @@ public class TripResourceTest extends BaseResourceTest {
                 });
 
         assertEquals(trips2.size(), 2);
-
-
 
     }
 }
