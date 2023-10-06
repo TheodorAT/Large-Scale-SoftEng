@@ -37,11 +37,6 @@ base.rest = (function () {
     };
   };
 
-  // const TripPassenger = function (tripId, passengerId) {
-  //   this.tripId = tripId;
-  //   this.passengerId = passengerId;
-  // };
-
   // Expose the classes to base module, they are primarily used by the tests.
   base.User = User;
   base.Role = Role;
