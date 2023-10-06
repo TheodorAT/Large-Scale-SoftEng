@@ -12,3 +12,14 @@ ul.navbar-nav > li > a {
     max-height: 200px;
     overflow-y: scroll;
 }
+
+.icon-settings {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-image: url('settings.svg'); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    text-indent: -9999px; /* Hide the text content */
+  }
+  
