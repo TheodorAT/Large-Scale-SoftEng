@@ -28,11 +28,14 @@ public class TripPassengerResourceTest extends BaseResourceTest {
      */
     @Test
     public void createTripPassenger() {
-
+        logout();
+        login(DRIVER_CREDENTIALS);
         Trip t = new Trip(1, 1, 1, 2, 1, 2, 2);
         Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
         target("trip").request().post(e, Trip.class);
 
+        logout();
+        login(TEST_CREDENTIALS);
         int tripId = t.getId();
         Entity<Integer> ti = Entity.entity(tripId, MediaType.APPLICATION_JSON);
         TripPassenger tripPassenger = target("tripPassenger/book").request().post(ti, TripPassenger.class);

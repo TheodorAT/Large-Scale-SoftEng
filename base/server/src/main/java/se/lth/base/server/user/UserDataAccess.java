@@ -175,4 +175,43 @@ public class UserDataAccess extends DataAccess<User> {
         execute(sql, role.name(), userId);
         return getUser(userId);
     }
+
+    /**
+     * Updates a user's password in the database based on the provided credentials.
+     *
+     * @param userId
+     *            The unique identifier of the user whose password is being updated.
+     * @param oldCredentials
+     *            The old credentials, including the username and old password.
+     * @param newCredentials
+     *            The new credentials, including the new password.
+     * 
+     * @return The updated User object, including user details with or without the changed password.
+     * 
+     * @throws DataAccessException
+     *             If there are errors in accessing or updating the database.
+     */
+    public User updateUserPassword(int userId, Credentials oldCredentials, Credentials newCredentials) {
+
+        long oldSalt = new DataAccess<>(getDriverUrl(), (rs) -> rs.getLong(1))
+                .queryStream("SELECT salt FROM users WHERE username = ?", oldCredentials.getUsername()).findFirst()
+                .orElseThrow(
+                        () -> new DataAccessException("Username or old password incorrect", ErrorType.DATA_QUALITY));
+        UUID hash = oldCredentials.generatePasswordHash(oldSalt);
+
+        // check that there exists a user with mathching username and old password, throws exception otherwise
+        User user = queryFirst(
+                "SELECT user_id, username, first_name, last_name, email, phone_number, role FROM users, user_role WHERE user_role.role_id = users.role_id AND username = ? AND password_hash = ?",
+                oldCredentials.getUsername(), hash);
+
+        // valid password already get checked in resource method so maybe remove here?
+        if (newCredentials.hasPassword() && newCredentials.validPassword()) {
+            long newSalt = Credentials.generateSalt();
+            execute("UPDATE users SET password_hash = ?, salt = ? WHERE user_id = ?",
+                    newCredentials.generatePasswordHash(newSalt), newSalt, userId);
+        }
+        // throws an exception in user resource if user puts in invalid passowrd, is that enough?
+        // currently it is returning the User with or without changed password.
+        return getUser(userId);
+    }
 }

@@ -96,4 +96,6 @@ VALUES
     (1, 'Admin', -2883142073796788660, '8dc0e2ab-4bf1-7671-c0c4-d22ffb55ee59', 'Admin_first_name',
      'Admin_last_name', 'Admin_email', 'Admin_phone_number'),
     (2, 'Test', 5336889820313124494, '144141f3-c868-85e8-0243-805ca28cdabd', 'Test_first_name', 
-    'Test_last_name', 'Test_email', 'Test_phone_number');
+    'Test_last_name', 'Test_email', 'Test_phone_number'),
+    (3, 'Driver', -6993485440425371837, '9041ed00-4e07-e0bf-d6ba-4bb84d631770', 'Driver_first_name',
+    'Driver_last_name', 'Driver_email', 'Driver_phone_number');
