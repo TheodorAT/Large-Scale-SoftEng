@@ -68,8 +68,8 @@ public class TripDataAccess extends DataAccess<Trip> {
     }
 
     /**
-     * Retrieves a list of available trips based on the parameters.
-     * Retrieves a list of available trips based on the parameters. Within a 24 hour period.
+     * Retrieves a list of available trips based on the parameters. Retrieves a list of available trips based on the
+     * parameters. Within a 24 hour period.
      * 
      * @param fromLocationId
      *            ID of starting location.

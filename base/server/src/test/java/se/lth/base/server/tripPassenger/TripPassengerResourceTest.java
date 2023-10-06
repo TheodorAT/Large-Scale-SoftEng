@@ -76,7 +76,7 @@ public class TripPassengerResourceTest extends BaseResourceTest {
 
         List<Trip> trips = target("trip").path("passenger").path(Integer.toString(TEST.getId())).request()
                 .get(TRIP_LIST);
-        
+
         assertEquals(trips.size(), 0);
 
     }
