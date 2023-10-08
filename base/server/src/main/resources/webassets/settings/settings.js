@@ -8,25 +8,51 @@ var base = base || {};
 
 base.settingsController = function () {
   "use strict"; // add this to avoid some potential bugs
+  let currentUser;
 
   const view = {
     render: function (user) {
-      console.log(user);
       document.getElementById("userName").textContent = user.username;
       document.getElementById("name").textContent = user.first_name + " " + user.last_name;
       document.getElementById("email").textContent = user.email;
       document.getElementById("phone").textContent = user.phone_number;
-      document.getElementById("role").textContent = user.role.label;
+      let options = controller.createRoleOptions(user.role);
+      document.getElementById("select-role").replaceChildren();
+      options.forEach((option) => document.getElementById("select-role").appendChild(option));
     },
   };
 
   const controller = {
     load: function () {
       let userPromise = base.rest.getUser().then(function (user) {
+        currentUser = user;
         view.render(user);
+        document.getElementById("select-role").onchange = function (event) {
+          let selectedIndex = event.target.selectedIndex;
+          let selectedOption = event.target.options[selectedIndex].id;
+          if (currentUser.isAdmin()) {
+            const myModal = new bootstrap.Modal(document.getElementById("adminModal"));
+            myModal.show();
+          } else {
+            base.rest.changeRole(currentUser.id, selectedOption).then(function (response) {
+              base.mainController.load();
+            });
+          }
+        };
       });
       document.getElementById("changePassword").onclick = function (event) {
         alert("TODO: changePassword");
+      };
+      document.getElementById("downgradeBtn").onclick = function (event) {
+        let selected = document.getElementById("select-role");
+        let selectedIndex = selected.selectedIndex;
+        let selectedOption = selected.options[selectedIndex].id;
+        base.rest.changeRole(currentUser.id, selectedOption).then(function (response) {
+          base.mainController.load();
+        });
+      };
+      document.getElementById("cancelBtn").onclick = function (event) {
+        controller.load();
       };
       document.getElementById("delete").onclick = function (event) {
         alert("TODO: delete");
@@ -36,9 +62,20 @@ base.settingsController = function () {
           base.changeLocation("/login/login.html");
         });
       };
-      document.getElementById("changeRole").onclick = function (event) {
-        alert("TODO: changerole");
-      };
+    },
+    createRoleOptions: function (current) {
+      let options = [];
+      let roles = currentUser.isAdmin() ? ["Admin", "User", "Driver"] : ["User", "Driver"];
+      roles.forEach((role) => {
+        let option = document.createElement("option");
+        option.innerHTML = role;
+        option.id = role.toLocaleUpperCase();
+        if (current.label == role) {
+          option.selected = true;
+        }
+        options.push(option);
+      });
+      return options;
     },
   };
 

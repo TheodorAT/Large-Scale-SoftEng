@@ -175,6 +175,25 @@ base.rest = (function () {
         .then((u) => new User(u));
     },
 
+    // @Path("{id}/changerole/{role}")
+    //public User updateUserRole(@PathParam("id") int userId, @PathParam("role") Role role) {
+
+    /*
+     * Update the user role.
+     * id: user id
+     * returns: the updated user
+     *
+     * example: let user = base.rest.changeRole(2, "ADMIN");
+     */
+    changeRole: function (id, role) {
+      return baseFetch("/rest/user/" + id + "/changerole/" + role, {
+        method: "PUT",
+        headers: jsonHeader,
+      })
+        .then((response) => response.json())
+        .then((u) => new User(u));
+    },
+
     /*
      * Delete a specific user with a given userId (admin only).
      * id: user to delete
