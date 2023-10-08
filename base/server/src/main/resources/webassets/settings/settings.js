@@ -55,8 +55,17 @@ base.settingsController = function () {
         controller.load();
       };
       document.getElementById("delete").onclick = function (event) {
-        alert("TODO: delete");
+        const myModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+        myModal.show();
       };
+      document.getElementById("deleteBtn").onclick = () => {
+        const deleteUserId = currentUser.id;
+        base.rest.logout().then(function(response){
+          base.changeLocation("/login/login.html");
+        });
+        base.rest.deleteUser(deleteUserId);
+      }  
+
       document.getElementById("logOut").onclick = function (event) {
         base.rest.logout().then(function (response) {
           base.changeLocation("/login/login.html");
