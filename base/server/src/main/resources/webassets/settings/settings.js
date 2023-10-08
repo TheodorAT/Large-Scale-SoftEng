@@ -60,11 +60,11 @@ base.settingsController = function () {
       };
       document.getElementById("deleteBtn").onclick = () => {
         const deleteUserId = currentUser.id;
-        base.rest.logout().then(function(response){
+        base.rest.logout().then(function (response) {
           base.changeLocation("/login/login.html");
         });
         base.rest.deleteUser(deleteUserId);
-      }  
+      };
 
       document.getElementById("logOut").onclick = function (event) {
         base.rest.logout().then(function (response) {
