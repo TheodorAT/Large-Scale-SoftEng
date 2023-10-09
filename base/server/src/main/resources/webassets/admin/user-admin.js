@@ -44,25 +44,26 @@ base.userAdminController = function () {
         if (event.target && event.target.classList.contains("delete-user")) {
           // This condition checks if the clicked element has the 'delete-user' class
           const button = event.target;
+          // Displays a modal which lets the admin confirm deletion of account
           deleteModal.show();
-
+          // finds the row in which the button is clicked
           userRow = button.closest("tr");
           if (userRow) {
-            // Find the specific column
+            // Finds the specific column with user id
             const userIdDataCell = userRow.querySelector(".user-id-data");
             if (userIdDataCell) {
               userIdColumnValue = userIdDataCell.textContent;
-              console.log("UserID of the selected row: ", userIdColumnValue);
             }
           }
         }
       });
       const addModal = new bootstrap.Modal(document.getElementById("modalAddUser"));
-      //document.getElementById("modal-delete-user").onclick = () => controller.adminDeleteUser(userIdColumnValue, userRow);
+      // When delete button is pressed inside the modal, it calls the REST API to delete the user
       document.getElementById("modal-delete-user").onclick = () => {
         controller.adminDeleteUser(userIdColumnValue, userRow);
         deleteModal.hide();
       };
+      //When add new admin button is pressed, a modal register form is displayed
       document.getElementById("new-admin").onclick = function (event) {
         addModal.show();
       };
@@ -72,8 +73,10 @@ base.userAdminController = function () {
         addModal.hide();
       };
     },
+    //Calls REST API to delete user
     adminDeleteUser: function (id, userRow) {
       base.rest.deleteUser(id);
+      //Removes the user row from the table
       userRow.remove();
     },
     addAdminUser: function () {
@@ -86,12 +89,13 @@ base.userAdminController = function () {
       const userData = {
         username: username,
         password: password,
+        // Assigns the new user an admin role
         role: "ADMIN",
         first_name: firstName,
         last_name: lastName,
         email: email,
       };
-
+      //Calls REST API to add user with the inputed values of the form
       base.rest.addUser(userData).then(function (user) {
         const vm = new UserViewModel(user);
         model.push(vm); // append the user to the end of the model array
