@@ -146,9 +146,16 @@ base.searchTripController = function () {
       bookButtons.forEach(
         (b) =>
           (b.onclick = function (event) {
-            base.rest.bookTrip(event.target.id);
-            //TODO: display modals and handle if booking was not possible but made this temporary for testing
-            alert("Trip booked, need to display modal");
+            //console.log("click", event.target.id);
+            const tripId = event.target.id;
+            base.rest
+              .bookTrip(tripId)
+              .then((bookedTrip) => {
+                alert("Trip booked successfully!");
+              })
+              .catch((error) => {
+                alert("Failed to book trip: " + error.message);
+              });
           }),
       );
     },

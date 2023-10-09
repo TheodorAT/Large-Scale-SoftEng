@@ -1,29 +1,54 @@
 <!--
   -- This is a partial HTML file, meaning that it will be loaded dynamically and added to another HTML file.
-  -- Author: 
+  -- Author: Bianca Widstam, Max Emtefall, Justin Hellsten
   -->
 <h2>User settings</h2>
-<div class="grid border bg-light">
+<div class="border bg-light">
   <div class="p-2">
-    <p id="usernameDisplay">Username: <span id="userName"></span></p>
-  </div>
-  <div class="p-2">
-    <p id="nameDisplay">Name: <span id="name"></span></p>
+    <b id="usernameDisplay">Username: </b>
+    <span id="userName"></span>
   </div>
   <div class="p-2">
-    <p id="emailDisplay">Email: <span id="email"></span></p>
+    <b id="nameDisplay">Name: </b>
+    <span id="name"></span>
   </div>
   <div class="p-2">
-    <p id="phoneDisplay">Phone number: <span id="phone"></span></p>
+    <b id="emailDisplay">Email: </b>
+    <span id="email"></span>
   </div>
-  <div class="p-2 row">
-    <p class="col" id="roleDisplay">Current role: <span id="role"></span></p>
-    <button type="button" id="changeRole" class="btn btn-primary col-md-auto mr-4 mb-2">Change role</button>
+  <div class="p-2">
+    <b id="phoneDisplay">Phone number: </b>
+    <span id="phone"></span>
   </div>
+<div class="p-2">
+  <label for="select-role "><b>Current role:</b></label>
+  <select class="form-select" id="select-role" aria-label="Select current role">
+    <option selected>User</option>
+    <option>Driver</option>
+  </select>
+</div>
 </div>
 
 <div class="p-2 g-col-6">
   <button type="button" class="btn btn-primary" id="changePassword">Change my password</button>
   <button type="button" class="btn btn-primary" id="logOut">Log out</button>
   <button type="button" class="btn btn-primary" id="delete">Delete account</button>
+</div>
+
+<div class="modal fade" id="adminModal" tabindex="-1" aria-labelledby="adminModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="adminModalTitle">Are you sure you want downgrade from your Admin-role?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>If you go from an Admin-role to User/Driver-role you will no longer be an admin and lose all your rights as admin.</p>
+      </div>
+      <div class="modal-footer">
+        <button id="downgradeBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal"><b>Downgrade my role</b></button>
+        <button id="cancelBtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
 </div>

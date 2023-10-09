@@ -175,6 +175,25 @@ base.rest = (function () {
         .then((u) => new User(u));
     },
 
+    // @Path("{id}/changerole/{role}")
+    //public User updateUserRole(@PathParam("id") int userId, @PathParam("role") Role role) {
+
+    /*
+     * Update the user role.
+     * id: user id
+     * returns: the updated user
+     *
+     * example: let user = base.rest.changeRole(2, "ADMIN");
+     */
+    changeRole: function (id, role) {
+      return baseFetch("/rest/user/" + id + "/changerole/" + role, {
+        method: "PUT",
+        headers: jsonHeader,
+      })
+        .then((response) => response.json())
+        .then((u) => new User(u));
+    },
+
     /*
      * Delete a specific user with a given userId (admin only).
      * id: user to delete
@@ -294,6 +313,30 @@ base.rest = (function () {
       })
         .then((response) => response.json())
         .then((trips) => trips.map((f) => new Trip(f)));
+    },
+
+    /*
+     * Books a trip for the current user/passenger.
+     * tripId: ID of the trip to be booked.
+     *
+     * function will return a TripPassenger object.
+     * example: const bookedTrip = base.rest.bookTrip(1);
+     */
+    bookTrip: function (tripId) {
+      return baseFetch("/rest/tripPassenger", {
+        method: "POST",
+        body: JSON.stringify(tripId),
+        headers: jsonHeader,
+      })
+        .then((tripPassengerData) => {
+          const tripId = tripPassengerData.tripId; // Extract tripId from the response
+          const passengerId = tripPassengerData.passengerId; // Extract passengerId from the response
+          return new TripPassenger(tripId, passengerId); // Create a new TripPassenger instance
+        })
+        .catch((error) => {
+          console.error("Book Trip Error:", error);
+          throw error;
+        });
     },
   };
 })();

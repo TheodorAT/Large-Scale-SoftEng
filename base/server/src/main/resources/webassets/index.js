@@ -58,10 +58,16 @@ base.mainController = (function () {
       base.rest.getUser().then(function (user) {
         model.user = user;
         document.getElementById("username").textContent = model.user.username;
+        document.querySelectorAll("#main-nav li").forEach((li) => (li.style.display = ""));
         if (user.isNone()) {
           base.changeLocation("/login/login.html");
         } else if (!user.isAdmin()) {
           document.querySelectorAll("#main-nav li.admin-only").forEach((li) => (li.style.display = "none"));
+          if (user.role.name == "USER") {
+            document.querySelectorAll("#main-nav li.driver-only").forEach((li) => (li.style.display = "none"));
+          } else {
+            document.querySelectorAll("#main-nav li.user-only").forEach((li) => (li.style.display = "none"));
+          }
         }
       });
     },
