@@ -32,4 +32,15 @@ public class TripPassengerDataAccessTest extends BaseDataAccessTest {
         assertEquals(1, tripPassenger.getTripId());
     }
 
+    @Test
+    public void getAvailableSeats() {
+        Trip trip = new Trip(1, DRIVER.getId(), 1, 2, 1, 2, 2);
+        tripDao.addTrip(DRIVER.getId(), trip);
+
+        assertEquals(2, tripPassengerDao.getAvailableSeats(trip));
+
+        tripPassengerDao.bookTrip(trip.getId(), TEST.getId());
+        assertEquals(1, tripPassengerDao.getAvailableSeats(trip));
+    }
+
 }
