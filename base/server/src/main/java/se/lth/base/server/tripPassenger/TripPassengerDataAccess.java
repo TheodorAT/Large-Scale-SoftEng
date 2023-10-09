@@ -41,6 +41,14 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
         return new TripPassenger(tripId, passengerId);
     }
 
+    /**
+     * 
+     */
+    public boolean cancelPassengerTrip(int passengerId, int tripId) {
+        String sql = "DELETE FROM trip_passengers WHERE user_id = ? AND trip_id = ?";
+        return execute(sql, passengerId, tripId) > 0;
+    }
+
     public int getAvailableSeats(Trip trip) {
         String sql = "SELECT COUNT(*) FROM trip_passengers WHERE trip_id = ?";
         int bookedSeats = count(sql, trip.getId());

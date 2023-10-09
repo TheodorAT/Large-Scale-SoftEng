@@ -7,6 +7,11 @@ import java.util.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.List;
+
+import org.eclipse.jetty.server.session.Session;
+
+import java.util.Date;
 
 /**
  * The TripDataAccess class provides data access methods for trip-related data in the database.
@@ -55,7 +60,16 @@ public class TripDataAccess extends DataAccess<Trip> {
     }
 
     /**
-     * Retrieves a list of available trips based on the parameters. Within a 24 hour period.
+     * 
+     */
+    public boolean cancelDriverTrip(int driverId, int tripId) {
+        String sql = "DELETE FROM trips WHERE driver_id = ? AND trip_id = ?";
+        return execute(sql, driverId, tripId) > 0;
+    }
+
+    /**
+     * Retrieves a list of available trips based on the parameters. Retrieves a list of available trips based on the
+     * parameters. Within a 24 hour period.
      * 
      * @param fromLocationId
      *            ID of starting location.

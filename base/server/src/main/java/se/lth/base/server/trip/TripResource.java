@@ -10,6 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * The TripResource class provides endpoints for managing trips within the system. The class is part of the REST API,
@@ -137,5 +138,18 @@ public class TripResource {
     public List<Trip> getTripsFromDriver(@PathParam("driverId") int driverId) {
         List<Trip> result = tripDao.getTripsFromDriver(driverId);
         return result;
+    }
+
+    /**
+     * Cancels a drivers trip, given tripId
+     * 
+     */
+    @Path("driver/{tripId}")
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public void cancelDriverTrip(@PathParam("tripId") int tripId) {
+        if (!tripDao.cancelDriverTrip(this.user.getId(), tripId)) {
+            throw new WebApplicationException("Not found trip", Response.Status.NOT_FOUND);
+        }
     }
 }
