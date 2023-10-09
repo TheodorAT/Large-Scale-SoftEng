@@ -1,7 +1,7 @@
 <div id="useradmin">
 <h1>All users</h1>
 
-<div class="mt-5">
+<div class="mt-5 list-group">
     <table class="table" id= "user-table" style="background: white">
         <thead>
         <tr>
@@ -62,28 +62,28 @@
       </div>
       <form id="addForm">
         <div class="modal-body">
-          <div class="form-group">
+          <div class="mb-2">
             <label for="input-firstname">First name</label>
             <input type="text" class="form-control" id="input-firstname" required>
           </div>
-          <div class="form-group">
+          <div class="mb-2">
             <label for="input-lastname">Last name</label>
             <input type="text" class="form-control" id="input-lastname" required>
           </div>
-          <div class="form-group">
+          <div class="mb-2">
             <label for="input-username">Username</label>
             <input type="text" class="form-control" id="input-username" required minlength="3">
           </div>
-          <div class="form-group">
+          <div class="mb-2">
             <label for="input-email">Email address</label>
             <input type="email" class="form-control" id="input-email" aria-describedby="emailHelp" required>
           </div>
-          <div class="form-group">
+          <div>
             <label for="input-password">Password</label>
             <input type="password" class="form-control" id="input-password" placeholder="Minimum 8 characters" required minlength="8">
           </div>
         </div>
-        <div class="form-group d-flex justify-content-center">
+        <div class="d-flex justify-content-center mb-3">
           <button type="submit" class="btn btn-success" data-dismiss="modal">Add New Administrator</button>
         </div>
       </form>

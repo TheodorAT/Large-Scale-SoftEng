@@ -1,12 +1,10 @@
 <!-- author: Emad aldeen issawi, Osama Hajjouz -->
 
 <div  class="container-fluid">
-
-
     <h2>Search for available trips</h2>
 
-    <form class="form-row pt-4" id="searchtrip-form">
-        <div class="form-group col-md-auto">
+    <form class="row row-cols-lg-auto g-3 align-items-center pt-4" id="searchtrip-form">
+        <div>
             <label for="from">From</label>
             <div class="dropdown">
                 <input
@@ -24,7 +22,7 @@
                 </ul>
             </div>
         </div>
-        <div class="form-group col-md-auto">
+        <div>
             <label for="to">To</label>
             <div class="dropdown">
                 <input
@@ -42,11 +40,11 @@
                 </ul>
             </div>
         </div>
-        <div class="form-group col-md-auto">
+        <div>
             <label for="datetime">Start date & time</label>
             <input required type="datetime-local" class="form-control" id="datetime" name="datetime" />
         </div>
-        <div class="form-group d-flex align-items-end">
+        <div class="form-group pt-4">
             <button id="searchbtn" type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
