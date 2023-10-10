@@ -16,14 +16,29 @@ public enum TripStatus {
 
     private final int trip_status; 
 
+    /**
+     * Constructs a new TripStatus enum constant with the specified trip status value.
+     *
+     * @param trip_status The integer value representing the trip status.
+     */
     TripStatus(int trip_status){
         this.trip_status = trip_status;
     }
 
-    public int getTripStatus(){
+    /**
+     * Get the status of the trip 
+     * 
+     * @return int of the status 
+     */
+    public int getTripStatus() {
         return trip_status; 
     }
     
+    /**
+     * Get all the current statuses
+     * 
+     * @return all statuses as a linked hashset 
+     */
     public static Set<TripStatus> ALL_TRIPSTATUSES = new LinkedHashSet<>(Arrays.asList(ACTIVE, CANCELLED, REQUESTED));
 
 }

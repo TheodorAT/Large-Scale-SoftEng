@@ -20,7 +20,7 @@ public class Trip {
         this.startTime = startTime;
         this.endTime = endTime;
         this.seatCapacity = seatCapacity;
-        this.status_id = 1; 
+        this.status_id = TripStatus.ACTIVE.getTripStatus();
     }
 
     /**
