@@ -49,6 +49,11 @@ CREATE TABLE locations (
 );
 
 -- TRIPS
+
+CREATE TABLE trip_status(status_id TINYINT,
+                       status VARCHAR(20) NOT NULL UNIQUE,
+                       PRIMARY KEY (status_id));
+
 CREATE TABLE trips (
     trip_id INT AUTO_INCREMENT NOT NULL,
     driver_id INT NOT NULL,
@@ -57,6 +62,7 @@ CREATE TABLE trips (
     -- using TIMESTAMP for both, allowing us to skip the date
     start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP NOT NULL,
+    status_id TINYINT NOT NULL DEFAULT 1,
 
     -- TODO: this seat_capacity will later be changed to a FOREIGN ref to vehicles
     seat_capacity INT NOT NULL, -- not to be changed, when checking seat availability, query trip_passengers. Excluding driver
@@ -68,7 +74,8 @@ CREATE TABLE trips (
 
     FOREIGN KEY (driver_id) REFERENCES users (user_id) ON DELETE CASCADE,
     FOREIGN KEY (from_location_id) REFERENCES locations (location_id) ON DELETE SET NULL,
-    FOREIGN KEY (to_location_id) REFERENCES locations (location_id) ON DELETE SET NULL
+    FOREIGN KEY (to_location_id) REFERENCES locations (location_id) ON DELETE SET NULL,
+    FOREIGN KEY (status_id) REFERENCES trip_status (status_id) ON DELETE SET NULL
 );
 
 CREATE TABLE trip_passengers(
@@ -99,3 +106,5 @@ VALUES
     'Test_last_name', 'Test_email', 'Test_phone_number'),
     (3, 'Driver', -6993485440425371837, '9041ed00-4e07-e0bf-d6ba-4bb84d631770', 'Driver_first_name',
     'Driver_last_name', 'Driver_email', 'Driver_phone_number');
+
+INSERT INTO trip_status VALUES (1, 'ACTIVE'), (2, 'CANCELLED'), (3, 'REQUESTED');

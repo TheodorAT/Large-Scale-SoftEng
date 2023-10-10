@@ -67,6 +67,18 @@ public class UserDataAccess extends DataAccess<User> {
                 credentials.getLastName(), credentials.getEmail(), credentials.getPhoneNumber());
     }
 
+    /**
+     * Updates a user's information in the database, including their username, password, and role. If a new password is
+     * provided in the credentials, it will be hashed and updated along with the salt. If no password is provided, only
+     * the username and role will be updated.
+     *
+     * @param userId
+     *            The unique identifier of the user to be updated.
+     * @param credentials
+     *            The new credentials containing the updated username, password, and role.
+     * 
+     * @return The updated User object after the changes have been applied in the database.
+     */
     public User updateUser(int userId, Credentials credentials) {
         if (credentials.hasPassword()) {
             long salt = Credentials.generateSalt();

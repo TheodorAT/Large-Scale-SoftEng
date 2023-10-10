@@ -30,7 +30,8 @@ public class TripDataAccess extends DataAccess<Trip> {
             return new Trip(resultSet.getInt("trip_id"), resultSet.getInt("driver_id"),
                     resultSet.getInt("from_location_id"), resultSet.getInt("to_location_id"),
                     resultSet.getObject("start_time", Date.class).getTime(),
-                    resultSet.getObject("end_time", Date.class).getTime(), resultSet.getInt("seat_capacity"));
+                    resultSet.getObject("end_time", Date.class).getTime(), resultSet.getInt("seat_capacity"),
+                    resultSet.getInt("status_id"));
         }
     }
 
@@ -60,11 +61,18 @@ public class TripDataAccess extends DataAccess<Trip> {
     }
 
     /**
+     * Cancels a driver's trip by updating it's status to CANCELLED
+     *
+     * @param driverId
+     *            The unique identifier of the driver.
+     * @param tripId
+     *            The unique identifier of the trip to be canceled.
      * 
+     * @return true if the trip was successfully canceled, false otherwise.
      */
     public boolean cancelDriverTrip(int driverId, int tripId) {
-        String sql = "DELETE FROM trips WHERE driver_id = ? AND trip_id = ?";
-        return execute(sql, driverId, tripId) > 0;
+        String sql = "UPDATE trips SET status_id = (SELECT status_id FROM trip_status WHERE trip_status.status = ?) WHERE driver_id = ? AND trip_id = ?";
+        return execute(sql, "CANCELLED", driverId, tripId) > 0;
     }
 
     /**
