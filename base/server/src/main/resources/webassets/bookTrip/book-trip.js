@@ -1,5 +1,5 @@
 /*
- * Author: emad Issawi, Osama Hajjouz
+ * Author: Emad Issawi, Osama Hajjouz
  */
 var base = base || {};
 // Defines the base namespace, if not already declared. Through this pattern it doesn't matter which order
