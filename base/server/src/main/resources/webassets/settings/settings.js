@@ -56,8 +56,14 @@ base.settingsController = function () {
       };
       //Displays a modal when delete-button is clicked which lets the user confirm removal of account
       document.getElementById("delete").onclick = function (event) {
-        const myModal = new bootstrap.Modal(document.getElementById("deleteModal"));
-        myModal.show();
+        //If the user is admin, the account cannot be deleted by themselves
+        if (currentUser.isAdmin()) {
+          const adminModal = new bootstrap.Modal(document.getElementById("adminDelete"));
+          adminModal.show();
+        } else {
+          const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+          deleteModal.show();
+        }
       };
       //When delete button in modal is clicked, the user is logged out and redirected to login-page
       document.getElementById("deleteBtn").onclick = () => {
