@@ -94,15 +94,17 @@ public class UserDataAccess extends DataAccess<User> {
         return getUser(userId);
     }
 
-        /**
-        * Retrieve a user's information by their unique identifier.
-        *
-        * This method retrieves the user information, including their role, username, first name, last name,
-        * email, and phone number, based on the provided unique user identifier (ID).
-        *
-        * @param userId The unique identifier of the user to retrieve.
-        * @return The user object containing the user's information.
-        */
+    /**
+     * Retrieve a user's information by their unique identifier.
+     *
+     * This method retrieves the user information, including their role, username, first name, last name, email, and
+     * phone number, based on the provided unique user identifier (ID).
+     *
+     * @param userId
+     *            The unique identifier of the user to retrieve.
+     * 
+     * @return The user object containing the user's information.
+     */
     public User getUser(int userId) {
         return queryFirst(
                 "SELECT user_id, role, username, first_name, last_name, email, phone_number FROM users, user_role "
@@ -115,7 +117,9 @@ public class UserDataAccess extends DataAccess<User> {
      * 
      * This method deletes a user account from the database based on the provided unique user identifier (ID).
      * 
-     * @param userId The unique identifier of the user to be deleted.
+     * @param userId
+     *            The unique identifier of the user to be deleted.
+     * 
      * @return true if the user was successfully deleted, false otherwise.
      * 
      */

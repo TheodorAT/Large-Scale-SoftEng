@@ -79,14 +79,18 @@ public class UserResource {
         return Role.ALL_ROLES;
     }
 
-    /** 
-    * Creates a new user account using the provided credentials.
-    *
-    * @param credentials The user credentials provided as JSON data.
-    * @return The newly created user object.
-    * @throws WebApplicationException If the provided password is invalid or if there is an issue
-    *                               with creating the user account, a BAD_REQUEST response is thrown.
-    */
+    /**
+     * Creates a new user account using the provided credentials.
+     *
+     * @param credentials
+     *            The user credentials provided as JSON data.
+     * 
+     * @return The newly created user object.
+     * 
+     * @throws WebApplicationException
+     *             If the provided password is invalid or if there is an issue with creating the user account, a
+     *             BAD_REQUEST response is thrown.
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public User createUser(Credentials credentials) {
@@ -133,11 +137,13 @@ public class UserResource {
     /**
      * Delete a user by their unique identifier.
      *
-     * @param userId The unique identifier of the user to be deleted.
-     * @throws WebApplicationException If the operation is forbidden (e.g., self-deletion),
-     *                                or the specified user does not exist, a suitable exception with
-     *                                an appropriate HTTP status code is thrown.
-     */    
+     * @param userId
+     *            The unique identifier of the user to be deleted.
+     * 
+     * @throws WebApplicationException
+     *             If the operation is forbidden (e.g., self-deletion), or the specified user does not exist, a suitable
+     *             exception with an appropriate HTTP status code is thrown.
+     */
     @Path("{id}")
     @DELETE
     public void deleteUser(@PathParam("id") int userId) {
