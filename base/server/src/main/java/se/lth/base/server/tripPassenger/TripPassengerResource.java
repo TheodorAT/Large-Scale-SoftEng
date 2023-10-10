@@ -41,7 +41,9 @@ public class TripPassengerResource {
     }
 
     /**
-     * Cancels a drivers trip, given tripId
+     * Cancels a drivers trip, given tripId for the trip
+     * 
+     * @param tripId the unique ID for the trip to be deleted 
      * 
      */
     @Path("{tripId}")

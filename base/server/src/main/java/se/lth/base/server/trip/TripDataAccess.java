@@ -60,7 +60,11 @@ public class TripDataAccess extends DataAccess<Trip> {
     }
 
     /**
-     * 
+     * Cancels a driver's trip by removing it from the database.
+     *
+     * @param driverId The unique identifier of the driver.
+     * @param tripId   The unique identifier of the trip to be canceled.
+     * @return true if the trip was successfully canceled, false otherwise.
      */
     public boolean cancelDriverTrip(int driverId, int tripId) {
         String sql = "DELETE FROM trips WHERE driver_id = ? AND trip_id = ?";
