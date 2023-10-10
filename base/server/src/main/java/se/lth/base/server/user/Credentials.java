@@ -99,9 +99,9 @@ public class Credentials {
     private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
 
     /**
-     * Checks if the password is valid, currently only by checking that 8 characters are used 
+     * Checks if the password is valid, currently only by checking that 8 characters are used
      * 
-     * @return true if the password meets the criteria, otherwise false 
+     * @return true if the password meets the criteria, otherwise false
      */
     public boolean validPassword() {
         // Password must be at least 8 characters long and contain at least one non-letter character

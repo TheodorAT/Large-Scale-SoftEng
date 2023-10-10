@@ -63,8 +63,11 @@ public class TripDataAccess extends DataAccess<Trip> {
     /**
      * Cancels a driver's trip by updating it's status to CANCELLED
      *
-     * @param driverId The unique identifier of the driver.
-     * @param tripId   The unique identifier of the trip to be canceled.
+     * @param driverId
+     *            The unique identifier of the driver.
+     * @param tripId
+     *            The unique identifier of the trip to be canceled.
+     * 
      * @return true if the trip was successfully canceled, false otherwise.
      */
     public boolean cancelDriverTrip(int driverId, int tripId) {

@@ -67,30 +67,32 @@ public class UserDataAccess extends DataAccess<User> {
                 credentials.getLastName(), credentials.getEmail(), credentials.getPhoneNumber());
     }
 
-    
-        /**
-        * Updates a user's information in the database, including their username, password, and role.
-        * If a new password is provided in the credentials, it will be hashed and updated along with the salt.
-        * If no password is provided, only the username and role will be updated.
-        *
-        * @param userId       The unique identifier of the user to be updated.
-        * @param credentials  The new credentials containing the updated username, password, and role.
-        * @return The updated User object after the changes have been applied in the database.
-        */
-        public User updateUser(int userId, Credentials credentials) {
+    /**
+     * Updates a user's information in the database, including their username, password, and role. If a new password is
+     * provided in the credentials, it will be hashed and updated along with the salt. If no password is provided, only
+     * the username and role will be updated.
+     *
+     * @param userId
+     *            The unique identifier of the user to be updated.
+     * @param credentials
+     *            The new credentials containing the updated username, password, and role.
+     * 
+     * @return The updated User object after the changes have been applied in the database.
+     */
+    public User updateUser(int userId, Credentials credentials) {
         if (credentials.hasPassword()) {
-                long salt = Credentials.generateSalt();
-                execute("UPDATE users SET username = ?, password_hash = ?, salt = ?, role_id = ("
-                        + "    SELECT user_role.role_id FROM user_role WHERE user_role.role = ?) " + "WHERE user_id = ?",
-                        credentials.getUsername(), credentials.generatePasswordHash(salt), salt,
-                        credentials.getRole().name(), userId);
+            long salt = Credentials.generateSalt();
+            execute("UPDATE users SET username = ?, password_hash = ?, salt = ?, role_id = ("
+                    + "    SELECT user_role.role_id FROM user_role WHERE user_role.role = ?) " + "WHERE user_id = ?",
+                    credentials.getUsername(), credentials.generatePasswordHash(salt), salt,
+                    credentials.getRole().name(), userId);
         } else {
-                execute("UPDATE users SET username = ?, role_id = ("
-                        + "    SELECT user_role.role_id FROM user_role WHERE user_role.role = ?) " + "WHERE user_id = ?",
-                        credentials.getUsername(), credentials.getRole().name(), userId);
+            execute("UPDATE users SET username = ?, role_id = ("
+                    + "    SELECT user_role.role_id FROM user_role WHERE user_role.role = ?) " + "WHERE user_id = ?",
+                    credentials.getUsername(), credentials.getRole().name(), userId);
         }
         return getUser(userId);
-        }
+    }
 
     public User getUser(int userId) {
         return queryFirst(

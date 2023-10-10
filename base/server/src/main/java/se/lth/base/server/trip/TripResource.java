@@ -143,7 +143,8 @@ public class TripResource {
     /**
      * Cancels a drivers trip
      * 
-     * @param tripId the unique ID for the trip which will be cancelled 
+     * @param tripId
+     *            the unique ID for the trip which will be cancelled
      * 
      */
     @Path("driver/{tripId}")
