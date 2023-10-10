@@ -1,5 +1,5 @@
 /*
- * Author: emad Issawi, Osama Hajjouz
+ * Author: Emad Issawi, Osama Hajjouz
  */
 var base = base || {};
 // Defines the base namespace, if not already declared. Through this pattern it doesn't matter which order
@@ -166,7 +166,7 @@ base.searchTripController = function () {
       const toId = controller.getLocationId(to.value.trim());
       const startTime = new Date(document.getElementById("datetime").value).getTime();
       const form = { fromLocationId: fromId, toLocationId: toId, startTime: startTime };
-      base.rest.getShuttles(form).then(function (trips) {
+      base.rest.getTrips(form).then(function (trips) {
         trips.forEach((trip) => {
           const vm = new TripViewModel(trip);
           model.push(vm); // append the trip to the end of the model array
