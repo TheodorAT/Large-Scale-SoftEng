@@ -72,7 +72,8 @@ public class TripDataAccessTest extends BaseDataAccessTest {
         assertEquals(resultBefore.size(), 3);
         assertTrue(tripDao.cancelDriverTrip(TEST.getId(), 3));
         List<Trip> resultAfter = tripDao.availableTrips(1, 2, 10000);
-        assertEquals(resultAfter.size(), 2);
+        // get status of cancelled trip, should be 2 = CANCELLED
+        assertEquals(resultAfter.get(2).getStatus(), 2);
     }
 
     /**

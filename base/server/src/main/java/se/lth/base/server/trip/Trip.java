@@ -9,6 +9,7 @@ public class Trip {
     private final long startTime;
     private final long endTime;
     private final int seatCapacity;
+    private final int status_id; 
 
     public Trip(int id, int driverId, int fromLocationId, int toLocationId, long startTime, long endTime,
             int seatCapacity) {
@@ -19,6 +20,31 @@ public class Trip {
         this.startTime = startTime;
         this.endTime = endTime;
         this.seatCapacity = seatCapacity;
+        this.status_id = 1; 
+    }
+
+    /**
+     * Another Constructor where Status_Id can be set manually 
+     * 
+     * @param id
+     * @param driverId
+     * @param fromLocationId
+     * @param toLocationId
+     * @param startTime
+     * @param endTime
+     * @param seatCapacity
+     * @param status_id
+     */
+    public Trip(int id, int driverId, int fromLocationId, int toLocationId, long startTime, long endTime,
+            int seatCapacity, int status_id) {
+        this.id = id;
+        this.driverId = driverId;
+        this.fromLocationId = fromLocationId;
+        this.toLocationId = toLocationId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.seatCapacity = seatCapacity;
+        this.status_id = status_id; 
     }
 
     public int getId() {
@@ -47,5 +73,9 @@ public class Trip {
 
     public int getSeatCapacity() {
         return seatCapacity;
+    }
+
+    public int getStatus(){
+        return status_id; 
     }
 }

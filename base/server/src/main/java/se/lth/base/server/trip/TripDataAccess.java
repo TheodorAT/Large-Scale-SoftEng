@@ -30,7 +30,8 @@ public class TripDataAccess extends DataAccess<Trip> {
             return new Trip(resultSet.getInt("trip_id"), resultSet.getInt("driver_id"),
                     resultSet.getInt("from_location_id"), resultSet.getInt("to_location_id"),
                     resultSet.getObject("start_time", Date.class).getTime(),
-                    resultSet.getObject("end_time", Date.class).getTime(), resultSet.getInt("seat_capacity"));
+                    resultSet.getObject("end_time", Date.class).getTime(), resultSet.getInt("seat_capacity"),
+                    resultSet.getInt("status_id"));
         }
     }
 
