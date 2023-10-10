@@ -58,7 +58,7 @@ CREATE TABLE trips (
     start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP NOT NULL,
 
-    -- TODO: this seat_capacity will later be changed to a FOREIGN ref to shuttles
+    -- TODO: this seat_capacity will later be changed to a FOREIGN ref to vehicles
     seat_capacity INT NOT NULL, -- not to be changed, when checking seat availability, query trip_passengers. Excluding driver
 
     PRIMARY KEY (trip_id),
@@ -87,7 +87,7 @@ CREATE TABLE trip_passengers(
 -- Kept 2 user for backwards compatability w/ tests. 
 -- Admin sees all tabs, most funcitonality
 -- Driver sees all tabs except for admin tab
--- User sees all tabs except register shuttle and admin tab
+-- User sees all tabs except register trip as driver and admin tab
 -- "both", i.e., driver and passenger, therefore should be a "driver"
 INSERT INTO user_role VALUES (1, 'ADMIN'), (2, 'USER'), (3, 'DRIVER');
 
