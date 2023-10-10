@@ -7,12 +7,12 @@ var base = base || {};
 // the scripts are loaded in.
 
 base.driverTripController = function () {
-  "use strict"; // add this to avoid some potential bugs
+  "use strict";
 
   let locations = [];
 
   const view = {
-    // Opens the modal/dialog
+    // Opens the modal/dialog when trip is registered
     render: function () {
       const myModal = new bootstrap.Modal(document.getElementById("driverModal"));
       myModal.show();
@@ -50,8 +50,7 @@ base.driverTripController = function () {
         event.preventDefault();
         base.changeLocation("#/my-trips");
       };
-      // Loads all locations from the server through the REST API, see res.js for definition.
-      // It will replace the model with the trips, and then render them through the view.
+      // Loads all locations from the server through the REST API, see rest.js for definition.
       base.rest.getLocations().then(function (l) {
         locations = l;
         controller.setLocations("from", l);
@@ -83,6 +82,7 @@ base.driverTripController = function () {
       document.getElementById(id).value = location.innerHTML.trim();
       document.getElementById("dropdown-" + id).classList.toggle("show");
     },
+    // Filters the locations in dropdown
     filterFunction: function (id) {
       var input, filter, citys, i;
       input = document.getElementById(id);
