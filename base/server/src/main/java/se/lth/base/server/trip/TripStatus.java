@@ -38,7 +38,6 @@ public enum TripStatus {
     /**
      * Get all the current statuses
      * 
-     * @return all statuses as a linked hashset
      */
     public static Set<TripStatus> ALL_TRIPSTATUSES = new LinkedHashSet<>(Arrays.asList(ACTIVE, CANCELLED, REQUESTED));
 
