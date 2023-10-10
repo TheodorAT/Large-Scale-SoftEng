@@ -11,16 +11,12 @@ const locations = [
 ];
 
 describe("driverTripController", function () {
-  // (int id, int driverId, int fromLocationId, int toLocationId, long startTime, long endTime,int seatCapacity
-  //(int locationId, String municipality, String name, double latitude, double longitude)
-
   let node;
   let locationPromise;
 
   // Creates the controller by loading the driver-trip.html and put it in the node variable
   beforeEach(function (done) {
     controller = base.driverTripController();
-    //specHelper.spyOnRest();
     specHelper
       .fetchHtml("drivertrips/driver-trips.html", document.body)
       .then(function (n) {
