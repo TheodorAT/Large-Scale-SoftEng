@@ -175,14 +175,10 @@ base.rest = (function () {
         .then((u) => new User(u));
     },
 
-    // @Path("{id}/changerole/{role}")
-    //public User updateUserRole(@PathParam("id") int userId, @PathParam("role") Role role) {
-
     /*
      * Update the user role.
      * id: user id
      * returns: the updated user
-     *
      * example: let user = base.rest.changeRole(2, "ADMIN");
      */
     changeRole: function (id, role) {
@@ -197,7 +193,6 @@ base.rest = (function () {
     /*
      * Delete a specific user with a given userId (admin only).
      * id: user to delete
-     *
      * example: base.rest.deleteUser(2);
      */
     deleteUser: function (userId) {
@@ -232,8 +227,8 @@ base.rest = (function () {
     },
 
     /*
-     * Delete a with a given trip
-     * id: trip to delete
+     * Deletes a trip
+     * id: tripid to delete
      *
      * example: base.rest.deleteTrip(1);
      */
@@ -241,19 +236,30 @@ base.rest = (function () {
       return baseFetch("/rest/trip/" + tripId, { method: "DELETE" });
     },
 
-    /*TODO: need back-end funtion for this
-     * Delete a passenger from trip
-     * id: trip to delete passenger from
+    /*
+     * Delete a passenger from the trip
+     * tripId: trip to delete passenger from
      *
-     * example: base.rest.deletePassengerTrip(1);
+     * example: base.rest.cancelPassengerTrip(1);
      */
-    deletePassengerTrip: function (tripId) {
-      return baseFetch("/rest/passengerTrip/" + tripId, { method: "DELETE" });
+    cancelPassengerTrip: function (tripId) {
+      return baseFetch("/rest/tripPassenger/" + tripId, { method: "DELETE" });
+    },
+
+    /*
+     * Cancel a driver trip
+     * tripId: the id of the trip that shall be cancelled
+     *
+     * example: base.rest.cancelDriverTrip(1);
+     */
+    cancelDriverTrip: function (tripId) {
+      return baseFetch("/rest/trip/driver/" + tripId, { method: "DELETE" });
     },
 
     /*
      * Fetches the trips of the driver
      * returns: an array of Trips
+     *
      * example: const trips = base.rest.getDriverTrips(1);
      */
     getDriverTrips: function () {
@@ -267,6 +273,7 @@ base.rest = (function () {
     /*
      * Books a trip
      * returns: a TripPassenger
+     *
      * example: const trips = base.rest.bookTrip(1);
      */
     bookTrip: function (trip) {
@@ -282,6 +289,7 @@ base.rest = (function () {
     /*
      * Fetches the trips of the passenger
      * returns: an array of Trips
+     *
      * example: const trips = base.rest.getPassengerTrips(1);
      */
     getPassengerTrips: function () {
@@ -292,16 +300,16 @@ base.rest = (function () {
         .then((trips) => trips.map((f) => new Trip(f)));
     },
     /*
-     * Fetches available shuttles based on search criteria.
+     * Fetches available trips based on search criteria.
      * from: the starting point
      * destination: the destination point
      * datetime: the desired departure datetime
      *
-     * function will return an array of JavaScript objects, each representing a shuttle
-     * example: const shuttles = base.rest.getShuttles('City A', 'City B', '2023-09-20 10:00');
+     * function will return an array of JavaScript objects, each representing a trip
+     * example: const trips = base.rest.getTrips('City A', 'City B', '2023-09-20 10:00');
      */
 
-    getShuttles: function (form) {
+    getTrips: function (form) {
       const queryParams = new URLSearchParams({
         fromLocationId: form.fromLocationId,
         toLocationId: form.toLocationId,

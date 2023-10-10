@@ -40,6 +40,7 @@ base.myTripsController = function () {
       td[4].textContent = duration;
       td[5].textContent = viewModel.trip.seatCapacity;
       td[6].textContent = viewModel.trip.driverId;
+      td[6].id = viewModel.trip.driverId;
       let now = new Date().getTime();
       //TODO: check status if cancelled add status button with "Cancelled".
       if (viewModel.trip.startTime > now) {
@@ -53,7 +54,7 @@ base.myTripsController = function () {
   };
 
   const view = {
-    // Creates HTML for each trip in model
+    // Creates partial HTML-code for each trip in model
     render: function () {
       const pt = this.pastTemplate();
       const ut = this.upcomingTemplate();
@@ -84,18 +85,15 @@ base.myTripsController = function () {
 
   const controller = {
     load: function () {
-      // Loads all first destinations and then the drivertrips from the server through the REST API, see res.js for definition.
+      // Loads first destinations and the user and then the trips from the server through the REST API, see rest.js for definition.
       // It will replace the model with the trips, and then render them through the view.
-
-      // should return a trip with information {From,	To,	Time of Departure,Expected Time of Arrival, Seats, Driver, passangers}
-
       let userPromise = base.rest.getUser();
       let locationPromise = base.rest.getLocations();
       Promise.all([userPromise, locationPromise]).then(function (array) {
         currentUser = array[0];
         locations = array[1];
         let role = currentUser.role.name;
-        //Admin gets all trips, should not be possible to book yourself as passenger if you are a driver, therefor no duplicates
+        //Admin gets all trips, should not be possible to book yourself as passenger if you are a driver, therefore no duplicates
         if (role == "DRIVER" || role == "ADMIN") {
           base.rest.getDriverTrips().then(function (trips) {
             model = trips.map((f) => new MyTripsViewModel(f));
@@ -118,18 +116,20 @@ base.myTripsController = function () {
       cancelButtons.forEach(
         (b) =>
           (b.onclick = function (event) {
-            let badge = view.createStatusButtons(event.target.id, "Cancelled", "bg-danger");
-            document.getElementById(event.target.id).replaceWith(badge);
-            //If user, delete passengerTrip and remove row
-            //If driver, update status to cancelled
-            if (currentUser.role.name == "USER") {
-              let tripRow = document.getElementById(event.target.id).parentNode.parentNode;
-              //base.rest.deletePassengerTrip() TODO: waiting for back-end
-              alert("base.rest.deletePassengerTrip() TODO: waiting for back-end");
-              tripRow.remove();
+            //If the user is a passenger on the trip, delete passengerTrip and remove row
+            //If the user is the driver on the trip, update status to cancelled
+            // Cancels the trips from the server through the REST API, see rest.js for definition.
+            let tripRow = document.getElementById(event.target.id).parentNode.parentNode;
+            let driverId = tripRow.children[6].id;
+            if (driverId != currentUser.id) {
+              base.rest.cancelPassengerTrip(event.target.id).then(function () {
+                tripRow.remove();
+              });
             } else {
-              //base.rest.cancelDriverTrip(), update trip status? TODO: waiting for back-end
-              alert("base.rest.cancelDriverTrip(), update trip status? TODO: waiting for back-end");
+              base.rest.cancelDriverTrip(event.target.id).then(function () {
+                let badge = view.createStatusButtons(event.target.id, "Cancelled", "bg-danger");
+                document.getElementById(event.target.id).replaceWith(badge);
+              });
             }
           }),
       );

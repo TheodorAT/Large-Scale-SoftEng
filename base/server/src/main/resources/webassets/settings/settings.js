@@ -7,9 +7,10 @@ var base = base || {};
 // the scripts are loaded in.
 
 base.settingsController = function () {
-  "use strict"; // add this to avoid some potential bugs
+  "use strict";
   let currentUser;
 
+  //Displays the current user's information
   const view = {
     render: function (user) {
       document.getElementById("userName").textContent = user.username;
@@ -24,12 +25,14 @@ base.settingsController = function () {
 
   const controller = {
     load: function () {
-      let userPromise = base.rest.getUser().then(function (user) {
+      // Loads the user from the server through the REST API, see rest.js for definition.
+      base.rest.getUser().then(function (user) {
         currentUser = user;
         view.render(user);
         document.getElementById("select-role").onchange = function (event) {
           let selectedIndex = event.target.selectedIndex;
           let selectedOption = event.target.options[selectedIndex].id;
+          //If role is Admin, ask the user if it wants to downgrade its role
           if (currentUser.isAdmin()) {
             const myModal = new bootstrap.Modal(document.getElementById("adminModal"));
             myModal.show();

@@ -5,7 +5,7 @@ base.mainController = (function () {
   const routingTable = {
     // first in table is the default
     search: {
-      partial: "searchForAvailableShuttles/search.html",
+      partial: "bookTrip/book-trip.html",
       controller: base.searchTripController,
     },
     "driver-trips": {
