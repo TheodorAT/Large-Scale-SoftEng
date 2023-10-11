@@ -14,8 +14,7 @@ import org.eclipse.jetty.server.session.Session;
 import java.util.Date;
 
 /**
- * The TripDataAccess class provides data access methods for trip-related data
- * in the database.
+ * The TripDataAccess class provides data access methods for trip-related data in the database.
  *
  * This class extends the DataAccess class.
  *
@@ -41,11 +40,13 @@ public class TripDataAccess extends DataAccess<Trip> {
     }
 
     /**
-     * Adds a new trip to the database for a specific driver. If the driverId is 0,
-     * the trip is added as a request with the driverID set to NULL.
+     * Adds a new trip to the database for a specific driver. If the driverId is 0, the trip is added as a request with
+     * the driverID set to NULL.
      *
-     * @param driverId The ID of the driver adding the trip.
-     * @param trip     The Trip object to be added.
+     * @param driverId
+     *            The ID of the driver adding the trip.
+     * @param trip
+     *            The Trip object to be added.
      * 
      * @return The newly added Trip object with updated details.
      */
@@ -74,8 +75,10 @@ public class TripDataAccess extends DataAccess<Trip> {
     /**
      * Cancels a driver's trip by updating it's status to CANCELLED
      *
-     * @param driverId The unique identifier of the driver.
-     * @param tripId   The unique identifier of the trip to be canceled.
+     * @param driverId
+     *            The unique identifier of the driver.
+     * @param tripId
+     *            The unique identifier of the trip to be canceled.
      * 
      * @return true if the trip was successfully canceled, false otherwise.
      */
@@ -85,14 +88,17 @@ public class TripDataAccess extends DataAccess<Trip> {
     }
 
     /**
-     * Retrieves a list of available trips based on the parameters. Retrieves a list
-     * of available trips based on the parameters. Within a 24 hour period.
+     * Retrieves a list of available trips based on the parameters. Retrieves a list of available trips based on the
+     * parameters. Within a 24 hour period.
      * 
-     * @param fromLocationId ID of starting location.
+     * @param fromLocationId
+     *            ID of starting location.
      * 
-     * @param toLocationId   ID of destination.
+     * @param toLocationId
+     *            ID of destination.
      * 
-     * @param startTime      Start time of trips to search for
+     * @param startTime
+     *            Start time of trips to search for
      * 
      * @return A list of Trip objects (available trips matching the parameters).
      * 
@@ -108,7 +114,8 @@ public class TripDataAccess extends DataAccess<Trip> {
     /**
      * Retrieves a list of created trips belonging to the driverId.
      * 
-     * @param driverId ID of driver
+     * @param driverId
+     *            ID of driver
      * 
      * @return A list of all trips created by the driver.
      */
@@ -120,7 +127,8 @@ public class TripDataAccess extends DataAccess<Trip> {
     /**
      * Retrieves a list of booked trips belonging to the passengerId.
      * 
-     * @param passengerId ID of passenger
+     * @param passengerId
+     *            ID of passenger
      * 
      * @return A list of all trips booked by the passenger.
      */
@@ -132,7 +140,8 @@ public class TripDataAccess extends DataAccess<Trip> {
     /**
      * Retrieves a Trip object from the database with trip ID.
      *
-     * @param tripId ID of the trip to retrieve
+     * @param tripId
+     *            ID of the trip to retrieve
      * 
      * @return Trip object with the ID
      */
@@ -142,11 +151,13 @@ public class TripDataAccess extends DataAccess<Trip> {
     }
 
     /**
-     * Updates the driver of a trip with the given driver ID and trip ID. The driver
-     * ID must not be null and the trip must not already have a driver assigned.
+     * Updates the driver of a trip with the given driver ID and trip ID. The driver ID must not be null and the trip
+     * must not already have a driver assigned.
      * 
-     * @param driverId The ID of the driver to assign to the trip
-     * @param tripId   The ID of the trip to update
+     * @param driverId
+     *            The ID of the driver to assign to the trip
+     * @param tripId
+     *            The ID of the trip to update
      * 
      * @return Updated Trip object
      */
