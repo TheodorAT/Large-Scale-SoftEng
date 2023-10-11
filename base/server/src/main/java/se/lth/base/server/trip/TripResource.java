@@ -13,8 +13,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * The TripResource class provides endpoints for managing trips within the system. The class is part of the REST API,
- * which allows for HTTP communication to interface with trip data and functionalities.
+ * The TripResource class provides endpoints for managing trips within the
+ * system. The class is part of the REST API, which allows for HTTP
+ * communication to interface with trip data and functionalities.
  * 
  * @author Isak Wahlqvist
  */
@@ -33,8 +34,7 @@ public class TripResource {
      *
      * HTTP Request Type: POST Path: "trip"
      *
-     * @param trip
-     *            The Trip object representing the trip to be created.
+     * @param trip The Trip object representing the trip to be created.
      * 
      * @return The newly created Trip object.
      */
@@ -49,17 +49,16 @@ public class TripResource {
     /**
      * Retrieve a list of trips matching specified parameters.
      * 
-     * @param fromLocationId
-     *            ID of the starting as parameter when searching for the trips.
+     * @param fromLocationId ID of the starting as parameter when searching for the
+     *                       trips.
      * 
-     * @param toLocationId
-     *            ID of the destination as parameter when searching for the trips.
+     * @param toLocationId   ID of the destination as parameter when searching for
+     *                       the trips.
      * 
-     * @param startTime
-     *            Start time as parameter when searching for the trips.
+     * @param startTime      Start time as parameter when searching for the trips.
      * 
-     * @return A list of Trip objects representing trips that match the parameters. Returned to the client in JSON
-     *         format.
+     * @return A list of Trip objects representing trips that match the parameters.
+     *         Returned to the client in JSON format.
      *
      */
     @GET
@@ -91,8 +90,7 @@ public class TripResource {
      *
      * HTTP Request Type: GET Path: "trip/passenger/{passengerId}"
      *
-     * @param passengerId
-     *            The ID of the passenger whose trips are to be retrieved.
+     * @param passengerId The ID of the passenger whose trips are to be retrieved.
      * 
      * @return A List of Trip objects representing the passenger's trips.
      */
@@ -126,8 +124,7 @@ public class TripResource {
      *
      * HTTP Request Type: GET Path: "trip/driver/{driverId}"
      *
-     * @param driverId
-     *            The ID of the driver whose trips are to be retrieved.
+     * @param driverId The ID of the driver whose trips are to be retrieved.
      * 
      * @return A List of Trip objects representing the driver's trips.
      */
@@ -143,8 +140,7 @@ public class TripResource {
     /**
      * Cancels a drivers trip
      * 
-     * @param tripId
-     *            the unique ID for the trip which will be cancelled
+     * @param tripId the unique ID for the trip which will be cancelled
      * 
      */
     @Path("driver/{tripId}")
@@ -154,5 +150,44 @@ public class TripResource {
         if (!tripDao.cancelDriverTrip(this.user.getId(), tripId)) {
             throw new WebApplicationException("Not found trip", Response.Status.NOT_FOUND);
         }
+    }
+
+    /**
+     * Updates the driver of a trip with the given trip ID. Only Drivers are allowed
+     * to access this resource.
+     * 
+     * @param tripId the ID of the trip to update the driver for
+     * 
+     * @return the updated Trip object
+     * 
+     * @throws WebApplicationException if the trip is not found
+     */
+    @Path("{tripId}")
+    @PUT
+    @RolesAllowed(Role.Names.DRIVER)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Trip updateDriver(@PathParam("tripId") int tripId) {
+        Trip trip = tripDao.updateDriver(this.user.getId(), tripId);
+        if (trip == null) {
+            throw new WebApplicationException("Trip not found", Response.Status.NOT_FOUND);
+        }
+        return trip;
+    }
+
+    /**
+     * This method is used to request a trip by a passenger. It adds the trip to the
+     * database and returns the added trip.
+     * 
+     * @param trip The trip object containing the details of the requested trip.
+     * 
+     * @return The added trip object.
+     */
+    @Path("passenger/request")
+    @POST
+    @RolesAllowed(Role.Names.USER)
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Trip requestTrip(Trip trip) {
+        Trip result = tripDao.addTrip(0, trip);
+        return result;
     }
 }

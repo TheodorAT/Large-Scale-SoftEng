@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import se.lth.base.server.BaseResourceTest;
 import se.lth.base.server.tripPassenger.TripPassenger;
+import se.lth.base.server.user.Credentials;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
@@ -54,12 +55,15 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of available trips based on location parameters.
+     * Test method to validate the retrieval of available trips based on location
+     * parameters.
      * 
-     * Test procedure: 1. Creating trips and performing HTTP POST request to add new trips to the database. 2.
-     * Performing a HTTP GET request to retrieve the available trips matching the given parameteters. 3. Check the list
-     * is not null or empty. 4. Validates the size of the list. 5. Validates the fromLocation and destination of the
-     * first trip in the list. 6. TOOD - more tests to validate
+     * Test procedure: 1. Creating trips and performing HTTP POST request to add new
+     * trips to the database. 2. Performing a HTTP GET request to retrieve the
+     * available trips matching the given parameteters. 3. Check the list is not
+     * null or empty. 4. Validates the size of the list. 5. Validates the
+     * fromLocation and destination of the first trip in the list. 6. TOOD - more
+     * tests to validate
      * 
      */
     @Test
@@ -99,11 +103,13 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of all trips belonging to current driver user.
+     * Test method to validate the retrieval of all trips belonging to current
+     * driver user.
      * 
-     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to database using HTTP POST request. 3.
-     * Retrieve list of trips for driver using HTTP GET. 4. Compare size of list with number of added trips. 5. Compare
-     * IDs of trips.
+     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to
+     * database using HTTP POST request. 3. Retrieve list of trips for driver using
+     * HTTP GET. 4. Compare size of list with number of added trips. 5. Compare IDs
+     * of trips.
      */
     @Test
     public void getTripsFromDriver() {
@@ -127,12 +133,14 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of all trips belonging to a specific driver.
+     * Test method to validate the retrieval of all trips belonging to a specific
+     * driver.
      * 
-     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to database using HTTP POST request. 3.
-     * Validate that non admin user is not able to retrieve list using driver/{driverId} path. 4. Sign in to admin
-     * account. 5. Retrieve list of trips for driverId using HTTP GET. 6. Compare size of list with number of added
-     * trips. 7. Compare IDs of trips.
+     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to
+     * database using HTTP POST request. 3. Validate that non admin user is not able
+     * to retrieve list using driver/{driverId} path. 4. Sign in to admin account.
+     * 5. Retrieve list of trips for driverId using HTTP GET. 6. Compare size of
+     * list with number of added trips. 7. Compare IDs of trips.
      */
     @Test
     public void getTripsFromDriverId() {
@@ -164,53 +172,59 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of all trips booked by current passenger user.
+     * Test method to validate the retrieval of all trips booked by current
+     * passenger user.
      * 
-     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to database using HTTP POST request. 3.
-     * Switch to passenger account. 4. Add booked trips as passenger to database using HTTP POST. 4. Retrieve list of
-     * booked trips as passenger. 5. Compare size of list with number of booked trips. 6. Compare IDs of trips.
+     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to
+     * database using HTTP POST request. 3. Switch to passenger account. 4. Add
+     * booked trips as passenger to database using HTTP POST. 4. Retrieve list of
+     * booked trips as passenger. 5. Compare size of list with number of booked
+     * trips. 6. Compare IDs of trips.
      */
     @Test
     public void getTripsAsPassenger() {
-        logout();
-        login(DRIVER_CREDENTIALS);
-
-        Trip t1 = new Trip(1, 1, 1, 2, 10200, 12600, 4);
-        Trip t2 = new Trip(2, 1, 1, 2, 10300, 12700, 4);
-
-        Entity<Trip> e1 = Entity.entity(t1, MediaType.APPLICATION_JSON);
-        Entity<Trip> e2 = Entity.entity(t1, MediaType.APPLICATION_JSON);
-
-        target("trip").request().post(e1, Trip.class);
-        target("trip").request().post(e2, Trip.class);
-
-        logout();
-        login(TEST_CREDENTIALS);
-
-        Entity<Integer> eId1 = Entity.entity(t1.getId(), MediaType.APPLICATION_JSON);
-        Entity<Integer> eId2 = Entity.entity(t2.getId(), MediaType.APPLICATION_JSON);
-
-        target("tripPassenger").request().post(eId1, TripPassenger.class);
-        target("tripPassenger").request().post(eId2, TripPassenger.class);
+        addTestTrips();
 
         List<Trip> trips = target("trip").path("passenger").request().get(TRIP_LIST);
 
         assertEquals(2, trips.size());
-        assertEquals(t1.getId(), trips.get(0).getId());
-        assertEquals(t2.getId(), trips.get(1).getId());
+        assertEquals(1, trips.get(0).getId());
+        assertEquals(2, trips.get(1).getId());
     }
 
     /**
-     * Test method to validate the retrieval of all trips booked by a specific passengerId.
+     * Test method to validate the retrieval of all trips booked by a specific
+     * passengerId.
      * 
-     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to database using HTTP POST request. 3.
-     * Switch to passenger account. 4. Add booked trips as passenger to database using HTTP POST. 4. Validate that non
-     * admin user is not able to retrieve list using passenger/{passengerId} path. 5. Sign in to admin account. 6.
-     * Retrieve list of booked trips for passengerId. 7. Compare size of list with number of booked trips. 8. Compare
+     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to
+     * database using HTTP POST request. 3. Switch to passenger account. 4. Add
+     * booked trips as passenger to database using HTTP POST. 4. Validate that non
+     * admin user is not able to retrieve list using passenger/{passengerId} path.
+     * 5. Sign in to admin account. 6. Retrieve list of booked trips for
+     * passengerId. 7. Compare size of list with number of booked trips. 8. Compare
      * IDs of trips.
      */
     @Test
     public void getTripsAsPassengerId() {
+
+        addTestTrips();
+
+        assertThrows(javax.ws.rs.ForbiddenException.class, () -> {
+            target("trip").path("passenger").path(Integer.toString(TEST.getId())).request().get(TRIP_LIST);
+        });
+
+        logout();
+        login(ADMIN_CREDENTIALS);
+
+        List<Trip> trips = target("trip").path("passenger").path(Integer.toString(TEST.getId())).request()
+                .get(TRIP_LIST);
+
+        assertEquals(2, trips.size());
+        assertEquals(1, trips.get(0).getId());
+        assertEquals(2, trips.get(1).getId());
+    }
+
+    private void addTestTrips() {
         logout();
         login(DRIVER_CREDENTIALS);
 
@@ -231,20 +245,6 @@ public class TripResourceTest extends BaseResourceTest {
 
         target("tripPassenger").request().post(eId1, TripPassenger.class);
         target("tripPassenger").request().post(eId2, TripPassenger.class);
-
-        assertThrows(javax.ws.rs.ForbiddenException.class, () -> {
-            target("trip").path("passenger").path(Integer.toString(TEST.getId())).request().get(TRIP_LIST);
-        });
-
-        logout();
-        login(ADMIN_CREDENTIALS);
-
-        List<Trip> trips = target("trip").path("passenger").path(Integer.toString(TEST.getId())).request()
-                .get(TRIP_LIST);
-
-        assertEquals(2, trips.size());
-        assertEquals(t1.getId(), trips.get(0).getId());
-        assertEquals(t2.getId(), trips.get(1).getId());
     }
 
     @Test
@@ -290,5 +290,56 @@ public class TripResourceTest extends BaseResourceTest {
         target("trip").request().post(Entity.entity(trip2, MediaType.APPLICATION_JSON), Trip.class);
         target("trip").request().post(Entity.entity(trip3, MediaType.APPLICATION_JSON), Trip.class);
 
+    }
+
+    @Test
+    public void requestTrip() {
+        Trip returnedTrip = createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
+
+        assertEquals(0, returnedTrip.getDriverId());
+    }
+
+    @Test
+    public void updateDriver() {
+        Trip returnedTrip = createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
+
+        assertEquals(0, returnedTrip.getDriverId());
+        assertEquals(TripStatus.REQUESTED.getTripStatus(), returnedTrip.getStatus());
+
+        Trip updatedTrip = updateTripDriver(returnedTrip.getId(), DRIVER_CREDENTIALS);
+
+        assertEquals(DRIVER.getId(), updatedTrip.getDriverId());
+        assertEquals(TripStatus.ACTIVE.getTripStatus(), updatedTrip.getStatus());
+    }
+
+    @Test
+    public void updateDriverTripWithDriver() {
+        Trip returnedTrip = createSampleTrip("trip", ADMIN_CREDENTIALS);
+
+        assertEquals(ADMIN.getId(), returnedTrip.getDriverId());
+
+        Trip updatedTrip = updateTripDriver(returnedTrip.getId(), DRIVER_CREDENTIALS);
+
+        // Driver did not change
+        assertEquals(ADMIN.getId(), updatedTrip.getDriverId());
+    }
+
+    private Trip createSampleTrip(String path, Credentials credentials) {
+        login(credentials);
+
+        Trip trip = new Trip(0, 0, 1, 2, 10200, 0, 4);
+        Entity<Trip> e = Entity.entity(trip, MediaType.APPLICATION_JSON);
+
+        Trip returnedTrip = target(path).request().post(e, Trip.class);
+        return returnedTrip;
+    }
+
+    private Trip updateTripDriver(int tripId, Credentials credentials) {
+        logout();
+        login(credentials);
+
+        Entity<Integer> eId = Entity.entity(0, MediaType.APPLICATION_JSON);
+
+        return target("trip").path("" + tripId).request().put(eId, Trip.class);
     }
 }
