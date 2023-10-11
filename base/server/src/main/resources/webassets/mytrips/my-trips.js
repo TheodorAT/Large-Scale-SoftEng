@@ -42,14 +42,28 @@ base.myTripsController = function () {
       td[6].textContent = viewModel.trip.driverId;
       td[6].id = viewModel.trip.driverId;
       let now = new Date().getTime();
-      //TODO: check status if cancelled add status button with "Cancelled".
-      if (viewModel.trip.startTime > now) {
-        let button = view.createCancelButton(viewModel.trip.id);
-        td[7].children[0] ? td[7].children[0].replaceWith(button) : td[7].appendChild(button);
-      } else {
-        let status = view.createStatusButtons(viewModel.trip.id, "Completed", "bg-success");
-        td[7].children[0] ? td[7].children[0].replaceWith(status) : td[7].appendChild(status);
+      //Status: ACTIVE(1), CANCELLED(2), REQUESTED(3);
+      let button;
+      switch (viewModel.trip.status_id) {
+        case 1:
+          //ACTIVE(1) if active it should display a cancel button
+          button = view.createButton(viewModel.trip.id, "Cancel",  "btn-danger");
+          break;
+        case 2:
+          //CANCELLED(2)  if cancelled, should be able to book?
+          button = view.createStatusButtons(viewModel.trip.id, "Cancelled", "bg-danger");
+          break;
+        case 3:
+            //REQUESTED(3) if requested, should be able to book
+            button = view.createButton(viewModel.trip.id, "Book", "btn-primary");
+          break;
+        default:
+          button = view.createStatusButtons(viewModel.trip.id, "Completed", "bg-success");
       }
+      if (viewModel.trip.startTime < now) {
+        button = view.createStatusButtons(viewModel.trip.id, "Completed", "bg-success");
+      }
+      td[7].children[0] ? td[7].children[0].replaceWith(button) : td[7].appendChild(button);
     };
   };
 
@@ -67,11 +81,11 @@ base.myTripsController = function () {
     upcomingTemplate: function () {
       return document.getElementById("upcoming-trips-template");
     },
-    createCancelButton: function (id) {
+    createButton: function (id, title, type) {
       let button = document.createElement("button");
-      button.innerHTML = "Cancel";
+      button.innerHTML = title;
       button.id = id;
-      button.classList.add("btn", "btn-danger");
+      button.classList.add("btn",type);
       return button;
     },
     createStatusButtons: function (id, title, type) {
@@ -127,8 +141,7 @@ base.myTripsController = function () {
               });
             } else {
               base.rest.cancelDriverTrip(event.target.id).then(function () {
-                let badge = view.createStatusButtons(event.target.id, "Cancelled", "bg-danger");
-                document.getElementById(event.target.id).replaceWith(badge);
+                controller.load();
               });
             }
           }),
