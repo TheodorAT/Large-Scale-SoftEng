@@ -40,7 +40,8 @@ public class TripDataAccess extends DataAccess<Trip> {
     }
 
     /**
-     * Adds a new trip to the database for a specific driver.
+     * Adds a new trip to the database for a specific driver. If the driverId is 0, the trip is added as a request with
+     * the driverID set to NULL.
      *
      * @param driverId
      *            The ID of the driver adding the trip.
@@ -50,14 +51,25 @@ public class TripDataAccess extends DataAccess<Trip> {
      * @return The newly added Trip object with updated details.
      */
     public Trip addTrip(int driverId, Trip trip) {
-        String sql = "INSERT INTO trips (driver_id, from_location_id, to_location_id, start_time, end_time, seat_capacity) VALUES (?, ?, ?, ?, ?, ?)";
-        //
+        String sql = "INSERT INTO trips (driver_id, from_location_id, to_location_id, start_time, end_time, seat_capacity, status_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
         // Right now it is just the starttime + 1 hour (3600000 ms)
         long end_time = trip.getStartTime() + 3600000;
-        int trip_id = insert(sql, driverId, trip.getFromLocationId(), trip.getToLocationId(),
-                new Timestamp(trip.getStartTime()), new Timestamp(end_time), trip.getSeatCapacity());
+
+        Object[] params = { driverId, trip.getFromLocationId(), trip.getToLocationId(),
+                new Timestamp(trip.getStartTime()), new Timestamp(end_time), trip.getSeatCapacity(), trip.getStatus() };
+
+        // Check if the driverId is 0, if so, set it to null and set the status to
+        // REQUESTED
+        if (driverId == 0) {
+            params[0] = null;
+            params[6] = TripStatus.REQUESTED.getTripStatus();
+        }
+
+        int trip_id = insert(sql, params);
+
         return new Trip(trip_id, driverId, trip.getFromLocationId(), trip.getToLocationId(), trip.getStartTime(),
-                end_time, trip.getSeatCapacity());
+                end_time, trip.getSeatCapacity(), (int) params[6]);
     }
 
     /**
@@ -123,6 +135,36 @@ public class TripDataAccess extends DataAccess<Trip> {
     public List<Trip> getTripsAsPassenger(int passengerId) {
         String sql = "SELECT trips.* FROM trips JOIN trip_passengers ON trips.trip_id = trip_passengers.trip_id WHERE trip_passengers.user_id = ?";
         return query(sql, passengerId);
+    }
+
+    /**
+     * Retrieves a Trip object from the database with trip ID.
+     *
+     * @param tripId
+     *            ID of the trip to retrieve
+     * 
+     * @return Trip object with the ID
+     */
+    public Trip getTrip(int tripId) {
+        String sql = "SELECT * FROM trips WHERE trip_id = ?";
+        return queryFirst(sql, tripId);
+    }
+
+    /**
+     * Updates the driver of a trip with the given driver ID and trip ID. The driver ID must not be null and the trip
+     * must not already have a driver assigned.
+     * 
+     * @param driverId
+     *            The ID of the driver to assign to the trip
+     * @param tripId
+     *            The ID of the trip to update
+     * 
+     * @return Updated Trip object
+     */
+    public Trip updateDriver(int driverId, int tripId) {
+        String sql = "UPDATE trips SET driver_id = ?, status_id = ? WHERE trip_id = ? AND driver_id IS NULL";
+        execute(sql, driverId, TripStatus.ACTIVE.getTripStatus(), tripId);
+        return getTrip(tripId);
     }
 
 }

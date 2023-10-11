@@ -56,7 +56,7 @@ CREATE TABLE trip_status(status_id TINYINT,
 
 CREATE TABLE trips (
     trip_id INT AUTO_INCREMENT NOT NULL,
-    driver_id INT NOT NULL,
+    driver_id INT,
     from_location_id INT NOT NULL,
     to_location_id INT NOT NULL,
     -- using TIMESTAMP for both, allowing us to skip the date
