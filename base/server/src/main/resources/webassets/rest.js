@@ -247,6 +247,22 @@ base.rest = (function () {
     },
 
     /*
+     * Request a new passenger trip
+     * returns: Trip
+     *
+     * example: let trip = base.rest.requestTrip({fromLocationId: 2, toLocationId: 1, startTime: 45354})
+     */
+    requestTrip: function (trip) {
+      return baseFetch("/rest/trip/passenger/request", {
+        method: "POST",
+        body: JSON.stringify(trip),
+        headers: jsonHeader,
+      })
+        .then((response) => response.json())
+        .then((u) => new Trip(u));
+    },
+
+    /*
      * Cancel a driver trip
      * tripId: the id of the trip that shall be cancelled
      *
@@ -285,7 +301,6 @@ base.rest = (function () {
       })
         .then(function (response) {
           if (!response.ok) {
-            console.log("not ok");
             return new Promise((resolve) => resolve(response.json())).then(function (errorJson) {
               throw Error(errorJson.error);
             });

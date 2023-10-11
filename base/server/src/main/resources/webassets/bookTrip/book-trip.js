@@ -109,13 +109,15 @@ base.searchTripController = function () {
       };
       document.getElementById("requestbtn").onclick = function (event) {
         document.getElementById("request-trip").hidden = true;
-        let fromId = document.getElementById("reqfrom").getAttribute("from");
-        let toId = document.getElementById("reqto").getAttribute("to");
-        let starTime = document.getElementById("reqdate").getAttribute("time");
-        //base.rest.requestTrip({ fromLocationId: fromId, toLocationId: toId, startTime: startTime })
+        let from = document.getElementById("reqfrom");
+        let to = document.getElementById("reqto");
+        let startTime = document.getElementById("reqdate");
+        //TODO
+        // Ask backend for requestTrip-bookings rest calls.
+        //base.rest.requestTrip({ fromLocationId: from.getAttribute("from");, toLocationId: to.getAttribute("to"), startTime: startTime.getAttribute("time") })
         controller.updateModal(
           "The trip was requested (TODO: rest-call not implemented yet)!",
-          "Go to my trips to see the status of your trips.",
+          "From: " + from.innerText + " To: " + to.innerText + " Date: " + startTime.innerText,
           true,
         );
       };
@@ -176,7 +178,11 @@ base.searchTripController = function () {
               .bookTrip(tripId)
               .then((bookedTrip) => {
                 document.getElementById("available-trips").hidden = true;
-                controller.updateModal("The trip was booked successfully!", "TODO, tripinfo", true);
+                controller.updateModal(
+                  "The trip was booked successfully!",
+                  "TODO restcall to get tripinfo by id",
+                  true,
+                );
               })
               .catch((error) => {
                 let msg = "Something went wrong, try again later.";
