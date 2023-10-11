@@ -350,5 +350,15 @@ base.rest = (function () {
         .then((response) => response.json())
         .then((trips) => trips.map((f) => new Trip(f)));
     },
+
+    getAvailableSeats: function (tripId) {
+      return baseFetch("rest/tripPassenger/availableSeats", {
+        method: "POST",
+        body: JSON.stringify(tripId),
+        headers: jsonHeader,
+      }).then(function (response) {
+        return response;
+      });
+    },
   };
 })();

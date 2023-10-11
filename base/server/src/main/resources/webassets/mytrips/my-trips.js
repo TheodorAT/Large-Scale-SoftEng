@@ -38,7 +38,9 @@ base.myTripsController = function () {
       td[3].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
       const duration = new Date(end - start).toLocaleTimeString();
       td[4].textContent = duration;
-      td[5].textContent = viewModel.trip.seatCapacity;
+
+      td[5].textContent = base.rest.getAvailableSeats(viewModel.trip.id) + " / " + viewModel.trip.seatCapacity;
+
       td[6].textContent = viewModel.trip.driverId;
       td[6].id = viewModel.trip.driverId;
       let now = new Date().getTime();
