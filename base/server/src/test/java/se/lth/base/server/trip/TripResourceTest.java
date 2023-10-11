@@ -55,15 +55,12 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of available trips based on location
-     * parameters.
+     * Test method to validate the retrieval of available trips based on location parameters.
      * 
-     * Test procedure: 1. Creating trips and performing HTTP POST request to add new
-     * trips to the database. 2. Performing a HTTP GET request to retrieve the
-     * available trips matching the given parameteters. 3. Check the list is not
-     * null or empty. 4. Validates the size of the list. 5. Validates the
-     * fromLocation and destination of the first trip in the list. 6. TOOD - more
-     * tests to validate
+     * Test procedure: 1. Creating trips and performing HTTP POST request to add new trips to the database. 2.
+     * Performing a HTTP GET request to retrieve the available trips matching the given parameteters. 3. Check the list
+     * is not null or empty. 4. Validates the size of the list. 5. Validates the fromLocation and destination of the
+     * first trip in the list. 6. TOOD - more tests to validate
      * 
      */
     @Test
@@ -103,13 +100,11 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of all trips belonging to current
-     * driver user.
+     * Test method to validate the retrieval of all trips belonging to current driver user.
      * 
-     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to
-     * database using HTTP POST request. 3. Retrieve list of trips for driver using
-     * HTTP GET. 4. Compare size of list with number of added trips. 5. Compare IDs
-     * of trips.
+     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to database using HTTP POST request. 3.
+     * Retrieve list of trips for driver using HTTP GET. 4. Compare size of list with number of added trips. 5. Compare
+     * IDs of trips.
      */
     @Test
     public void getTripsFromDriver() {
@@ -133,14 +128,12 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of all trips belonging to a specific
-     * driver.
+     * Test method to validate the retrieval of all trips belonging to a specific driver.
      * 
-     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to
-     * database using HTTP POST request. 3. Validate that non admin user is not able
-     * to retrieve list using driver/{driverId} path. 4. Sign in to admin account.
-     * 5. Retrieve list of trips for driverId using HTTP GET. 6. Compare size of
-     * list with number of added trips. 7. Compare IDs of trips.
+     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to database using HTTP POST request. 3.
+     * Validate that non admin user is not able to retrieve list using driver/{driverId} path. 4. Sign in to admin
+     * account. 5. Retrieve list of trips for driverId using HTTP GET. 6. Compare size of list with number of added
+     * trips. 7. Compare IDs of trips.
      */
     @Test
     public void getTripsFromDriverId() {
@@ -172,14 +165,11 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of all trips booked by current
-     * passenger user.
+     * Test method to validate the retrieval of all trips booked by current passenger user.
      * 
-     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to
-     * database using HTTP POST request. 3. Switch to passenger account. 4. Add
-     * booked trips as passenger to database using HTTP POST. 4. Retrieve list of
-     * booked trips as passenger. 5. Compare size of list with number of booked
-     * trips. 6. Compare IDs of trips.
+     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to database using HTTP POST request. 3.
+     * Switch to passenger account. 4. Add booked trips as passenger to database using HTTP POST. 4. Retrieve list of
+     * booked trips as passenger. 5. Compare size of list with number of booked trips. 6. Compare IDs of trips.
      */
     @Test
     public void getTripsAsPassenger() {
@@ -193,15 +183,12 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of all trips booked by a specific
-     * passengerId.
+     * Test method to validate the retrieval of all trips booked by a specific passengerId.
      * 
-     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to
-     * database using HTTP POST request. 3. Switch to passenger account. 4. Add
-     * booked trips as passenger to database using HTTP POST. 4. Validate that non
-     * admin user is not able to retrieve list using passenger/{passengerId} path.
-     * 5. Sign in to admin account. 6. Retrieve list of booked trips for
-     * passengerId. 7. Compare size of list with number of booked trips. 8. Compare
+     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to database using HTTP POST request. 3.
+     * Switch to passenger account. 4. Add booked trips as passenger to database using HTTP POST. 4. Validate that non
+     * admin user is not able to retrieve list using passenger/{passengerId} path. 5. Sign in to admin account. 6.
+     * Retrieve list of booked trips for passengerId. 7. Compare size of list with number of booked trips. 8. Compare
      * IDs of trips.
      */
     @Test
