@@ -59,7 +59,7 @@ public class TripPassengerResource {
     @Path("/availableSeats")
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public int getAvailableSeats(Trip trip) {
-        return tripPassengerDao.getAvailableSeats(trip);
+    public int getAvailableSeats(int tripId) {
+        return tripPassengerDao.getAvailableSeats(tripId);
     }
 }

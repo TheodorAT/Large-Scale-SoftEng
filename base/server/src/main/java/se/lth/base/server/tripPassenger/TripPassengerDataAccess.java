@@ -56,10 +56,10 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
         return execute(sql, passengerId, tripId) > 0;
     }
 
-    public int getAvailableSeats(Trip trip) {
+    public int getAvailableSeats(int tripId) {
         String sql = "SELECT COUNT(*) FROM trip_passengers WHERE trip_id = ?";
-        int bookedSeats = count(sql, trip.getId());
-        int availableSeats = trip.getSeatCapacity() - bookedSeats;
+        int bookedSeats = count(sql, tripId);
+        int availableSeats = bookedSeats;
         return availableSeats;
     }
 }
