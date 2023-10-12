@@ -211,6 +211,10 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(2, trips.get(1).getId());
     }
 
+    /**
+     * Helper method to add a two test trips to the database. Works by login in as driver sending requests to create the
+     * trips, then logging out and logging in as passenger and sending requests to book the trips.
+     */
     private void addTestTrips() {
         logout();
         login(DRIVER_CREDENTIALS);
@@ -311,6 +315,16 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(ADMIN.getId(), updatedTrip.getDriverId());
     }
 
+    /**
+     * Creates a sample trip by sending a POST request to the specified path with the given credentials and trip data.
+     * 
+     * @param path
+     *            the path to send the POST request to
+     * @param credentials
+     *            the credentials to use for authentication
+     * 
+     * @return the created trip object
+     */
     private Trip createSampleTrip(String path, Credentials credentials) {
         login(credentials);
 
@@ -321,6 +335,16 @@ public class TripResourceTest extends BaseResourceTest {
         return returnedTrip;
     }
 
+    /**
+     * Updates the driver of a trip
+     *
+     * @param tripId
+     *            the ID of the trip to update
+     * @param credentials
+     *            the credentials to use for new driver
+     * 
+     * @return the updated Trip object
+     */
     private Trip updateTripDriver(int tripId, Credentials credentials) {
         logout();
         login(credentials);
@@ -328,5 +352,16 @@ public class TripResourceTest extends BaseResourceTest {
         Entity<Integer> eId = Entity.entity(0, MediaType.APPLICATION_JSON);
 
         return target("trip").path("" + tripId).request().put(eId, Trip.class);
+    }
+
+    @Test
+    public void getTrip() {
+        Trip returnedTrip = createSampleTrip("trip", ADMIN_CREDENTIALS);
+
+        int tripId = returnedTrip.getId();
+
+        Trip updatedTrip = target("trip").path("" + returnedTrip.getId()).request().get(Trip.class);
+
+        assertEquals(tripId, updatedTrip.getId());
     }
 }
