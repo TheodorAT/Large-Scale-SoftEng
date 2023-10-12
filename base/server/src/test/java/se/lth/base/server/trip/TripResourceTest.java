@@ -61,8 +61,11 @@ public class TripResourceTest extends BaseResourceTest {
      * Performing a HTTP GET request to retrieve the available trips matching the given parameteters. 3. Check the list
      * is not null or empty. 4. Validates the size of the list. 5. Validates the fromLocation and destination of the
      * first trip in the list. 6. TOOD - more tests to validate
+     * 
      * @desc validate the retrieval of available trips based on location parameters
+     * 
      * @task ETS-895
+     * 
      * @story ETS-610
      */
     @Test

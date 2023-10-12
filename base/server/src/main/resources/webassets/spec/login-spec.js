@@ -23,10 +23,10 @@ describe("loginController", function () {
   });
 
   /**
-    * @desc test that there is a call to loginUser when the form is submitted
-    * @task ETS-1393
-    * @story ETS-1392
-  */
+   * @desc test that there is a call to loginUser when the form is submitted
+   * @task ETS-1393
+   * @story ETS-1392
+   */
   it('should redirect user to "/" if already logged in', function (done) {
     var userPromise = Promise.resolve(test);
     spyOn(base.rest, "getUser").and.returnValue(Promise.resolve(test));
@@ -48,10 +48,10 @@ describe("loginController", function () {
     });
 
     /**
-      * @desc test that there is a call to loginUser when the form is submitted
-      * @task
-      * @story
-    */
+     * @desc test that there is a call to loginUser when the form is submitted
+     * @task
+     * @story
+     */
     it("should call loginUser on form submit", function () {
       document.getElementById("username").value = "test";
       document.getElementById("password").value = "password1";
