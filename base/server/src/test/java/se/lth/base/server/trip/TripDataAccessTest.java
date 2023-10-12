@@ -24,6 +24,16 @@ public class TripDataAccessTest extends BaseDataAccessTest {
     private TripPassengerDataAccess tripPassengerDao = new TripPassengerDataAccess(
             Config.instance().getDatabaseDriver());
 
+    /**
+     * Test case for adding a trip to the database. It tests if the trip is added successfully by checking if the driver
+     * ID, start time and seat capacity are correct.
+     * 
+     * @desc Test adding a trip to the database.
+     * 
+     * @task ETS-988
+     * 
+     * @story ETS-592
+     */
     @Test
     public void addTrip() {
         Trip data = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10200, 10500, 5));
@@ -118,6 +128,15 @@ public class TripDataAccessTest extends BaseDataAccessTest {
         assertEquals(trips.get(1).getId(), trip2.getId());
     }
 
+    /**
+     * Tests the availableTrips method by adding 5 trips with 6 hours between each trip. The returned list should be 4
+     * 
+     * @desc Test availableTrips method
+     * 
+     * @task ETS-753
+     * 
+     * @story ETS-828
+     */
     @Test
     public void availableTripsAfter1Day() {
         Trip[] trips = new Trip[5];
@@ -131,6 +150,16 @@ public class TripDataAccessTest extends BaseDataAccessTest {
         assertEquals(4, result.size());
     }
 
+    /**
+     * Tests the functionality of the requesting a trip by adding a trip with a driverId of 0. The returned trip should
+     * have a driverId of 0 and a status of REQUESTED.
+     * 
+     * @desc Test requesting a trip by adding a trip with a driverId of 0
+     * 
+     * @task ETS-1345
+     * 
+     * @story ETS-1339
+     */
     @Test
     public void requestTrip() {
         Trip driverlessTrip = tripDao.addTrip(0, new Trip(0, 0, 1, 2, 10000, 10400, 5));
@@ -139,6 +168,16 @@ public class TripDataAccessTest extends BaseDataAccessTest {
         assertEquals(TripStatus.REQUESTED.getTripStatus(), driverlessTrip.getStatus());
     }
 
+    /**
+     * Tests the updateDriver method of the TripDataAccess class. Adds a driverless trip, updates the driver of the trip
+     * and checks that the driver has been updated and the trip status has changed accordingly.
+     * 
+     * @desc Test updating the driver of a trip
+     * 
+     * @task ETS-1346
+     * 
+     * @story ETS-1339
+     */
     @Test
     public void updateDriver() {
         Trip driverlessTrip = tripDao.addTrip(0, new Trip(-1, -1, 1, 2, 10000, 10400, 5));

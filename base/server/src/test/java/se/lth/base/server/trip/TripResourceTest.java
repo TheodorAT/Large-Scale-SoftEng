@@ -27,6 +27,15 @@ public class TripResourceTest extends BaseResourceTest {
         login(TEST_CREDENTIALS);
     }
 
+    /**
+     * Tests the addTrip method of the TripResource class.
+     * 
+     * @desc Test the addTrip method by creating a trip as a driver
+     * 
+     * @task ETS-988
+     * 
+     * @story ETS-592
+     */
     @Test
     public void addTrip() {
         logout();
@@ -44,6 +53,15 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(3610200, trip.getEndTime());
     }
 
+    /**
+     * Tests that a passenger cannot add a trip. Expects a ForbiddenException to be thrown.
+     * 
+     * @desc Test the addTrip method by creating a trip as a passenger
+     * 
+     * @task ETS-988
+     * 
+     * @story ETS-592
+     */
     @Test(expected = javax.ws.rs.ForbiddenException.class)
     public void addTripAsPassenger() {
         Trip t = new Trip(1, 1, 1, 2, 10200, 0, 4);
@@ -236,6 +254,15 @@ public class TripResourceTest extends BaseResourceTest {
         target("tripPassenger").request().post(eId2, TripPassenger.class);
     }
 
+    /**
+     * Tests the availability of trips after 1 day.
+     * 
+     * @desc Test the matching algorithm by checking that only trips within 1 day are returned
+     * 
+     * @task ETS-753
+     * 
+     * @story ETS-828
+     */
     @Test
     public void availableTripsAfter1Day() {
         logout();
@@ -281,6 +308,13 @@ public class TripResourceTest extends BaseResourceTest {
 
     }
 
+    /**
+     * @desc Test the requestTrip method by creating a trip as a passenger
+     * 
+     * @task ETS-1345
+     * 
+     * @story ETS-1339
+     */
     @Test
     public void requestTrip() {
         Trip returnedTrip = createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
@@ -288,6 +322,13 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(0, returnedTrip.getDriverId());
     }
 
+    /**
+     * @desc Test the updateTripDriver by creating a trip and then updating the driver
+     * 
+     * @task ETS-1346
+     * 
+     * @story ETS-1339
+     */
     @Test
     public void updateDriver() {
         Trip returnedTrip = createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
@@ -302,6 +343,15 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(TripStatus.ACTIVE.getTripStatus(), updatedTrip.getStatus());
     }
 
+    /**
+     * Tests the updateTripDriver method in the TripResource class when updating a trip that already has a driver.
+     * 
+     * @desc Test the updateTripDriver method in the TripResource class for a trip with a driver
+     * 
+     * @task ETS-1346
+     * 
+     * @story ETS-1339
+     */
     @Test
     public void updateDriverTripWithDriver() {
         Trip returnedTrip = createSampleTrip("trip", ADMIN_CREDENTIALS);
@@ -368,6 +418,16 @@ public class TripResourceTest extends BaseResourceTest {
         return target("trip").path("" + tripId).request().put(eSeatCapacity, Trip.class);
     }
 
+    /**
+     * Tests the getTrip method of the TripResource class. Creates a sample trip with admin credentials, retrieves the
+     * trip using the created trip's ID, and checks if the retrieved trip's ID matches the created trip's ID.
+     * 
+     * @desc test the getTrip method of the TripResource class
+     * 
+     * @task ETS-1354
+     * 
+     * @story ETS-1339
+     */
     @Test
     public void getTrip() {
         Trip returnedTrip = createSampleTrip("trip", ADMIN_CREDENTIALS);
