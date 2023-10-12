@@ -60,11 +60,49 @@ formatting standard used in the [Eclipse JDT Language Server](https://github.com
 
 6. Create a branch with a short description using camel case and the Card ID of the task, e.g.: `git switch -c createRegistering-ETS-766`
 
-7. Write code and tests covering the code you wrote. Document new functions with doc strings and lines of code that are not described by the code itself. Make sure that the code is correctly formatted using `make check`/`make format`.
+7. Write code and tests covering the code you wrote. Document new functions with doc strings and lines of code that are not described by the code itself. Add annotations in the specified format for the tests. Make sure that the code is correctly formatted using `make check`/`make format`.
 
 8. Commit and push to your branch as often as you like, preferably after every big change. Start every commit message with the following tag: \[your-task-card-id-on-Favro\]. Do the first push with `git push -u origin createRegistering-ETS-766`, after that `git push` should suffice.
 
 9. When the feature is ready to be reviewed, create a merge request to the main branch on the [coursegit website](https://coursegit.cs.lth.se/etsn05/team-1-2023/-/branches) website. Don't forget to run `git fetch main && git merge origin/main` to get the latest changes.
+
+## Test documentation
+Each test needs to be described with a comment defining 3 fields that will be used in the SVVR report. A test method in java is the method that has the `@TEST` about it's method signature, while it in javascript is defined with the `it` method.
+
+The fields that should be defined in a multiline comment above the method signature is the following:
+- `@desc` a short description of the test
+- `@task` the Favro card-id of the task that the test is related to 
+- `@story` the Favro task-id of the story that the test is related to 
+
+examples:
+```java
+    /**
+     * Test method to validate the retrieval of available trips based on location parameters.
+     * <optional extra description of the method> 
+     * @desc validate the retrieval of available trips based on location parameters
+     * @task ETS-895
+     * @story ETS-610
+     */
+    @Test
+    public void availableTrips() {
+        logout();
+        login(DRIVER_CREDENTIALS);
+        int fromLocationId = 1;
+        // rest of the code
+```
+
+```js
+
+/**
+  * @desc test that there is a call to loginUser when the form is submitted
+  * @task ETS-1393
+  * @story ETS-1392
+*/
+it('should redirect user to "/" if already logged in', function (done) {
+  var userPromise = Promise.resolve(test);
+  spyOn(base.rest, "getUser").and.returnValue(Promise.resolve(test));
+  // rest of the code
+```
 
 ### Configure your editor
 
