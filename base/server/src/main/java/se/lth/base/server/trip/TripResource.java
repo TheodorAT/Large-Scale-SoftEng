@@ -171,8 +171,8 @@ public class TripResource {
     @PUT
     @RolesAllowed(Role.Names.DRIVER)
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Trip updateDriver(@PathParam("tripId") int tripId) {
-        Trip trip = tripDao.updateDriver(this.user.getId(), tripId);
+    public Trip updateDriver(@PathParam("tripId") int tripId, int seatCapacity) {
+        Trip trip = tripDao.updateDriver(this.user.getId(), tripId, seatCapacity);
         if (trip == null) {
             throw new WebApplicationException("Trip not found", Response.Status.NOT_FOUND);
         }

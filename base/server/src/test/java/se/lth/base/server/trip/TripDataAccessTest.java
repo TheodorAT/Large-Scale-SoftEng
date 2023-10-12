@@ -142,7 +142,7 @@ public class TripDataAccessTest extends BaseDataAccessTest {
     public void updateDriver() {
         Trip driverlessTrip = tripDao.addTrip(0, new Trip(-1, -1, 1, 2, 10000, 10400, 5));
 
-        Trip trip = tripDao.updateDriver(TEST.getId(), driverlessTrip.getId());
+        Trip trip = tripDao.updateDriver(TEST.getId(), driverlessTrip.getId(), 4);
 
         assertEquals(TEST.getId(), trip.getDriverId());
         assertEquals(TripStatus.REQUESTED.getTripStatus(), driverlessTrip.getStatus());
