@@ -171,8 +171,8 @@ public class TripResource {
     @PUT
     @RolesAllowed(Role.Names.DRIVER)
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Trip updateDriver(@PathParam("tripId") int tripId) {
-        Trip trip = tripDao.updateDriver(this.user.getId(), tripId);
+    public Trip updateDriver(@PathParam("tripId") int tripId, int seatCapacity) {
+        Trip trip = tripDao.updateDriver(this.user.getId(), tripId, seatCapacity);
         if (trip == null) {
             throw new WebApplicationException("Trip not found", Response.Status.NOT_FOUND);
         }
@@ -212,4 +212,20 @@ public class TripResource {
         Trip result = tripDao.addTrip(0, trip);
         return result;
     }
+
+    /**
+     * Retrieves a list of requested trips where there is no driver.
+     *
+     * HTTP Request Type: GET Path: "trip/requests"
+     * 
+     * @return A List of Trip objects representing the users passenger trips.
+     */
+    @Path("requests")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public List<Trip> getTripsWithoutDriver() {
+        List<Trip> result = tripDao.getTripsWithoutDriver();
+        return result;
+    }
+
 }

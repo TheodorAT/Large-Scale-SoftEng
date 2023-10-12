@@ -62,6 +62,11 @@ public class TripResourceTest extends BaseResourceTest {
      * is not null or empty. 4. Validates the size of the list. 5. Validates the fromLocation and destination of the
      * first trip in the list. 6. TOOD - more tests to validate
      * 
+     * @desc validate the retrieval of available trips based on location parameters
+     * 
+     * @task ETS-895
+     * 
+     * @story ETS-610
      */
     @Test
     public void availableTrips() {
@@ -164,13 +169,6 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(t2.getId(), trips.get(1).getId());
     }
 
-    /**
-     * Test method to validate the retrieval of all trips booked by current passenger user.
-     * 
-     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to database using HTTP POST request. 3.
-     * Switch to passenger account. 4. Add booked trips as passenger to database using HTTP POST. 4. Retrieve list of
-     * booked trips as passenger. 5. Compare size of list with number of booked trips. 6. Compare IDs of trips.
-     */
     @Test
     public void getTripsAsPassenger() {
         addTestTrips();
@@ -296,9 +294,10 @@ public class TripResourceTest extends BaseResourceTest {
 
         assertEquals(0, returnedTrip.getDriverId());
         assertEquals(TripStatus.REQUESTED.getTripStatus(), returnedTrip.getStatus());
+        assertEquals(0, returnedTrip.getSeatCapacity());
 
         Trip updatedTrip = updateTripDriver(returnedTrip.getId(), DRIVER_CREDENTIALS);
-
+        assertEquals(4, updatedTrip.getSeatCapacity());
         assertEquals(DRIVER.getId(), updatedTrip.getDriverId());
         assertEquals(TripStatus.ACTIVE.getTripStatus(), updatedTrip.getStatus());
     }
@@ -313,6 +312,21 @@ public class TripResourceTest extends BaseResourceTest {
 
         // Driver did not change
         assertEquals(ADMIN.getId(), updatedTrip.getDriverId());
+    }
+
+    @Test
+    public void getTripsWithoutDriver() {
+        createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
+        createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
+        createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
+
+        List<Trip> tripsWithoutDriver = target("trip/requests").request().get(new GenericType<List<Trip>>() {
+        });
+
+        assertEquals(3, tripsWithoutDriver.size());
+        for (int i = 0; i < tripsWithoutDriver.size(); i++) {
+            assertEquals(0, tripsWithoutDriver.get(i).getDriverId());
+        }
     }
 
     /**
@@ -349,9 +363,9 @@ public class TripResourceTest extends BaseResourceTest {
         logout();
         login(credentials);
 
-        Entity<Integer> eId = Entity.entity(0, MediaType.APPLICATION_JSON);
+        Entity<Integer> eSeatCapacity = Entity.entity(4, MediaType.APPLICATION_JSON);
 
-        return target("trip").path("" + tripId).request().put(eId, Trip.class);
+        return target("trip").path("" + tripId).request().put(eSeatCapacity, Trip.class);
     }
 
     @Test
