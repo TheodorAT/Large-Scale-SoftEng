@@ -164,13 +164,6 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(t2.getId(), trips.get(1).getId());
     }
 
-    /**
-     * Test method to validate the retrieval of all trips booked by current passenger user.
-     * 
-     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to database using HTTP POST request. 3.
-     * Switch to passenger account. 4. Add booked trips as passenger to database using HTTP POST. 4. Retrieve list of
-     * booked trips as passenger. 5. Compare size of list with number of booked trips. 6. Compare IDs of trips.
-     */
     @Test
     public void getTripsAsPassenger() {
         addTestTrips();
@@ -310,6 +303,21 @@ public class TripResourceTest extends BaseResourceTest {
 
         // Driver did not change
         assertEquals(ADMIN.getId(), updatedTrip.getDriverId());
+    }
+
+    @Test
+    public void getTripsWithoutDriver() {
+        createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
+        createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
+        createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
+
+        List<Trip> tripsWithoutDriver = target("trip/requests").request().get(new GenericType<List<Trip>>() {
+        });
+
+        assertEquals(3, tripsWithoutDriver.size());
+        for (int i = 0; i < tripsWithoutDriver.size(); i++) {
+            assertEquals(0, tripsWithoutDriver.get(i).getDriverId());
+        }
     }
 
     private Trip createSampleTrip(String path, Credentials credentials) {

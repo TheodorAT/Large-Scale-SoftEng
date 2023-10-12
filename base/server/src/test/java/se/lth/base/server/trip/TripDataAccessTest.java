@@ -6,6 +6,7 @@ import se.lth.base.server.database.BaseDataAccessTest;
 import se.lth.base.server.tripPassenger.TripPassengerDataAccess;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -149,5 +150,24 @@ public class TripDataAccessTest extends BaseDataAccessTest {
 
         assertEquals(0, driverlessTrip.getDriverId());
         assertEquals(TripStatus.ACTIVE.getTripStatus(), trip.getStatus());
+    }
+
+    @Test
+    public void getTripsWithoutDriver() {
+        Trip reqeustTrip1 = tripDao.addTrip(0, new Trip(0, 0, 1, 2, 1000, 3000, 4));
+        Trip requestTrip2 = tripDao.addTrip(0, new Trip(0, 0, 1, 2, 2000, 3000, 4));
+        Trip requestTrip3 = tripDao.addTrip(0, new Trip(0, 0, 1, 2, 1400, 3100, 4));
+
+        List<Trip> result = tripDao.getTripsWithoutDriver();
+        assertEquals(3, result.size());
+        int sumOfIds = 0;
+
+        for (int i = 0; i < result.size(); i++) {
+            sumOfIds += result.get(i).getId();
+            assertEquals(1, result.get(i).getFromLocationId());
+            assertEquals(2, result.get(i).getToLocationId());
+            assertEquals(0, result.get(i).getDriverId());
+        }
+        assertEquals(sumOfIds, reqeustTrip1.getId() + requestTrip2.getId() + requestTrip3.getId());
     }
 }
