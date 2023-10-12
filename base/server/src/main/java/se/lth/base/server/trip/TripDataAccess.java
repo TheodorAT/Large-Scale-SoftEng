@@ -170,4 +170,13 @@ public class TripDataAccess extends DataAccess<Trip> {
         return getTrip(tripId);
     }
 
+    /**
+     * Retrieves a list of requested trips without a driver.
+     * 
+     * @return A list of trips without driver.
+     */
+    public List<Trip> getTripsWithoutDriver() {
+        return query("SELECT * FROM trips WHERE driver_id IS NULL");
+    }
+
 }
