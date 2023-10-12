@@ -141,7 +141,10 @@ public class TripResource {
     }
 
     /**
-     * Cancels a drivers trip, given tripId
+     * Cancels a drivers trip
+     * 
+     * @param tripId
+     *            the unique ID for the trip which will be cancelled
      * 
      */
     @Path("driver/{tripId}")
@@ -151,5 +154,46 @@ public class TripResource {
         if (!tripDao.cancelDriverTrip(this.user.getId(), tripId)) {
             throw new WebApplicationException("Not found trip", Response.Status.NOT_FOUND);
         }
+    }
+
+    /**
+     * Updates the driver of a trip with the given trip ID. Only Drivers are allowed to access this resource.
+     * 
+     * @param tripId
+     *            the ID of the trip to update the driver for
+     * 
+     * @return the updated Trip object
+     * 
+     * @throws WebApplicationException
+     *             if the trip is not found
+     */
+    @Path("{tripId}")
+    @PUT
+    @RolesAllowed(Role.Names.DRIVER)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Trip updateDriver(@PathParam("tripId") int tripId) {
+        Trip trip = tripDao.updateDriver(this.user.getId(), tripId);
+        if (trip == null) {
+            throw new WebApplicationException("Trip not found", Response.Status.NOT_FOUND);
+        }
+        return trip;
+    }
+
+    /**
+     * This method is used to request a trip by a passenger. It adds the trip to the database and returns the added
+     * trip.
+     * 
+     * @param trip
+     *            The trip object containing the details of the requested trip.
+     * 
+     * @return The added trip object.
+     */
+    @Path("passenger/request")
+    @POST
+    @RolesAllowed(Role.Names.USER)
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Trip requestTrip(Trip trip) {
+        Trip result = tripDao.addTrip(0, trip);
+        return result;
     }
 }

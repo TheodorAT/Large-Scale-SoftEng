@@ -72,7 +72,7 @@ public class TripDataAccessTest extends BaseDataAccessTest {
         assertEquals(resultBefore.size(), 3);
         assertTrue(tripDao.cancelDriverTrip(TEST.getId(), 3));
         List<Trip> resultAfter = tripDao.availableTrips(1, 2, 10000);
-        assertEquals(resultAfter.size(), 2);
+        assertEquals(resultAfter.get(2).getStatus(), TripStatus.CANCELLED.getTripStatus());
     }
 
     /**
@@ -128,5 +128,26 @@ public class TripDataAccessTest extends BaseDataAccessTest {
         List<Trip> result = tripDao.availableTrips(1, 2, 10100);
 
         assertEquals(4, result.size());
+    }
+
+    @Test
+    public void requestTrip() {
+        Trip driverlessTrip = tripDao.addTrip(0, new Trip(0, 0, 1, 2, 10000, 10400, 5));
+
+        assertEquals(0, driverlessTrip.getDriverId());
+        assertEquals(TripStatus.REQUESTED.getTripStatus(), driverlessTrip.getStatus());
+    }
+
+    @Test
+    public void updateDriver() {
+        Trip driverlessTrip = tripDao.addTrip(0, new Trip(-1, -1, 1, 2, 10000, 10400, 5));
+
+        Trip trip = tripDao.updateDriver(TEST.getId(), driverlessTrip.getId());
+
+        assertEquals(TEST.getId(), trip.getDriverId());
+        assertEquals(TripStatus.REQUESTED.getTripStatus(), driverlessTrip.getStatus());
+
+        assertEquals(0, driverlessTrip.getDriverId());
+        assertEquals(TripStatus.ACTIVE.getTripStatus(), trip.getStatus());
     }
 }

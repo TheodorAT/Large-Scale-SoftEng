@@ -247,6 +247,22 @@ base.rest = (function () {
     },
 
     /*
+     * Request a new passenger trip
+     * returns: Trip
+     *
+     * example: let trip = base.rest.requestTrip({fromLocationId: 2, toLocationId: 1, startTime: 45354})
+     */
+    requestTrip: function (trip) {
+      return baseFetch("/rest/trip/passenger/request", {
+        method: "POST",
+        body: JSON.stringify(trip),
+        headers: jsonHeader,
+      })
+        .then((response) => response.json())
+        .then((u) => new Trip(u));
+    },
+
+    /*
      * Cancel a driver trip
      * tripId: the id of the trip that shall be cancelled
      *
@@ -277,13 +293,25 @@ base.rest = (function () {
      * example: const trips = base.rest.bookTrip(1);
      */
     bookTrip: function (trip) {
-      return baseFetch("/rest/tripPassenger", {
+      return fetch("/rest/tripPassenger", {
         method: "POST",
         body: JSON.stringify(trip),
         headers: jsonHeader,
+        credentials: "same-origin",
       })
-        .then((response) => response.json())
-        .then((f) => new TripPassenger(f));
+        .then(function (response) {
+          if (!response.ok) {
+            return new Promise((resolve) => resolve(response.json())).then(function (errorJson) {
+              throw Error(errorJson.error);
+            });
+          } else {
+            return response.json();
+          }
+        })
+        .then((f) => new TripPassenger(f))
+        .catch(function (error) {
+          throw error;
+        });
     },
 
     /*
@@ -300,16 +328,16 @@ base.rest = (function () {
         .then((trips) => trips.map((f) => new Trip(f)));
     },
     /*
-     * Fetches available shuttles based on search criteria.
+     * Fetches available trips based on search criteria.
      * from: the starting point
      * destination: the destination point
      * datetime: the desired departure datetime
      *
-     * function will return an array of JavaScript objects, each representing a shuttle
-     * example: const shuttles = base.rest.getShuttles('City A', 'City B', '2023-09-20 10:00');
+     * function will return an array of JavaScript objects, each representing a trip
+     * example: const trips = base.rest.getTrips('City A', 'City B', '2023-09-20 10:00');
      */
 
-    getShuttles: function (form) {
+    getTrips: function (form) {
       const queryParams = new URLSearchParams({
         fromLocationId: form.fromLocationId,
         toLocationId: form.toLocationId,
@@ -321,30 +349,6 @@ base.rest = (function () {
       })
         .then((response) => response.json())
         .then((trips) => trips.map((f) => new Trip(f)));
-    },
-
-    /*
-     * Books a trip for the current user/passenger.
-     * tripId: ID of the trip to be booked.
-     *
-     * function will return a TripPassenger object.
-     * example: const bookedTrip = base.rest.bookTrip(1);
-     */
-    bookTrip: function (tripId) {
-      return baseFetch("/rest/tripPassenger", {
-        method: "POST",
-        body: JSON.stringify(tripId),
-        headers: jsonHeader,
-      })
-        .then((tripPassengerData) => {
-          const tripId = tripPassengerData.tripId; // Extract tripId from the response
-          const passengerId = tripPassengerData.passengerId; // Extract passengerId from the response
-          return new TripPassenger(tripId, passengerId); // Create a new TripPassenger instance
-        })
-        .catch((error) => {
-          console.error("Book Trip Error:", error);
-          throw error;
-        });
     },
   };
 })();

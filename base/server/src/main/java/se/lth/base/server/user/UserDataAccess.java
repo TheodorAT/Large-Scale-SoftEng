@@ -67,6 +67,18 @@ public class UserDataAccess extends DataAccess<User> {
                 credentials.getLastName(), credentials.getEmail(), credentials.getPhoneNumber());
     }
 
+    /**
+     * Updates a user's information in the database, including their username, password, and role. If a new password is
+     * provided in the credentials, it will be hashed and updated along with the salt. If no password is provided, only
+     * the username and role will be updated.
+     *
+     * @param userId
+     *            The unique identifier of the user to be updated.
+     * @param credentials
+     *            The new credentials containing the updated username, password, and role.
+     * 
+     * @return The updated User object after the changes have been applied in the database.
+     */
     public User updateUser(int userId, Credentials credentials) {
         if (credentials.hasPassword()) {
             long salt = Credentials.generateSalt();
@@ -82,6 +94,17 @@ public class UserDataAccess extends DataAccess<User> {
         return getUser(userId);
     }
 
+    /**
+     * Retrieve a user's information by their unique identifier.
+     *
+     * This method retrieves the user information, including their role, username, first name, last name, email, and
+     * phone number, based on the provided unique user identifier (ID).
+     *
+     * @param userId
+     *            The unique identifier of the user to retrieve.
+     * 
+     * @return The user object containing the user's information.
+     */
     public User getUser(int userId) {
         return queryFirst(
                 "SELECT user_id, role, username, first_name, last_name, email, phone_number FROM users, user_role "
@@ -89,11 +112,24 @@ public class UserDataAccess extends DataAccess<User> {
                 userId);
     }
 
+    /**
+     * Delete a user by their unique identifier.
+     * 
+     * This method deletes a user account from the database based on the provided unique user identifier (ID).
+     * 
+     * @param userId
+     *            The unique identifier of the user to be deleted.
+     * 
+     * @return true if the user was successfully deleted, false otherwise.
+     * 
+     */
     public boolean deleteUser(int userId) {
         return execute("DELETE FROM users WHERE user_id = ?", userId) > 0;
     }
 
     /**
+     * Returns all the users currently in the system as a list
+     * 
      * @return all users in the system.
      */
     public List<User> getUsers() {

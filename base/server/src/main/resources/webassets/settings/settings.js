@@ -57,9 +57,27 @@ base.settingsController = function () {
       document.getElementById("cancelBtn").onclick = function (event) {
         controller.load();
       };
+      //Displays a modal when delete-button is clicked which lets the user confirm removal of account
       document.getElementById("delete").onclick = function (event) {
-        alert("TODO: delete");
+        //If the user is admin, the account cannot be deleted by themselves
+        if (currentUser.isAdmin()) {
+          const adminModal = new bootstrap.Modal(document.getElementById("adminDelete"));
+          adminModal.show();
+        } else {
+          const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+          deleteModal.show();
+        }
       };
+      //When delete button in modal is clicked, the user is logged out and redirected to login-page
+      document.getElementById("deleteBtn").onclick = () => {
+        const deleteUserId = currentUser.id;
+        base.rest.logout().then(function (response) {
+          base.changeLocation("/login/login.html");
+        });
+        // Calls REST API to delete user
+        base.rest.deleteUser(deleteUserId);
+      };
+
       document.getElementById("logOut").onclick = function (event) {
         base.rest.logout().then(function (response) {
           base.changeLocation("/login/login.html");

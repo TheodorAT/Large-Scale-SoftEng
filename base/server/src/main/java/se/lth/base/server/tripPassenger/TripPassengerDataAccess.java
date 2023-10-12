@@ -42,7 +42,14 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
     }
 
     /**
+     * Cancels a passenger's trip by removing them from the trip's passenger list.
      * 
+     * @param passengerId
+     *            The unique identifier of the passenger.
+     * @param tripId
+     *            The unique identifier of the trip to be canceled for the passenger
+     * 
+     * @return true if the passenger's trip was successfully canceled, false otherwise.
      */
     public boolean cancelPassengerTrip(int passengerId, int tripId) {
         String sql = "DELETE FROM trip_passengers WHERE user_id = ? AND trip_id = ?";
