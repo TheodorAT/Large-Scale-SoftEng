@@ -194,6 +194,31 @@ base.driverTripController = function () {
         view.render();
       });
     },
+    loadButtons: function () {
+      const addDriverButtons = document.getElementById("mytrips").querySelectorAll("button");
+      addDriverButtons.forEach(
+        (b) =>
+          (b.onclick = function (event) {            
+            base.rest.addDriverToDriverlessTrip(event.target.id).then(function (trip) {
+
+              let fromlocation = controller.getLocationFromId(trip.fromLocationId);
+              let tolocation = controller.getLocationFromId(trip.toLocationId);
+
+              document.getElementById("registeredTripsModal").textContent =
+                "TripID: #" +
+                trip.id +
+                " Departing from: " +
+                fromlocation.name + ", " + fromlocation.municipality +
+                " Destination: " +
+                tolocation.name + ", " + tolocation.municipality +
+                " Date: " +
+                new Date(startTime).toLocaleDateString();
+              view.render();
+            });
+            
+          }),
+      );
+    },
   };
 
   return controller;
