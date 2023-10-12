@@ -350,5 +350,19 @@ base.rest = (function () {
         .then((response) => response.json())
         .then((trips) => trips.map((f) => new Trip(f)));
     },
+
+    getDriverlessTrips: function () {
+      return baseFetch("/rest/trip/requests", {
+        method: "GET"
+      }).then(res => res.json())
+        .then((trips) => trips.map((f) => new Trip(f)))
+    },
+
+    addDriverToDriverlessTrip: function (id) {
+      return baseFetch("/rest/trip/" + id, {
+        method: "PUT"
+      }).then(res => res.json())
+        .then(trip => new Trip(f))
+    }
   };
 })();
