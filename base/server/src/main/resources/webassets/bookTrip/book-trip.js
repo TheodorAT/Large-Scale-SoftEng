@@ -180,13 +180,17 @@ base.searchTripController = function () {
         (b) =>
           (b.onclick = function (event) {
             const tripId = event.target.id;
+            let tr = event.target.parentElement.parentElement;
             base.rest
               .bookTrip(tripId)
               .then((bookedTrip) => {
                 document.getElementById("available-trips").hidden = true;
+                let from = tr.children[1].innerText;
+                let to = tr.children[2].innerText;
+                let start = tr.children[3].innerText;
                 controller.updateModal(
                   "The trip was booked successfully!",
-                  "TODO restcall to get tripinfo by id",
+                  "From: " + from + ". To: " + to + ". Date: " + start +".", 
                   true,
                 );
               })

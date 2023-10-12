@@ -69,7 +69,7 @@ CREATE TABLE trips (
 
     PRIMARY KEY (trip_id),
 
-    CHECK (seat_capacity > 0),
+    CHECK (seat_capacity >= 0),
     CHECK (start_time < end_time),
 
     FOREIGN KEY (driver_id) REFERENCES users (user_id) ON DELETE CASCADE,

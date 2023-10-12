@@ -292,9 +292,10 @@ public class TripResourceTest extends BaseResourceTest {
 
         assertEquals(0, returnedTrip.getDriverId());
         assertEquals(TripStatus.REQUESTED.getTripStatus(), returnedTrip.getStatus());
+        assertEquals(0, returnedTrip.getSeatCapacity());
 
         Trip updatedTrip = updateTripDriver(returnedTrip.getId(), DRIVER_CREDENTIALS);
-
+        assertEquals(4, updatedTrip.getSeatCapacity());
         assertEquals(DRIVER.getId(), updatedTrip.getDriverId());
         assertEquals(TripStatus.ACTIVE.getTripStatus(), updatedTrip.getStatus());
     }
@@ -325,8 +326,8 @@ public class TripResourceTest extends BaseResourceTest {
         logout();
         login(credentials);
 
-        Entity<Integer> eId = Entity.entity(0, MediaType.APPLICATION_JSON);
+        Entity<Integer> eSeatCapacity = Entity.entity(4, MediaType.APPLICATION_JSON);
 
-        return target("trip").path("" + tripId).request().put(eId, Trip.class);
+        return target("trip").path("" + tripId).request().put(eSeatCapacity, Trip.class);
     }
 }
