@@ -212,7 +212,7 @@ base.driverTripController = function () {
                 " Destination: " +
                 tolocation.name + ", " + tolocation.municipality +
                 " Date: " +
-                new Date(startTime).toLocaleDateString();
+                new Date(trip.startTime).toLocaleDateString();
               view.render();
             });
             
