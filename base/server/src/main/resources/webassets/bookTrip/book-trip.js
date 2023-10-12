@@ -112,14 +112,20 @@ base.searchTripController = function () {
         let from = document.getElementById("reqfrom");
         let to = document.getElementById("reqto");
         let startTime = document.getElementById("reqdate");
-        //TODO
-        // Ask backend for requestTrip-bookings rest calls.
-        //base.rest.requestTrip({ fromLocationId: from.getAttribute("from");, toLocationId: to.getAttribute("to"), startTime: startTime.getAttribute("time") })
-        controller.updateModal(
-          "The trip was requested (TODO: rest-call not implemented yet)!",
-          "From: " + from.innerText + " To: " + to.innerText + " Date: " + startTime.innerText,
-          true,
-        );
+        base.rest
+          .requestTrip({
+            fromLocationId: from.getAttribute("from"),
+            toLocationId: to.getAttribute("to"),
+            startTime: startTime.getAttribute("time"),
+          })
+          .then((trip) => {
+            console.log(trip);
+            controller.updateModal(
+              "The trip was requested!",
+              "From: " + from.innerText + " To: " + to.innerText + " Date: " + startTime.innerText,
+              true,
+            );
+          });
       };
     },
     getLocationId: function (value) {
