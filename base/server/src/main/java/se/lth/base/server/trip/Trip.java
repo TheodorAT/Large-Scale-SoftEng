@@ -44,6 +44,9 @@ public class Trip {
         this.startTime = startTime;
         this.endTime = endTime;
         this.seatCapacity = seatCapacity;
+        if (status_id == 0) {
+            status_id = TripStatus.ACTIVE.getTripStatus();
+        }
         this.status_id = status_id;
     }
 
