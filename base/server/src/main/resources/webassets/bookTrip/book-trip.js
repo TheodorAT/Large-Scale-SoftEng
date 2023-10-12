@@ -119,7 +119,6 @@ base.searchTripController = function () {
             startTime: startTime.getAttribute("time"),
           })
           .then((trip) => {
-            console.log(trip);
             controller.updateModal(
               "The trip was requested!",
               "From: " + from.innerText + " To: " + to.innerText + " Date: " + startTime.innerText,
@@ -190,7 +189,7 @@ base.searchTripController = function () {
                 let start = tr.children[3].innerText;
                 controller.updateModal(
                   "The trip was booked successfully!",
-                  "From: " + from + ". To: " + to + ". Date: " + start +".", 
+                  "From: " + from + ". To: " + to + ". Date & time: " + start + ".",
                   true,
                 );
               })
