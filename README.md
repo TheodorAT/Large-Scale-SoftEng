@@ -72,7 +72,7 @@ Each test needs to be described with a comment defining 3 fields that will be us
 The fields that should be defined in a multiline comment above the method signature is the following:
 - `@desc` a short description of the test
 - `@task` the Favro card-id of the task that the test is related to 
-- `@story` the Favro task-id of the story that the test is related to 
+- `@story` the Favro task-id of the user-story that the test is related to 
 
 examples:
 ```java
