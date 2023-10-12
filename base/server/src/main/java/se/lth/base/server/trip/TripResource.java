@@ -197,7 +197,6 @@ public class TripResource {
         return result;
     }
 
-
     /**
      * Retrieves a list of requested trips where there is no driver.
      *

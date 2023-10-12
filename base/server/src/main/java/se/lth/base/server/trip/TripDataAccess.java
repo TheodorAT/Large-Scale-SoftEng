@@ -168,7 +168,7 @@ public class TripDataAccess extends DataAccess<Trip> {
     }
 
     /**
-     * Retrieves a list of requested trips without a driver.           
+     * Retrieves a list of requested trips without a driver.
      * 
      * @return A list of trips without driver.
      */

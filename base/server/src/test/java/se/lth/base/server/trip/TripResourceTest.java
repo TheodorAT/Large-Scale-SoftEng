@@ -310,10 +310,11 @@ public class TripResourceTest extends BaseResourceTest {
         createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
         createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
 
-        List<Trip> tripsWithoutDriver = target("trip/requests").request().get(new GenericType<List<Trip>>() {});
+        List<Trip> tripsWithoutDriver = target("trip/requests").request().get(new GenericType<List<Trip>>() {
+        });
 
-        assertEquals(3,tripsWithoutDriver.size());
-        for(int i=0; i < tripsWithoutDriver.size(); i++){
+        assertEquals(3, tripsWithoutDriver.size());
+        for (int i = 0; i < tripsWithoutDriver.size(); i++) {
             assertEquals(0, tripsWithoutDriver.get(i).getDriverId());
         }
     }
