@@ -104,7 +104,14 @@ base.driverTripController = function () {
       const toId = controller.getLocationId(to.value.trim());
       const seats = document.getElementById("seats").value;
       const startTime = new Date(document.getElementById("startTime").value).getTime();
-      const form = { fromLocationId: fromId, toLocationId: toId, startTime: startTime, seatCapacity: seats };
+      const status = 3;
+      const form = {
+        fromLocationId: fromId,
+        toLocationId: toId,
+        startTime: startTime,
+        seatCapacity: seats,
+        status_id: status,
+      };
       //Call the REST API to register trip, see file rest.js for definitions.
       base.rest.createTrip(form).then(function (trip) {
         // Trip is the response from the server, it will have this form:
