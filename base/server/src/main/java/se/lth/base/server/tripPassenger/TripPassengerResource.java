@@ -28,16 +28,26 @@ public class TripPassengerResource {
 
     /**
      * Calls on the bookTrip function from TripPassengerDataAccess using HTTP, which inserts a TripPassenger object in
-     * to the database, with current userId as passengerId.
+     * to the database, with current userId as passengerId. If the driver tries to book his own trip, a
+     * ForbiddenException is thrown.
      * 
      * @param tripId
      * 
      * @return TripPassenger This returns the TripPassenger objects.
+     * 
+     * @exception WebApplicationException
+     *                A forbidden exception is thrown if the driver tries to book his own trip.
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public TripPassenger createTripPassenger(int tripId) {
-        return tripPassengerDao.bookTrip(tripId, user.getId());
+        TripPassenger tripPassenger;
+        try {
+            tripPassenger = tripPassengerDao.bookTrip(tripId, user.getId());
+        } catch (IllegalArgumentException e) {
+            throw new WebApplicationException("Driver cannot book his own trip", Response.Status.FORBIDDEN);
+        }
+        return tripPassenger;
     }
 
     /**
