@@ -2,6 +2,8 @@ package se.lth.base.server.tripPassenger;
 
 import se.lth.base.server.trip.Trip;
 import se.lth.base.server.trip.TripDataAccess;
+import se.lth.base.server.trip.TripStatus;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -64,6 +66,10 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
      */
     public boolean cancelPassengerTrip(int passengerId, int tripId) {
         String sql = "DELETE FROM trip_passengers WHERE user_id = ? AND trip_id = ?";
+        // If the trip is a request, delete it from the database
+        if(tripDao.getTrip(tripId).getStatus() == TripStatus.REQUESTED.getTripStatus()) {
+            tripDao.deleteTrip(tripId);
+        }
         return execute(sql, passengerId, tripId) > 0;
     }
 
