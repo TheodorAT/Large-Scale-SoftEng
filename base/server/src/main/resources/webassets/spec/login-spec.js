@@ -21,11 +21,10 @@ describe("loginController", function () {
   afterEach(function () {
     document.body.removeChild(node);
   });
-
   /**
-   * @desc test that there is a call to loginUser when the form is submitted
-   * @task ETS-1393
-   * @story ETS-1392
+   * @desc test that user is redirected to default if already logged in
+   * @task ETS-1405
+   * @story ETS-1404
    */
   it('should redirect user to "/" if already logged in', function (done) {
     var userPromise = Promise.resolve(test);
@@ -38,7 +37,7 @@ describe("loginController", function () {
       })
       .finally(done);
   });
-
+  
   describe("login submit", function () {
     beforeEach(function (done) {
       var userPromise = Promise.resolve(none);
@@ -46,12 +45,11 @@ describe("loginController", function () {
       base.loginController.load();
       userPromise.finally(done);
     });
-
-    /**
-     * @desc test that there is a call to loginUser when the form is submitted
-     * @task
-     * @story
-     */
+  /**
+   * @desc test that there is a call to loginUser when the form is submitted
+   * @task ETS-1405
+   * @story ETS-1404
+   */
     it("should call loginUser on form submit", function () {
       document.getElementById("username").value = "test";
       document.getElementById("password").value = "password1";
@@ -59,7 +57,11 @@ describe("loginController", function () {
       document.querySelector("#login-form button").click();
       expect(base.loginController.loginUser).toHaveBeenCalled();
     });
-
+    /**
+   * @desc test that a POST request is sent to rest/login when form is submitted
+   * @task ETS-1405
+   * @story ETS-1404
+   */
     it("should do post to rest/login", function (done) {
       document.getElementById("username").value = "test";
       document.getElementById("password").value = "password2";
