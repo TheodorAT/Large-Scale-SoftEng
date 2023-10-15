@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class TripResourceTest extends BaseResourceTest {
     private static final GenericType<List<Trip>> TRIP_LIST = new GenericType<List<Trip>>() {
     };
+    private static final GenericType<List<TripPassenger>> TRIP_PASSENGER_LIST = new GenericType<List<TripPassenger>>() {
+    };
 
     @Before
     public void loginTest() {
@@ -318,8 +320,10 @@ public class TripResourceTest extends BaseResourceTest {
     @Test
     public void requestTrip() {
         Trip returnedTrip = createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
-
+        List<TripPassenger> tripPassengers = target("tripPassenger").path("" + returnedTrip.getId()).request()
+                .get(TRIP_PASSENGER_LIST);
         assertEquals(0, returnedTrip.getDriverId());
+        assertEquals(TEST.getId(), tripPassengers.get(0).getPassengerId());
     }
 
     /**
