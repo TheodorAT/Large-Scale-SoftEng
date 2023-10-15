@@ -1,6 +1,6 @@
 /*
  * Unit tests for the user admin controller and user classes.
- * Author: Rasmus Ros, rasmus.ros@cs.lth.se
+ * Author: Amanda Nystedt
  */
 
 describe("user specs", function () {
@@ -21,7 +21,7 @@ describe("user specs", function () {
     });
   });
 
-  /* describe("userAdminController", function () {
+  describe("userAdminController", function () {
     let node;
     let controller;
 
@@ -52,82 +52,89 @@ describe("user specs", function () {
       document.body.removeChild(node);
     });
 
-    describe("add user", function () {
-      const credentials = { username: "new user", password: "qwerty123", role: roles[4].name };
-      const newUser = new base.User({ username: credentials.username, role: credentials.role, id: 4 });
+    describe("add admin", function () {
+      const userData = {
+        username: "newadmin",
+        password: "password123",
+        role: "ADMIN",
+        first_name: "Adminfirst",
+        last_name: "Adminlast",
+        email: "admin@email.com",
+      };
+      const newUser = new base.User({
+        username: userData.username,
+        role: userData.role,
+        first_name: userData.first_name,
+        last_name: userData.last_name,
+        email: userData.email,
+        id: 3,
+      });
       const userPromise = Promise.resolve(newUser);
 
       beforeEach(function () {
         document.getElementById("new-admin").click();
-        document.getElementById("input-username").value = credentials.username;
-        document.getElementById("input-password").value = credentials.password;
+        document.getElementById("input-firstname").value = userData.first_name;
+        document.getElementById("input-lastname").value = userData.last_name;
+        document.getElementById("input-username").value = userData.username;
+        document.getElementById("input-password").value = userData.password;
+        document.getElementById("input-email").value = userData.email;
         spyOn(base.rest, "addUser").and.returnValue(userPromise);
       });
 
-      it("should post username, password, and role", function (done) {
-        document.getElementById("submit-admin").click();
+      it("should post the user data", function (done) {
+        document.getElementById("addNewBtn").click();
+        document.getElementById("closeBtn").click();
         userPromise
           .then(function () {
-            expect(base.rest.addUser).toHaveBeenCalledWith(credentials);
+            expect(base.rest.addUser).toHaveBeenCalledWith(userData);
+          })
+          .finally(done);
+      });
+      it("should add user in user list", function (done) {
+        document.getElementById("addForm").submit();
+        userPromise
+          .then(function () {
+            //code to check that it is added in list
+            let table = document.getElementById("user-table");
+            expect(table.rows.length).toBe(3);
           })
           .finally(done);
       });
 
-      it("should be possible to delete the added user", function (done) {
-        document.getElementById("submit-admin").click();
+      /*it("should be possible to delete the added user", function (done) {
+        document.getElementById("addForm").submit();
         userPromise
           .then(function () {
             const deleteUserPromise = Promise.resolve({});
             spyOn(base.rest, "deleteUser").and.returnValue(deleteUserPromise);
-            document.getElementById("delete-user").click();
+            const lastRow = document.querySelector('#users-table tr:last-child');
+            lastRow.querySelector('.delete-user').click();
+            document.getElementById("modal-delete-user").click();
             return deleteUserPromise;
           })
           .then(function () {
-            const items = document.querySelectorAll("#user-list button");
-            expect(items.length).toBe(3);
-            expect(items[0].textContent).toBe(startUsers[0].username);
-            expect(items[1].textContent).toBe(startUsers[1].username);
-            expect(items[2].textContent).not.toBe(newUser.username); // should be add user button
+            let table = document.getElementById("user-table");
+            expect(base.rest.deleteUser).toHaveBeenCalledWith(3);
+            expect(table.rows.length).toBe(2);
+            //expect(items[0].textContent).toBe(startUsers[0].username);
+            //expect(items[1].textContent).toBe(startUsers[1].username);
           })
           .finally(done);
-      });
+      });*/
     });
-
-    describe("delete user", function () {
+    /* describe("delete user", function () {
       it("should be possible to delete a selected user", function (done) {
         const deleteUserPromise = Promise.resolve({});
         spyOn(base.rest, "deleteUser").and.returnValue(deleteUserPromise);
+        const lastRow = document.querySelector('#users-table tr:last-child');
+        lastRow.querySelector('.delete-user').click();
         document.getElementById("modal-delete-user").click();
-        deleteUserPromise
-          .then(function () {
-            const items = document.querySelectorAll("#user-table");
-            expect(items.length).toBe(2);
+        deleteUserPromise.then(function () {
+          let table = document.getElementById("user-table");
+          expect(table.rows.length).toBe(1);
           })
           .finally(done);
       });
-    });
-    
-      it("should update the left user list menu with new new username", function (done) {
-        const userCredentials = { username: "New name", password: "new password", role: startUsers[0].role.name };
-        const userPromise = Promise.resolve(
-          new base.User({
-            username: userCredentials.username,
-            role: userCredentials.role,
-            id: startUsers[0].id,
-          }),
-        );
-        spyOn(base.rest, "putUser").and.returnValue(userPromise);
-        document.getElementById("input-username").value = userCredentials.username;
-        document.getElementById("input-password").disabled = false;
-        document.getElementById("input-password").value = userCredentials.password;
-        document.getElementById("submit-admin").click();
-        userPromise
-          .then(function () {
-            const userBtns = document.querySelectorAll("user-id-data");
-            expect(userBtns.length).toBe(3);
-            expect(userBtns[0].textContent).toBe(userCredentials.username);
-          })
-          .finally(done);
-      });
-    });*/
+    }); */
+  });
 });

@@ -12,6 +12,9 @@ base.rest = (function () {
     this.startTime = new Date(this.startTime);
     this.endTime = new Date(this.endTime);
   };
+  const TripPassenger = function (json) {
+    Object.assign(this, json);
+  };
   const Location = function (json) {
     Object.assign(this, json);
   };
@@ -39,6 +42,7 @@ base.rest = (function () {
   base.Role = Role;
   base.Trip = Trip;
   base.Location = Location;
+  base.TripPassenger = TripPassenger;
 
   // This method extends the functionality of fetch by adding default error handling.
   // Using it is entirely optional.
@@ -172,9 +176,23 @@ base.rest = (function () {
     },
 
     /*
+     * Update the user role.
+     * id: user id
+     * returns: the updated user
+     * example: let user = base.rest.changeRole(2, "ADMIN");
+     */
+    changeRole: function (id, role) {
+      return baseFetch("/rest/user/" + id + "/changerole/" + role, {
+        method: "PUT",
+        headers: jsonHeader,
+      })
+        .then((response) => response.json())
+        .then((u) => new User(u));
+    },
+
+    /*
      * Delete a specific user with a given userId (admin only).
      * id: user to delete
-     *
      * example: base.rest.deleteUser(2);
      */
     deleteUser: function (userId) {
@@ -208,18 +226,56 @@ base.rest = (function () {
         .then((f) => new Trip(f));
     },
 
-    //TODO: get all trips with user_id, both as passenger and driver
-    /* getAllTrips: function () {
-      return baseFetch("/rest/trip/", {
-        method: "GET",
+    /*
+     * Deletes a trip
+     * id: tripid to delete
+     *
+     * example: base.rest.deleteTrip(1);
+     */
+    deleteTrip: function (tripId) {
+      return baseFetch("/rest/trip/" + tripId, { method: "DELETE" });
+    },
+
+    /*
+     * Delete a passenger from the trip
+     * tripId: trip to delete passenger from
+     *
+     * example: base.rest.cancelPassengerTrip(1);
+     */
+    cancelPassengerTrip: function (tripId) {
+      return baseFetch("/rest/tripPassenger/" + tripId, { method: "DELETE" });
+    },
+
+    /*
+     * Request a new passenger trip
+     * returns: Trip
+     *
+     * example: let trip = base.rest.requestTrip({fromLocationId: 2, toLocationId: 1, startTime: 45354})
+     */
+    requestTrip: function (trip) {
+      return baseFetch("/rest/trip/passenger/request", {
+        method: "POST",
+        body: JSON.stringify(trip),
+        headers: jsonHeader,
       })
         .then((response) => response.json())
-        .then((trips) => trips.map((f) => new Trip(f)));
-    }, */
+        .then((u) => new Trip(u));
+    },
+
+    /*
+     * Cancel a driver trip
+     * tripId: the id of the trip that shall be cancelled
+     *
+     * example: base.rest.cancelDriverTrip(1);
+     */
+    cancelDriverTrip: function (tripId) {
+      return baseFetch("/rest/trip/driver/" + tripId, { method: "DELETE" });
+    },
 
     /*
      * Fetches the trips of the driver
      * returns: an array of Trips
+     *
      * example: const trips = base.rest.getDriverTrips(1);
      */
     getDriverTrips: function () {
@@ -229,21 +285,63 @@ base.rest = (function () {
         .then((response) => response.json())
         .then((trips) => trips.map((f) => new Trip(f)));
     },
+
     /*
-     * Fetches available shuttles based on search criteria.
+     * Books a trip
+     * returns: a TripPassenger
+     *
+     * example: const trips = base.rest.bookTrip(1);
+     */
+    bookTrip: function (trip) {
+      return fetch("/rest/tripPassenger", {
+        method: "POST",
+        body: JSON.stringify(trip),
+        headers: jsonHeader,
+        credentials: "same-origin",
+      })
+        .then(function (response) {
+          if (!response.ok) {
+            return new Promise((resolve) => resolve(response.json())).then(function (errorJson) {
+              throw Error(errorJson.error);
+            });
+          } else {
+            return response.json();
+          }
+        })
+        .then((f) => new TripPassenger(f))
+        .catch(function (error) {
+          throw error;
+        });
+    },
+
+    /*
+     * Fetches the trips of the passenger
+     * returns: an array of Trips
+     *
+     * example: const trips = base.rest.getPassengerTrips(1);
+     */
+    getPassengerTrips: function () {
+      return baseFetch("/rest/trip/passenger", {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
+    },
+    /*
+     * Fetches available trips based on search criteria.
      * from: the starting point
      * destination: the destination point
      * datetime: the desired departure datetime
      *
-     * function will return an array of JavaScript objects, each representing a shuttle
-     * example: const shuttles = base.rest.getShuttles('City A', 'City B', '2023-09-20 10:00');
+     * function will return an array of JavaScript objects, each representing a trip
+     * example: const trips = base.rest.getTrips('City A', 'City B', '2023-09-20 10:00');
      */
 
-    getShuttles: function (form) {
+    getTrips: function (form) {
       const queryParams = new URLSearchParams({
         fromLocationId: form.fromLocationId,
         toLocationId: form.toLocationId,
-        //datetime: form.datetime,
+        startTime: form.startTime,
       });
 
       return baseFetch("/rest/trip/search/?" + queryParams.toString(), {

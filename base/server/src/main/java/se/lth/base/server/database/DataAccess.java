@@ -55,6 +55,25 @@ public class DataAccess<T> {
     }
 
     /**
+     * This method is used for returning the result of a COUNT query.
+     * 
+     * @return the integer result of the COUNT query
+     */
+    public int count(String sql, Object... objects) {
+        try (Connection conn = getConnection(); PreparedStatement statement = conn.prepareStatement(sql);) {
+            for (int i = 0; i < objects.length; i++) {
+                statement.setObject(i + 1, objects[i]);
+            }
+            try (ResultSet resultSet = statement.executeQuery();) {
+                resultSet.next();
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw toException(e, e.getErrorCode());
+        }
+    }
+
+    /**
      * This method is used for inserts that return auto generated ids.
      * <p>
      * The type of the return value will be decided what is defined in the database, it is casted automatically.

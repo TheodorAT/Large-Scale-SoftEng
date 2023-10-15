@@ -1,12 +1,10 @@
-<!-- author: Emad aldeen issawi, Osama Hajjouz -->
+<!-- author: Emad aldeen issawi, Osama Hajjouz, Bianca Widstam -->
 
 <div  class="container-fluid">
-
-
     <h2>Search for available trips</h2>
-
-    <form class="form-row pt-4" id="searchtrip-form">
-        <div class="form-group col-md-auto">
+  <div>
+    <form class="row row-cols-lg-auto g-3 align-items-center justify-content-center pt-4" id="searchtrip-form">
+        <div>
             <label for="from">From</label>
             <div class="dropdown">
                 <input
@@ -24,7 +22,7 @@
                 </ul>
             </div>
         </div>
-        <div class="form-group col-md-auto">
+        <div>
             <label for="to">To</label>
             <div class="dropdown">
                 <input
@@ -42,20 +40,28 @@
                 </ul>
             </div>
         </div>
-        <div class="form-group col-md-auto">
+        <div>
             <label for="datetime">Start date & time</label>
             <input required type="datetime-local" class="form-control" id="datetime" name="datetime" />
         </div>
-        <div class="form-group d-flex align-items-end">
+        <div class="form-group pt-4">
             <button id="searchbtn" type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
 
+    <div id="request-trip" class="mt-5 alert alert-primary alert-dismissible" hidden role="alert">
+      <button id="cancel-request" type="button" class="btn-close" aria-label="Close"></button>
+      <p>There are no available drivers for this trip from <b id="reqfrom"></b> to <b id="reqto"></b> on the date <b time="" id="reqdate"></b>. 
+        <hr>However, you can submit a request and a driver may book it in the future.</p>
+      <button id="requestbtn" type="submit" class="btn btn-primary">Request this trip</button>
+    </div>
+    
+    <div id="available-trips" hidden>
     <h2 class="pt-5">Available trips</h2>
     <table id="search-trip" class="table">
         <thead>
         <tr>
-            <th scope="col">#</th>
+            <th scope="col">Trip id</th>
             <th scope="col">From</th>
             <th scope="col">To</th>
             <th scope="col">Start Time</th>
@@ -84,18 +90,20 @@
     </table>
 </div>
 </div>
+</div>
 
 <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="driverModalTitle">No trips available!</h1>
+          <h1 class="modal-title fs-5" id="searchModalTitle"></h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p id="searchTripModal">Try again later!</p>
+          <p id="searchModalBody"></p>
         </div>
         <div class="modal-footer">
+          <button id="mytrips" type="button" class="btn btn-primary" data-bs-dismiss="modal" hidden>Take me to <b>My Trips</b></button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>

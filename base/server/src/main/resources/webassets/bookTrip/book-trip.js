@@ -1,5 +1,5 @@
 /*
- * Author: emad Issawi, Osama Hajjouz
+ * Author: Emad Issawi, Osama Hajjouz, Bianca Widstam
  */
 var base = base || {};
 // Defines the base namespace, if not already declared. Through this pattern it doesn't matter which order
@@ -66,6 +66,13 @@ base.searchTripController = function () {
     load: function () {
       document.getElementById("searchtrip-form").onsubmit = function (event) {
         event.preventDefault();
+        const template = document.getElementById("searchtrip-template");
+        const parentElement = template.parentElement;
+        const rows = parentElement.querySelectorAll("tr");
+        rows.forEach((row) => {
+          parentElement.removeChild(row);
+        });
+
         // Before submitting, needs to check if locations exists, otherwise mark the input invalid.
         const from = document.getElementById("from");
         const to = document.getElementById("to");
@@ -84,19 +91,41 @@ base.searchTripController = function () {
       document.getElementById("to").onkeyup = function (event) {
         controller.filterFunction("to");
       };
-
       base.rest.getLocations().then(function (l) {
         locations = l;
         controller.setLocations("from", l);
         controller.setLocations("to", l);
       });
-
       base.rest.getUser().then(function (user) {
         currentUser = user;
       });
-    },
-    getLocationId: function (value) {
-      return locations.find((location) => location.name + ", " + location.municipality == value)?.locationId;
+      document.getElementById("mytrips").onclick = function (event) {
+        event.preventDefault();
+        base.changeLocation("#/my-trips");
+      };
+      //must manually hide, otherwise if using 'data-bs-dismiss' it will be removed completely from the DOM.
+      document.getElementById("cancel-request").onclick = function (event) {
+        document.getElementById("request-trip").hidden = true;
+      };
+      document.getElementById("requestbtn").onclick = function (event) {
+        document.getElementById("request-trip").hidden = true;
+        let from = document.getElementById("reqfrom");
+        let to = document.getElementById("reqto");
+        let startTime = document.getElementById("reqdate");
+        base.rest
+          .requestTrip({
+            fromLocationId: from.getAttribute("from"),
+            toLocationId: to.getAttribute("to"),
+            startTime: startTime.getAttribute("time"),
+          })
+          .then((trip) => {
+            controller.updateModal(
+              "The trip was requested!",
+              "From: " + from.innerText + " To: " + to.innerText + " Date: " + startTime.innerText,
+              true,
+            );
+          });
+      };
     },
     getLocationId: function (value) {
       return locations.find((location) => location.name + ", " + location.municipality == value)?.locationId;
@@ -123,6 +152,13 @@ base.searchTripController = function () {
       document.getElementById(id).value = location.innerHTML.trim();
       document.getElementById("dropdown-" + id).classList.toggle("show");
     },
+    updateModal: function (title, body, button) {
+      document.getElementById("searchModalTitle").textContent = title;
+      document.getElementById("searchModalBody").textContent = body;
+      button ? (document.getElementById("mytrips").hidden = false) : (document.getElementById("mytrips").hidden = true);
+      const searchModal = new bootstrap.Modal(document.getElementById("searchModal"));
+      searchModal.show();
+    },
     filterFunction: function (id) {
       var input, filter, citys, i;
       input = document.getElementById(id);
@@ -142,28 +178,56 @@ base.searchTripController = function () {
       bookButtons.forEach(
         (b) =>
           (b.onclick = function (event) {
-            console.log("click", event.target.id);
-            //TODO: rest call to booking trip
-            alert("TODO: rest call to booking trip");
+            const tripId = event.target.id;
+            let tr = event.target.parentElement.parentElement;
+            base.rest
+              .bookTrip(tripId)
+              .then((bookedTrip) => {
+                document.getElementById("available-trips").hidden = true;
+                let from = tr.children[1].innerText;
+                let to = tr.children[2].innerText;
+                let start = tr.children[3].innerText;
+                controller.updateModal(
+                  "The trip was booked successfully!",
+                  "From: " + from + ". To: " + to + ". Date & time: " + start + ".",
+                  true,
+                );
+              })
+              .catch((error) => {
+                let msg = "Something went wrong, try again later.";
+                if (error.message == "DUPLICATE") {
+                  msg = "You have already booked this trip, try another trip";
+                }
+                controller.updateModal("Unfortunately, no trip was booked!", msg, false);
+              });
           }),
       );
     },
     loadTrips: function () {
-      const from = document.getElementById("from");
-      const to = document.getElementById("to");
-      const fromId = controller.getLocationId(from.value.trim());
-      const toId = controller.getLocationId(to.value.trim());
-      const datetime = new Date(document.getElementById("datetime").value).getTime();
-      const form = { fromLocationId: fromId, toLocationId: toId, startTime: datetime };
-      base.rest.getShuttles(form).then(function (trips) {
-        trips.forEach((trip) => {
-          const vm = new TripViewModel(trip);
-          model.push(vm); // append the trip to the end of the model array
-          vm.render(view.template()); // append the trip to the table
-        });
+      const from = document.getElementById("from").value;
+      const to = document.getElementById("to").value;
+      const fromId = controller.getLocationId(from.trim());
+      const toId = controller.getLocationId(to.trim());
+      const startTime = new Date(document.getElementById("datetime").value).getTime();
+      const form = { fromLocationId: fromId, toLocationId: toId, startTime: startTime };
+      base.rest.getTrips(form).then(function (trips) {
         if (trips.length == 0) {
-          const myModal = new bootstrap.Modal(document.getElementById("searchModal"));
-          myModal.show();
+          document.getElementById("available-trips").hidden = true;
+          document.getElementById("reqfrom").textContent = from;
+          document.getElementById("reqto").textContent = to;
+          document.getElementById("reqdate").textContent = new Date(startTime).toLocaleDateString();
+          document.getElementById("reqdate").setAttribute("time", startTime);
+          document.getElementById("reqfrom").setAttribute("from", fromId);
+          document.getElementById("reqto").setAttribute("to", toId);
+          document.getElementById("request-trip").hidden = false;
+        } else {
+          document.getElementById("request-trip").hidden = true;
+          document.getElementById("available-trips").hidden = false;
+          trips.forEach((trip) => {
+            const vm = new TripViewModel(trip);
+            model.push(vm); // append the trip to the end of the model array
+            vm.render(view.template()); // append the trip to the table
+          });
         }
       });
       document.getElementById("from").classList.remove("is-invalid");
@@ -171,6 +235,5 @@ base.searchTripController = function () {
       document.getElementById("searchtrip-form").reset();
     },
   };
-
   return controller;
 };

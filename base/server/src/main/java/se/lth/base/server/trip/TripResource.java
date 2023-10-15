@@ -10,6 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * The TripResource class provides endpoints for managing trips within the system. The class is part of the REST API,
@@ -71,7 +72,41 @@ public class TripResource {
     }
 
     /**
-     * Retrieves a list of trips associated with the current Driver user.
+     * Retrieves a list of trips where the current user is a passenger.
+     *
+     * HTTP Request Type: GET Path: "trip/passenger"
+     * 
+     * @return A List of Trip objects representing the users passenger trips.
+     */
+    @Path("passenger")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public List<Trip> getTripsAsPassenger() {
+        List<Trip> result = tripDao.getTripsAsPassenger(user.getId());
+        return result;
+    }
+
+    /**
+     * Retrieves a list of trips where a specific user is a passenger.
+     *
+     * HTTP Request Type: GET Path: "trip/passenger/{passengerId}"
+     *
+     * @param passengerId
+     *            The ID of the passenger whose trips are to be retrieved.
+     * 
+     * @return A List of Trip objects representing the passenger's trips.
+     */
+    @Path("passenger/{passengerId}")
+    @GET
+    @RolesAllowed(Role.Names.ADMIN)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public List<Trip> getTripsAsPassenger(@PathParam("passengerId") int passengerId) {
+        List<Trip> result = tripDao.getTripsAsPassenger(passengerId);
+        return result;
+    }
+
+    /**
+     * Retrieves a list of trips where the current user is the driver.
      *
      * HTTP Request Type: GET Path: "trip/driver"
      * 
@@ -87,7 +122,7 @@ public class TripResource {
     }
 
     /**
-     * Retrieves a list of trips associated with a specific driver.
+     * Retrieves a list of trips where a specific user is the driver.
      *
      * HTTP Request Type: GET Path: "trip/driver/{driverId}"
      *
@@ -98,9 +133,99 @@ public class TripResource {
      */
     @Path("driver/{driverId}")
     @GET
+    @RolesAllowed(Role.Names.ADMIN)
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<Trip> getTripsFromDriver(@PathParam("driverId") int driverId) {
         List<Trip> result = tripDao.getTripsFromDriver(driverId);
         return result;
     }
+
+    /**
+     * Cancels a drivers trip
+     * 
+     * @param tripId
+     *            the unique ID for the trip which will be cancelled
+     * 
+     */
+    @Path("driver/{tripId}")
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public void cancelDriverTrip(@PathParam("tripId") int tripId) {
+        if (!tripDao.cancelDriverTrip(this.user.getId(), tripId)) {
+            throw new WebApplicationException("Not found trip", Response.Status.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Updates the driver of a trip with the given trip ID. Only Drivers are allowed to access this resource.
+     * 
+     * @param tripId
+     *            the ID of the trip to update the driver for
+     * 
+     * @return the updated Trip object
+     * 
+     * @throws WebApplicationException
+     *             if the trip is not found
+     */
+    @Path("{tripId}")
+    @PUT
+    @RolesAllowed(Role.Names.DRIVER)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Trip updateDriver(@PathParam("tripId") int tripId, int seatCapacity) {
+        Trip trip = tripDao.updateDriver(this.user.getId(), tripId, seatCapacity);
+        if (trip == null) {
+            throw new WebApplicationException("Trip not found", Response.Status.NOT_FOUND);
+        }
+        return trip;
+    }
+
+    /**
+     * This method retrieves a Trip object from the tripDao based on the provided tripId.
+     * 
+     * @param tripId
+     *            The id of the trip to retrieve.
+     * 
+     * @return The Trip object corresponding to the provided tripId.
+     */
+    @Path("{tripId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Trip getTrip(@PathParam("tripId") int tripId) {
+        Trip trip = tripDao.getTrip(tripId);
+        return trip;
+    }
+
+    /**
+     * This method is used to request a trip by a passenger. It adds the trip to the database and returns the added
+     * trip.
+     * 
+     * @param trip
+     *            The trip object containing the details of the requested trip.
+     * 
+     * @return The added trip object.
+     */
+    @Path("passenger/request")
+    @POST
+    @RolesAllowed(Role.Names.USER)
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Trip requestTrip(Trip trip) {
+        Trip result = tripDao.addTrip(0, trip);
+        return result;
+    }
+
+    /**
+     * Retrieves a list of requested trips where there is no driver.
+     *
+     * HTTP Request Type: GET Path: "trip/requests"
+     * 
+     * @return A List of Trip objects representing the users passenger trips.
+     */
+    @Path("requests")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public List<Trip> getTripsWithoutDriver() {
+        List<Trip> result = tripDao.getTripsWithoutDriver();
+        return result;
+    }
+
 }

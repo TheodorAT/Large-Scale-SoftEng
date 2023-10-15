@@ -1,92 +1,92 @@
 <div id="useradmin">
-<h1>All users</h1>
-
-<div class="mt-5">
-    <table class="table" id= "user-table" style="background: white">
-        <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Username</th>
-            <th scope="col">User Id</th>
-            <th scope="col">Role</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <template id="user-template">
-            <tr>
-                <td></td>
-                <td></td>
-                <td class="user-id-data"></td>
-                <td></td>
-                <td>
-                    <button type="button" class="w-100 btn btn-danger delete-user">Delete</button>
-                </td>
-            </tr>
-        </template>
-        </tbody>
-    </table>
-    <button type="button" id="new-admin" class="list-group-item list-group-item-action list-group-item-success">
-        ➕ Add New Admin User
-    </button>
-</div>
-
-<div class="modal" id="deleteModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+  <h1>All users</h1>
+  
+  <div class="mt-5 list-group">
+      <table class="table" id= "user-table" style="background: white">
+          <thead>
+          <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Username</th>
+              <th scope="col">User Id</th>
+              <th scope="col">Role</th>
+              <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <template id="user-template">
+              <tr>
+                  <td></td>
+                  <td></td>
+                  <td class="user-id-data"></td>
+                  <td></td>
+                  <td>
+                      <button type="button" class="w-100 btn btn-danger delete-user">Delete</button>
+                  </td>
+              </tr>
+          </template>
+          </tbody>
+      </table>
+      <button type="button" id="new-admin" class="list-group-item list-group-item-action list-group-item-success">
+          ➕ Add New Admin User
+      </button>
+  </div>
+  
+  <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Are you sure you want to delete this user?</h5>
+            <button type="button" id="closeBtn" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>The user will be deleted immediatly. This action can not be undone. </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id = "modal-delete-user" class="btn btn-danger">Yes, delete user</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  <div class="modal fade" id="modalAddUser" tabindex="-1" role="dialog" aria-labelledby="modalAddUser" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Are you sure you want to delete this user?</h5>
+        <div class="modal-header border-bottom-0">
+          <h5 class="modal-title" >Add New Administrator</h5>
           <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <p>The user will be deleted immediatly. This action can not be undone. </p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" id = "modal-delete-user" class="btn btn-danger">Yes, delete user</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, cancel</button>
-        </div>
+        <form id="addForm">
+          <div class="modal-body">
+            <div class="mb-2">
+              <label for="input-firstname">First name</label>
+              <input type="text" class="form-control" id="input-firstname" required>
+            </div>
+            <div class="mb-2">
+              <label for="input-lastname">Last name</label>
+              <input type="text" class="form-control" id="input-lastname" required>
+            </div>
+            <div class="mb-2">
+              <label for="input-username">Username</label>
+              <input type="text" class="form-control" id="input-username" required minlength="3">
+            </div>
+            <div class="mb-2">
+              <label for="input-email">Email address</label>
+              <input type="email" class="form-control" id="input-email" aria-describedby="emailHelp" required>
+            </div>
+            <div>
+              <label for="input-password">Password</label>
+              <input type="password" class="form-control" id="input-password" placeholder="Minimum 8 characters" required minlength="8">
+            </div>
+          </div>
+          <div class="d-flex justify-content-center mb-3">
+            <button type="submit" id="addNewBtn" class="btn btn-success" data-dismiss="modal">Add New Administrator</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-
-<div class="modal fade" id="modalAddUser" tabindex="-1" role="dialog" aria-labelledby="modalAddUser" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header border-bottom-0">
-        <h5 class="modal-title" >Add New Administrator</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form id="addForm">
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="input-firstname">First name</label>
-            <input type="text" class="form-control" id="input-firstname" required>
-          </div>
-          <div class="form-group">
-            <label for="input-lastname">Last name</label>
-            <input type="text" class="form-control" id="input-lastname" required>
-          </div>
-          <div class="form-group">
-            <label for="input-username">Username</label>
-            <input type="text" class="form-control" id="input-username" required minlength="3">
-          </div>
-          <div class="form-group">
-            <label for="input-email">Email address</label>
-            <input type="email" class="form-control" id="input-email" aria-describedby="emailHelp" required>
-          </div>
-          <div class="form-group">
-            <label for="input-password">Password</label>
-            <input type="password" class="form-control" id="input-password" placeholder="Minimum 8 characters" required minlength="8">
-          </div>
-        </div>
-        <div class="form-group d-flex justify-content-center">
-          <button type="submit" id="submit-admin" class="btn btn-success" data-dismiss="modal">Add New Administrator</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>

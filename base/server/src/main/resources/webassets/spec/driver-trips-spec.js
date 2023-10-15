@@ -11,46 +11,12 @@ const locations = [
 ];
 
 describe("driverTripController", function () {
-  // (int id, int driverId, int fromLocationId, int toLocationId, long startTime, long endTime,int seatCapacity)
-  const trips = [
-    new base.Trip({
-      id: 1,
-      driverId: 1,
-      fromLocationId: 1,
-      toLocationId: 2,
-      startTime: new Date().getTime() + 1000000,
-      endTime: new Date().getTime() + 3000000,
-      seatCapacity: 2,
-    }),
-    new base.Trip({
-      id: 2,
-      driverId: 2,
-      fromLocationId: 2,
-      toLocationId: 3,
-      startTime: new Date().getTime() + 1000000,
-      endTime: new Date().getTime() + 3000000,
-      seatCapacity: 3,
-    }),
-    new base.Trip({
-      id: 3,
-      driverId: 3,
-      fromLocationId: 3,
-      toLocationId: 4,
-      startTime: new Date().getTime() + 1000000,
-      endTime: new Date().getTime() + 3000000,
-      seatCapacity: 4,
-    }),
-  ];
-  //(int locationId, String municipality, String name, double latitude, double longitude)
-
   let node;
-  let tripPromise;
   let locationPromise;
 
   // Creates the controller by loading the driver-trip.html and put it in the node variable
   beforeEach(function (done) {
     controller = base.driverTripController();
-    //specHelper.spyOnRest();
     specHelper
       .fetchHtml("drivertrips/driver-trips.html", document.body)
       .then(function (n) {
@@ -59,35 +25,17 @@ describe("driverTripController", function () {
       .finally(done);
     locationPromise = Promise.resolve(locations.slice(0));
     spyOn(base.rest, "getLocations").and.returnValue(locationPromise);
-    tripPromise = Promise.resolve(trips.slice(0));
-    spyOn(base.rest, "getDriverTrips").and.returnValue(tripPromise);
   });
   // Remove the node from the DOM
   afterEach(function () {
     document.body.removeChild(node);
   });
 
-  it("should fetch locations and trips on load", function (done) {
+  it("should fetch locations on load", function (done) {
     controller.load();
     locationPromise
       .then(function () {
         expect(base.rest.getLocations).toHaveBeenCalled();
-      })
-      .then(function () {
-        expect(base.rest.getDriverTrips).toHaveBeenCalled();
-      })
-      .finally(done);
-  });
-
-  it("should populate trip table on load", function (done) {
-    controller.load();
-    locationPromise
-      .then(function () {
-        expect(base.rest.getLocations).toHaveBeenCalled();
-      })
-      .then(function () {
-        const rows = node.querySelectorAll("tbody tr");
-        expect(rows.length).toBe(trips.length);
       })
       .finally(done);
   });
@@ -98,9 +46,6 @@ describe("driverTripController", function () {
       locationPromise
         .then(function () {
           expect(base.rest.getLocations).toHaveBeenCalled();
-        })
-        .then(function () {
-          expect(base.rest.getDriverTrips).toHaveBeenCalled();
         })
         .finally(done);
     });

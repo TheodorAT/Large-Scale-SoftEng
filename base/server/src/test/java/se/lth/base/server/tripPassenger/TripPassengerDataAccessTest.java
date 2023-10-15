@@ -7,6 +7,8 @@ import se.lth.base.server.trip.Trip;
 import se.lth.base.server.trip.TripDataAccess;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for TripPassengerDataAccess
@@ -31,4 +33,26 @@ public class TripPassengerDataAccessTest extends BaseDataAccessTest {
         assertEquals(TEST.getId(), tripPassenger.getPassengerId());
         assertEquals(1, tripPassenger.getTripId());
     }
+
+    @Test
+    public void cancelPassengerTrips() {
+        Trip trip = new Trip(1, 1, 1, 2, 1, 2, 2);
+        tripDao.addTrip(1, trip);
+        TripPassenger tripPassenger = tripPassengerDao.bookTrip(trip.getId(), TEST.getId());
+
+        assertTrue(tripPassengerDao.cancelPassengerTrip(TEST.getId(), trip.getId()));
+        assertFalse(tripPassengerDao.cancelPassengerTrip(TEST.getId(), trip.getId()));
+    }
+
+    @Test
+    public void getAvailableSeats() {
+        Trip trip = new Trip(1, DRIVER.getId(), 1, 2, 1, 2, 2);
+        tripDao.addTrip(DRIVER.getId(), trip);
+
+        assertEquals(2, tripPassengerDao.getAvailableSeats(trip));
+
+        tripPassengerDao.bookTrip(trip.getId(), TEST.getId());
+        assertEquals(1, tripPassengerDao.getAvailableSeats(trip));
+    }
+
 }

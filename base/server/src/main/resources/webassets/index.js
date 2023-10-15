@@ -5,7 +5,7 @@ base.mainController = (function () {
   const routingTable = {
     // first in table is the default
     search: {
-      partial: "searchForAvailableShuttles/search.html",
+      partial: "bookTrip/book-trip.html",
       controller: base.searchTripController,
     },
     "driver-trips": {
@@ -19,6 +19,10 @@ base.mainController = (function () {
     admin: {
       partial: "admin/user-admin.html",
       controller: base.userAdminController,
+    },
+    settings: {
+      partial: "settings/settings.html",
+      controller: base.settingsController,
     },
   };
 
@@ -54,10 +58,16 @@ base.mainController = (function () {
       base.rest.getUser().then(function (user) {
         model.user = user;
         document.getElementById("username").textContent = model.user.username;
+        document.querySelectorAll("#main-nav li").forEach((li) => (li.style.display = ""));
         if (user.isNone()) {
           base.changeLocation("/login/login.html");
         } else if (!user.isAdmin()) {
           document.querySelectorAll("#main-nav li.admin-only").forEach((li) => (li.style.display = "none"));
+          if (user.role.name == "USER") {
+            document.querySelectorAll("#main-nav li.driver-only").forEach((li) => (li.style.display = "none"));
+          } else {
+            document.querySelectorAll("#main-nav li.user-only").forEach((li) => (li.style.display = "none"));
+          }
         }
       });
     },
