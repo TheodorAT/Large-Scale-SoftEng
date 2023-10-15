@@ -72,7 +72,7 @@ public class TripPassengerResource {
     /**
      * This method returns a list of passengers for a given trip. Using a GET request.
      * 
-     * @param trip
+     * @param tripId
      *            The trip to get passengers for.
      * 
      * @return A list of passengers for the given trip.
