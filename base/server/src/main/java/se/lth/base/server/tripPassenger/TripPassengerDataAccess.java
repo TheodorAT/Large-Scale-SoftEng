@@ -5,6 +5,7 @@ import se.lth.base.server.trip.TripDataAccess;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import se.lth.base.server.Config;
 import se.lth.base.server.database.DataAccess;
 import se.lth.base.server.database.Mapper;
 
@@ -56,10 +57,23 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
         return execute(sql, passengerId, tripId) > 0;
     }
 
+    /**
+     * Returns the number of available seats for a specific trip
+     * 
+     * @param tripId
+     *            The unique identifier of the trip
+     * 
+     * @return int Number of available seats
+     */
     public int getAvailableSeats(int tripId) {
         String sql = "SELECT COUNT(*) FROM trip_passengers WHERE trip_id = ?";
         int bookedSeats = count(sql, tripId);
-        int availableSeats = bookedSeats;
+
+        TripDataAccess tripDao = new TripDataAccess(Config.instance().getDatabaseDriver());
+        Trip trip = tripDao.getTrip(tripId);
+        int seat_capacity = trip.getSeatCapacity();
+
+        int availableSeats = seat_capacity - bookedSeats;
         return availableSeats;
     }
 }

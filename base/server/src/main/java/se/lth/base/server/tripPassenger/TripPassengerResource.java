@@ -56,6 +56,14 @@ public class TripPassengerResource {
         }
     }
 
+    /**
+     * Calls on the getAvailableSeats function in TripPassengerDataAccess using HTTP.
+     * 
+     * @param tripId
+     *            the unique ID for the trip
+     * 
+     * @return int Number of available seats.
+     */
     @Path("/availableSeats")
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
