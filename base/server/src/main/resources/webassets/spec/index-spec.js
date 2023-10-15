@@ -43,7 +43,11 @@ describe("mainController", function () {
     window.onhashchange = null;
     window.location.hash = "";
   });
-
+  /**
+   * @desc test that default route is set if none is specified
+   * @task ETS-1405
+   * @story ETS-1404
+   */
   it("should set route to default if none is specified", function (done) {
     const userPromise = Promise.resolve(test);
     spyOn(base.rest, "getUser").and.returnValue(userPromise);
@@ -54,7 +58,11 @@ describe("mainController", function () {
       })
       .finally(done);
   });
-
+  /**
+   * @desc test that default route is set if user tries to navigate to a missing route
+   * @task ETS-1405
+   * @story ETS-1404
+   */
   it("should redirect bad route to default", function (done) {
     const userPromise = Promise.resolve(test);
     spyOn(base.rest, "getUser").and.returnValue(userPromise);
@@ -66,7 +74,11 @@ describe("mainController", function () {
       })
       .finally(done);
   });
-
+  /**
+   * @desc test that controller of r1 is loaded
+   * @task ETS-1405
+   * @story ETS-1404
+   */
   it("should load controller of r1", function (done) {
     const userPromise = Promise.resolve(admin);
     const fetchPromise = Promise.resolve({ text: () => "html" });
@@ -82,6 +94,11 @@ describe("mainController", function () {
       .finally(done);
   });
 
+  /**
+   * @desc test that partial of r2 is fectched
+   * @task ETS-1405
+   * @story ETS-1404
+   */
   it("should fetch partial of r2", function (done) {
     const userPromise = Promise.resolve(admin);
     const fetchPromise = Promise.resolve({ text: () => "html" });
@@ -97,7 +114,11 @@ describe("mainController", function () {
       })
       .finally(done);
   });
-
+  /**
+   * @desc test that the username is shown in the right side corner of navigation header
+   * @task ETS-1405
+   * @story ETS-1404
+   */
   it("should render username", function (done) {
     const userPromise = Promise.resolve(test);
     spyOn(base.mainController, "changeRoute");
@@ -109,7 +130,11 @@ describe("mainController", function () {
       })
       .finally(done);
   });
-
+  /**
+   * @desc test that if user is none the system redirects to login page
+   * @task ETS-1405
+   * @story ETS-1404
+   */
   it("should redirect to login if user is none", function (done) {
     const userPromise = Promise.resolve(none);
     spyOn(base.rest, "getUser").and.returnValue(userPromise);
@@ -122,7 +147,11 @@ describe("mainController", function () {
       })
       .finally(done);
   });
-
+  /**
+   * @desc test that user is redirected to login page after logging out
+   * @task ETS-1405
+   * @story ETS-1404
+   */
   it("should redirect to login after logout", function (done) {
     const userPromise = Promise.resolve(admin);
     spyOn(base.rest, "getUser").and.returnValue(userPromise);
@@ -141,6 +170,11 @@ describe("mainController", function () {
     });
   });
 
+  /**
+   * @desc test element is marked active in the navigation header
+   * @task ETS-1405
+   * @story ETS-1404
+   */
   it("should mark an element active in nav", function (done) {
     const userPromise = Promise.resolve(admin);
     spyOn(base.mainController, "changeRoute");
@@ -152,7 +186,11 @@ describe("mainController", function () {
       })
       .finally(done);
   });
-
+  /**
+   * @desc test that the admin tabs are hidden for users that are not admins
+   * @task ETS-1405
+   * @story ETS-1404
+   */
   it("should hide admin tabs from user", function (done) {
     const userPromise = Promise.resolve(test);
     spyOn(base.mainController, "changeRoute");
@@ -167,7 +205,11 @@ describe("mainController", function () {
       })
       .finally(done);
   });
-
+  /**
+   * @desc test that the admin tabs are visible for admin users
+   * @task ETS-1405
+   * @story ETS-1404
+   */
   it("should show admin tabs to admin", function (done) {
     const userPromise = Promise.resolve(admin);
     spyOn(base.mainController, "changeRoute");
