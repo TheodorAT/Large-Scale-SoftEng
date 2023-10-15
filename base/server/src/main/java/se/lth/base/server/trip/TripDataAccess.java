@@ -108,7 +108,7 @@ public class TripDataAccess extends DataAccess<Trip> {
 
         // End time is 24 hours after start time
         long endTime = startTime + 86400000;
-        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ? AND start_time >= ? AND start_time <= ?";
+        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ? AND start_time >= ? AND start_time <= ? AND status_id = 1";
         return query(sql, fromLocationId, toLocationId, new Timestamp(startTime), new Timestamp(endTime));
     }
 
@@ -149,6 +149,16 @@ public class TripDataAccess extends DataAccess<Trip> {
     public Trip getTrip(int tripId) {
         String sql = "SELECT * FROM trips WHERE trip_id = ?";
         return queryFirst(sql, tripId);
+    }
+
+    /**
+     * Returns a list of all trips in the database.
+     *
+     * @return a list of all trips
+     */
+    public List<Trip> getAllTrips() {
+        String sql = "SELECT * FROM trips";
+        return query(sql);
     }
 
     /**
