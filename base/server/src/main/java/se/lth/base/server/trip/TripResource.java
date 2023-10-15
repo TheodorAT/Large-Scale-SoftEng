@@ -180,6 +180,22 @@ public class TripResource {
     }
 
     /**
+     * This method retrieves a Trip object from the tripDao based on the provided tripId.
+     * 
+     * @param tripId
+     *            The id of the trip to retrieve.
+     * 
+     * @return The Trip object corresponding to the provided tripId.
+     */
+    @Path("{tripId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Trip getTrip(@PathParam("tripId") int tripId) {
+        Trip trip = tripDao.getTrip(tripId);
+        return trip;
+    }
+
+    /**
      * This method is used to request a trip by a passenger. It adds the trip to the database and returns the added
      * trip.
      * 
