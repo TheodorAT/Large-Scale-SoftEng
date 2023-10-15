@@ -52,6 +52,26 @@ public class TripPassengerResourceTest extends BaseResourceTest {
         assertEquals(tripId, tripPassenger.getTripId());
     }
 
+    /**
+     * Tests that a driver cannot book a trip as a passenger. Expects a ForbiddenException to be thrown.
+     * 
+     * @desc Test the route for booking a trip as the driver. It should return ForbiddenException.
+     * 
+     * @task ETS-1353
+     * 
+     * @story ETS-1339
+     */
+    @Test(expected = javax.ws.rs.ForbiddenException.class)
+    public void bookTripAsDriver() {
+        login(DRIVER_CREDENTIALS);
+        Trip t = new Trip(1, 1, 1, 2, 1, 2, 2);
+        Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
+        Trip trip = target("trip").request().post(e, Trip.class);
+
+        Entity<Integer> tripId = Entity.entity(trip.getId(), MediaType.APPLICATION_JSON);
+        target("tripPassenger").request().post(tripId, TripPassenger.class);
+    }
+
     @Test
     public void cancelPassengerTrip() {
         logout();
