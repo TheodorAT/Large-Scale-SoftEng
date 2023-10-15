@@ -39,7 +39,7 @@ base.myTripsController = function () {
       const duration = new Date(end - start).toLocaleTimeString();
       td[4].textContent = duration;
       td[5].textContent = viewModel.trip.seatCapacity;
-      td[6].textContent = viewModel.trip.driverId;
+      td[6].textContent = viewModel.trip.driverId == 0 ? "Requested" : viewModel.trip.driverId;
       td[6].id = viewModel.trip.driverId;
       let now = new Date().getTime();
       //Status: ACTIVE(1), CANCELLED(2), REQUESTED(3);
@@ -50,12 +50,16 @@ base.myTripsController = function () {
           button = view.createButton(viewModel.trip.id, "Cancel",  "btn-danger");
           break;
         case 2:
-          //CANCELLED(2)  if cancelled, should be able to book?
-          button = view.createStatusButtons(viewModel.trip.id, "Cancelled", "bg-danger");
+          //CANCELLED(2)  if cancelled, should be able to book - same as requested?? both without driver
+          if (viewModel.trip.startTime > now) {
+            button = view.createStatusButtons(viewModel.trip.id, "Cancelled", "bg-danger");
+          } else {
+            button = view.createStatusButtons(viewModel.trip.id, "Completed", "bg-success");
+          }
           break;
         case 3:
-            //REQUESTED(3) if requested, should be able to book
-            button = view.createButton(viewModel.trip.id, "Book", "btn-primary");
+        // REQUESTED(3) if user
+          button = view.createStatusButtons(viewModel.trip.id, "Requested", "bg-primary");
           break;
         default:
           button = view.createStatusButtons(viewModel.trip.id, "Completed", "bg-success");
@@ -131,7 +135,7 @@ base.myTripsController = function () {
         (b) =>
           (b.onclick = function (event) {
             //If the user is a passenger on the trip, delete passengerTrip and remove row
-            //If the user is the driver on the trip, update status to cancelled
+            //If the user is the driver on the trip, cancel driverTrip and remove row (should be in requested)
             // Cancels the trips from the server through the REST API, see rest.js for definition.
             let tripRow = document.getElementById(event.target.id).parentNode.parentNode;
             let driverId = tripRow.children[6].id;
@@ -141,7 +145,7 @@ base.myTripsController = function () {
               });
             } else {
               base.rest.cancelDriverTrip(event.target.id).then(function () {
-                controller.load();
+                tripRow.remove();
               });
             }
           }),
