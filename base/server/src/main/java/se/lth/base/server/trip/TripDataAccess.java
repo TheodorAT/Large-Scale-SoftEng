@@ -108,7 +108,7 @@ public class TripDataAccess extends DataAccess<Trip> {
 
         // End time is 24 hours after start time
         long endTime = startTime + 86400000;
-        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ? AND start_time >= ? AND start_time <= ? AND status_id != 2";
+        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ? AND start_time >= ? AND start_time <= ? AND status_id = 1";
         return query(sql, fromLocationId, toLocationId, new Timestamp(startTime), new Timestamp(endTime));
     }
 
