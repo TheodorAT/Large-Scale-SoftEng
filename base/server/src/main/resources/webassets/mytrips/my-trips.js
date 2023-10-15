@@ -21,12 +21,11 @@ base.myTripsController = function () {
       let now = new Date().getTime();
       // Depending if the trip is old or new it should update the past or upcoming table
       viewModel.trip.startTime < now ? (template = pastTemplate) : (template = updomingTemplate);
-      this.update(template.content.querySelector("tr"));
-      const clone = document.importNode(template.content, true);
-      template.parentElement.appendChild(clone);
+      this.update(template);
     };
-    // Update a single table row to display a trip
-    this.update = function (trElement) {
+    // Update a single table row to display a trip, and
+    this.update = function (template) {
+      const trElement = template.content.querySelector("tr");
       const td = trElement.children;
       let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
       let tolocation = controller.getLocationFromId(viewModel.trip.toLocationId);
@@ -38,9 +37,11 @@ base.myTripsController = function () {
       td[3].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
       const duration = new Date(end - start).toLocaleTimeString();
       td[4].textContent = duration;
-
-      td[5].textContent = base.rest.getAvailableSeats(viewModel.trip.id) + " / " + viewModel.trip.seatCapacity;
-
+      base.rest.getAvailableSeats(viewModel.trip.id).then(function (seats) {
+        td[5].textContent = seats + " / " + viewModel.trip.seatCapacity;
+        const clone = document.importNode(template.content, true);
+        template.parentElement.appendChild(clone);
+      });
       td[6].textContent = viewModel.trip.driverId;
       td[6].id = viewModel.trip.driverId;
       let now = new Date().getTime();

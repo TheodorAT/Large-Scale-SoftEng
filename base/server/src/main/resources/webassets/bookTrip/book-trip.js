@@ -16,12 +16,13 @@ base.searchTripController = function () {
     const viewModel = this;
 
     this.render = function (template) {
-      this.update(template.content.querySelector("tr"));
-      const clone = document.importNode(template.content, true);
-      template.parentElement.appendChild(clone);
+      this.update(template);
+      //const clone = document.importNode(template.content, true);
+      //template.parentElement.appendChild(clone);*/
       controller.loadButtons();
     };
-    this.update = function (trElement) {
+    this.update = function (template) {
+      const trElement = template.content.querySelector("tr");
       const td = trElement.children;
       td[0].textContent = viewModel.trip.id;
       let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
@@ -32,8 +33,13 @@ base.searchTripController = function () {
       td[3].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
       const end = viewModel.trip.endTime;
       td[4].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
-      td[5].textContent = new Date(end - start).toLocaleTimeString();
-      td[6].textContent = viewModel.trip.seatCapacity;
+      const duration = new Date(end - start).toLocaleTimeString();
+      td[5].textContent = duration;
+      base.rest.getAvailableSeats(viewModel.trip.id).then(function (seats) {
+        td[6].textContent = seats + " / " + viewModel.trip.seatCapacity;
+        const clone = document.importNode(template.content, true);
+        template.parentElement.appendChild(clone);
+      });
       td[7].textContent = viewModel.trip.driverId;
       let now = new Date().getTime();
       // Book Button //

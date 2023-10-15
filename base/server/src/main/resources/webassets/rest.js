@@ -351,14 +351,16 @@ base.rest = (function () {
         .then((trips) => trips.map((f) => new Trip(f)));
     },
 
-    getAvailableSeats: function (tripId) {
+    getAvailableSeats: function (tripId, seatCapacity) {
       return baseFetch("rest/tripPassenger/availableSeats", {
         method: "POST",
-        body: JSON.stringify(tripId),
+        body: JSON.stringify(tripId, seatCapacity),
         headers: jsonHeader,
-      }).then(function (response) {
-        return response;
-      });
+      })
+        .then((response) => response.json())
+        .then(function (seats) {
+          return seats;
+        });
     },
   };
 })();
