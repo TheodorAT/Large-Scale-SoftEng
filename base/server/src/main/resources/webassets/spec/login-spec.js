@@ -37,7 +37,7 @@ describe("loginController", function () {
       })
       .finally(done);
   });
-  
+
   describe("login submit", function () {
     beforeEach(function (done) {
       var userPromise = Promise.resolve(none);
@@ -45,11 +45,11 @@ describe("loginController", function () {
       base.loginController.load();
       userPromise.finally(done);
     });
-  /**
-   * @desc test that there is a call to loginUser when the form is submitted
-   * @task ETS-1405
-   * @story ETS-1404
-   */
+    /**
+     * @desc test that there is a call to loginUser when the form is submitted
+     * @task ETS-1405
+     * @story ETS-1404
+     */
     it("should call loginUser on form submit", function () {
       document.getElementById("username").value = "test";
       document.getElementById("password").value = "password1";
@@ -58,10 +58,10 @@ describe("loginController", function () {
       expect(base.loginController.loginUser).toHaveBeenCalled();
     });
     /**
-   * @desc test that a POST request is sent to rest/login when form is submitted
-   * @task ETS-1405
-   * @story ETS-1404
-   */
+     * @desc test that a POST request is sent to rest/login when form is submitted
+     * @task ETS-1405
+     * @story ETS-1404
+     */
     it("should do post to rest/login", function (done) {
       document.getElementById("username").value = "test";
       document.getElementById("password").value = "password2";
