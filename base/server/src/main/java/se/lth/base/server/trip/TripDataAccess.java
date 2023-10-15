@@ -92,7 +92,8 @@ public class TripDataAccess extends DataAccess<Trip> {
      * Deletes a trip from the database. Only trips with status REQUESTED can be deleted.
      * 
      * @param tripId
-     *           The ID of the trip to delete.
+     *            The ID of the trip to delete.
+     * 
      * @return true if the trip was successfully deleted, false otherwise.
      */
     public boolean deleteTrip(int tripId) {

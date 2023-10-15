@@ -67,7 +67,7 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
     public boolean cancelPassengerTrip(int passengerId, int tripId) {
         String sql = "DELETE FROM trip_passengers WHERE user_id = ? AND trip_id = ?";
         // If the trip is a request, delete it from the database
-        if(tripDao.getTrip(tripId).getStatus() == TripStatus.REQUESTED.getTripStatus()) {
+        if (tripDao.getTrip(tripId).getStatus() == TripStatus.REQUESTED.getTripStatus()) {
             tripDao.deleteTrip(tripId);
         }
         return execute(sql, passengerId, tripId) > 0;
