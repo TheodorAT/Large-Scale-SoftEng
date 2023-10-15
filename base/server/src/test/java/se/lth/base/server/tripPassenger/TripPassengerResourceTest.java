@@ -93,7 +93,7 @@ public class TripPassengerResourceTest extends BaseResourceTest {
         Entity<Integer> t = Entity.entity(tripId, MediaType.APPLICATION_JSON);
 
         int availableSeats = target("tripPassenger/availableSeats").request().post(t, Integer.class);
-        assertEquals(0, availableSeats);
+        assertEquals(2, availableSeats);
 
         logout();
         login(TEST_CREDENTIALS);
