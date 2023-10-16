@@ -23,31 +23,31 @@ base.searchTripController = function () {
       });
     };
     this.update = function (template, seats) {
-        const trElement = template.content.querySelector("tr");
-        const td = trElement.children;
-        td[0].textContent = viewModel.trip.id;
-        let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
-        let tolocation = controller.getLocationFromId(viewModel.trip.toLocationId);
-        td[1].textContent = fromlocation.name + ", " + fromlocation.municipality;
-        td[2].textContent = tolocation.name + ", " + tolocation.municipality;
-        const start = viewModel.trip.startTime;
-        td[3].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
-        const end = viewModel.trip.endTime;
-        td[4].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
-        const duration = new Date(end - start).toLocaleTimeString();
-        td[5].textContent = duration;
-        td[6].textContent = seats + " / " + viewModel.trip.seatCapacity;
-        td[7].textContent = viewModel.trip.driverId;
-        // Book Button //
-        //If button already has already been added, it needs to be replaced
-        if (td[8].children[0]) {
-          td[8].children[0].remove();
-        }
-        let button1 = document.createElement("button");
-        button1.innerHTML = "Book";
-        button1.id = viewModel.trip.id;
-        button1.classList.add("btn", "btn-danger");
-        td[8].appendChild(button1);
+      const trElement = template.content.querySelector("tr");
+      const td = trElement.children;
+      td[0].textContent = viewModel.trip.id;
+      let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
+      let tolocation = controller.getLocationFromId(viewModel.trip.toLocationId);
+      td[1].textContent = fromlocation.name + ", " + fromlocation.municipality;
+      td[2].textContent = tolocation.name + ", " + tolocation.municipality;
+      const start = viewModel.trip.startTime;
+      td[3].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
+      const end = viewModel.trip.endTime;
+      td[4].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
+      const duration = new Date(end - start).toLocaleTimeString();
+      td[5].textContent = duration;
+      td[6].textContent = seats + " / " + viewModel.trip.seatCapacity;
+      td[7].textContent = viewModel.trip.driverId;
+      // Book Button //
+      //If button already has already been added, it needs to be replaced
+      if (td[8].children[0]) {
+        td[8].children[0].remove();
+      }
+      let button1 = document.createElement("button");
+      button1.innerHTML = "Book";
+      button1.id = viewModel.trip.id;
+      button1.classList.add("btn", "btn-danger");
+      td[8].appendChild(button1);
     };
   };
 
