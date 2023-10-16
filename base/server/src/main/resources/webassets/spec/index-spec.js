@@ -93,7 +93,6 @@ describe("mainController", function () {
       })
       .finally(done);
   });
-
   /**
    * @desc test that partial of r2 is fectched
    * @task ETS-1405
