@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class TripResourceTest extends BaseResourceTest {
     private static final GenericType<List<Trip>> TRIP_LIST = new GenericType<List<Trip>>() {
     };
+    private static final GenericType<List<TripPassenger>> TRIP_PASSENGER_LIST = new GenericType<List<TripPassenger>>() {
+    };
 
     @Before
     public void loginTest() {
@@ -309,6 +311,26 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
+     * Check whether the trip is removed from the database after the passenger cancels a requested trip.
+     * 
+     * @desc Test the deletion of a requested trip by passenger
+     * 
+     * @task ETS-1345
+     * 
+     * @story ETS-1339
+     */
+    @Test
+    public void cancelRequestedTrip() {
+        Trip returnedTrip = createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
+        List<Trip> trips = target("trip").path("requests").request().get(TRIP_LIST);
+        assertEquals(1, trips.size());
+
+        target("tripPassenger").path(returnedTrip.getId() + "").request().delete();
+        trips = target("trip").path("requests").request().get(TRIP_LIST);
+        assertEquals(0, trips.size());
+    }
+
+    /**
      * @desc Test the requestTrip method by creating a trip as a passenger
      * 
      * @task ETS-1345
@@ -318,8 +340,10 @@ public class TripResourceTest extends BaseResourceTest {
     @Test
     public void requestTrip() {
         Trip returnedTrip = createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
-
+        List<TripPassenger> tripPassengers = target("tripPassenger").path("" + returnedTrip.getId()).request()
+                .get(TRIP_PASSENGER_LIST);
         assertEquals(0, returnedTrip.getDriverId());
+        assertEquals(TEST.getId(), tripPassengers.get(0).getPassengerId());
     }
 
     /**

@@ -4,6 +4,8 @@ import se.lth.base.server.Config;
 import se.lth.base.server.user.*;
 import se.lth.base.server.trip.*;
 
+import java.util.List;
+
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
@@ -71,5 +73,19 @@ public class TripPassengerResource {
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public int getAvailableSeats(Trip trip) {
         return tripPassengerDao.getAvailableSeats(trip);
+    }
+
+    /**
+     * This method returns a list of passengers for a given trip. Using a GET request.
+     * 
+     * @param tripId
+     *            The trip to get passengers for.
+     * 
+     * @return A list of passengers for the given trip.
+     */
+    @Path("{tripId}")
+    @GET
+    public List<TripPassenger> getPassengers(@PathParam("tripId") int tripId) {
+        return tripPassengerDao.getPassengers(tripId);
     }
 }

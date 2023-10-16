@@ -1,6 +1,8 @@
 package se.lth.base.server.trip;
 
 import se.lth.base.server.Config;
+import se.lth.base.server.tripPassenger.TripPassenger;
+import se.lth.base.server.tripPassenger.TripPassengerDataAccess;
 import se.lth.base.server.user.*;
 
 import java.util.List;
@@ -23,6 +25,8 @@ public class TripResource {
 
     private final User user;
     private final TripDataAccess tripDao = new TripDataAccess(Config.instance().getDatabaseDriver());
+    private final TripPassengerDataAccess tripPassengerDao = new TripPassengerDataAccess(
+            Config.instance().getDatabaseDriver());
 
     public TripResource(@Context ContainerRequestContext context) {
         this.user = (User) context.getProperty(User.class.getSimpleName());
@@ -197,7 +201,7 @@ public class TripResource {
 
     /**
      * This method is used to request a trip by a passenger. It adds the trip to the database and returns the added
-     * trip.
+     * trip. Also adds the user as a passenger to the trip.
      * 
      * @param trip
      *            The trip object containing the details of the requested trip.
@@ -210,6 +214,7 @@ public class TripResource {
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Trip requestTrip(Trip trip) {
         Trip result = tripDao.addTrip(0, trip);
+        tripPassengerDao.bookTrip(result.getId(), user.getId());
         return result;
     }
 
