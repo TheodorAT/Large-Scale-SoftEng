@@ -17,6 +17,8 @@ import se.lth.base.server.database.Mapper;
 
 public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
 
+    TripDataAccess tripDao;
+
     private static class TripPassengerMapper implements Mapper<TripPassenger> {
         @Override
         public TripPassenger map(ResultSet resultSet) throws SQLException {
@@ -26,6 +28,7 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
 
     public TripPassengerDataAccess(String driverUrl) {
         super(driverUrl, new TripPassengerMapper());
+        tripDao = new TripDataAccess(driverUrl);
     }
 
     /**
@@ -35,8 +38,15 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
      * @param passengerId
      * 
      * @return TripPassenger This returns the TripPassenger object.
+     * 
+     * @throws IllegalArgumentException
+     *             If the driver tries to book his own trip.
      */
     public TripPassenger bookTrip(int tripId, int passengerId) {
+        Trip trip = tripDao.getTrip(tripId);
+        if (trip.getDriverId() == passengerId) {
+            throw new IllegalArgumentException("Driver cannot book his own trip");
+        }
         insert("INSERT INTO trip_passengers (trip_id, user_id) VALUES (?, ?)", tripId, passengerId);
         return new TripPassenger(tripId, passengerId);
     }
