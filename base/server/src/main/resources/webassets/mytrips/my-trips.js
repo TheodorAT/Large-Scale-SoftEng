@@ -41,26 +41,7 @@ base.myTripsController = function () {
       td[5].textContent = viewModel.trip.seatCapacity;
       td[6].textContent = viewModel.trip.driverId == 0 ? "Requested" : viewModel.trip.driverId;
       td[6].id = viewModel.trip.driverId;
-      let now = new Date().getTime();
-      //Status: ACTIVE(1), CANCELLED(2), REQUESTED(3);
-      let button;
-      switch (viewModel.trip.status_id) {
-        case 1:
-          //ACTIVE(1) if active it should display a cancel button
-          button = view.createButton(viewModel.trip.id, "Cancel", "btn-danger");
-          break;
-        case 2:
-          //CANCELLED(2)  if cancelled, it should display cancelled
-          button = view.createStatusButtons(viewModel.trip.id, "Cancelled", "bg-danger");
-          break;
-        case 3:
-          // REQUESTED(3) if user
-          button = view.createStatusButtons(viewModel.trip.id, "Requested", "bg-primary");
-          break;
-      }
-      if (viewModel.trip.startTime < now && viewModel.trip.status_id != "CANCELLED") {
-        button = view.createStatusButtons(viewModel.trip.id, "Completed", "bg-success");
-      }
+      let button = view.createStatus(viewModel.trip);
       td[7].children[0] ? td[7].children[0].replaceWith(button) : td[7].appendChild(button);
     };
   };
@@ -78,6 +59,29 @@ base.myTripsController = function () {
     },
     upcomingTemplate: function () {
       return document.getElementById("upcoming-trips-template");
+    },
+    createStatus: function (trip) {
+      let button;
+      let now = new Date().getTime();
+      switch (trip.status_id) {
+        case 1:
+          //ACTIVE(1) if active it should display a cancel button
+          button = view.createButton(trip.id, "Cancel", "btn-danger");
+          break;
+        case 2:
+          //CANCELLED(2)  if cancelled, it should display cancelled
+          button = view.createStatusButtons(trip.id, "Cancelled", "bg-danger");
+          break;
+        case 3:
+          // REQUESTED(3) if requested, it should display requested
+          button = view.createButton(trip.id, "Cancel", "btn-danger");
+          break;
+      }
+      //if past trip it should display completed if it has not been cancelled
+      if (trip.startTime < now) {
+        button = view.createStatusButtons(trip.id, "Completed", "bg-success");
+      }
+      return button;
     },
     createButton: function (id, title, type) {
       let button = document.createElement("button");
@@ -113,7 +117,6 @@ base.myTripsController = function () {
             Promise.all([driverPromise, passengerPromise]).then(function (array) {
               let driverTrips = array[0];
               let passengerTrips = array[1];
-              // Merge driverTrips and passengerTrips into the model array
               let trips = driverTrips.concat(passengerTrips);
               // Create MyTripsViewModel instances for each trip
               model = trips.map((trip) => new MyTripsViewModel(trip));
@@ -127,7 +130,7 @@ base.myTripsController = function () {
             });
             break;
           case "USER":
-            passengerPromise.getPassengerTrips().then(function (trips) {
+            passengerPromise.then(function (trips) {
               model = trips.map((f) => new MyTripsViewModel(f));
               view.render();
             });
@@ -142,10 +145,10 @@ base.myTripsController = function () {
       cancelButtons.forEach(
         (b) =>
           (b.onclick = function (event) {
-            //If the user is a passenger on the trip, delete passengerTrip and remove row
+            //If the user is a passenger on the trip, delete passengerTrip and remove row, if requested? what happens then? should it be deleted
             //If the user is the driver on the trip, cancel driverTrip and remove row (should be in requested if passengers)
             // Cancels the trips from the server through the REST API, see rest.js for definition.
-            let tripRow = document.getElementById(event.target.id).parentNode.parentNode;
+            let tripRow = event.target.parentNode.parentNode;
             let driverId = tripRow.children[6].id;
             if (driverId != currentUser.id) {
               base.rest.cancelPassengerTrip(event.target.id).then(function () {
