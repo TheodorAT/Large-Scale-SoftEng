@@ -17,14 +17,19 @@ base.myTripsController = function () {
     const viewModel = this;
 
     this.render = function (pastTemplate, updomingTemplate) {
-      let template;
-      let now = new Date().getTime();
-      // Depending if the trip is old or new it should update the past or upcoming table
-      viewModel.trip.startTime < now ? (template = pastTemplate) : (template = updomingTemplate);
-      this.update(template);
+      base.rest.getAvailableSeats(viewModel.trip.id).then(function (seats) {
+        let template;
+        let now = new Date().getTime();
+        // Depending if the trip is old or new it should update the past or upcoming table
+        viewModel.trip.startTime < now ? (template = pastTemplate) : (template = updomingTemplate);
+        viewModel.update(template, seats);
+        const clone = document.importNode(template.content, true);
+        template.parentElement.appendChild(clone);
+        controller.loadButtons();
+      });
     };
     // Update a single table row to display a trip, and
-    this.update = function (template) {
+    this.update = function (template, seats) {
       const trElement = template.content.querySelector("tr");
       const td = trElement.children;
       let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
@@ -37,11 +42,7 @@ base.myTripsController = function () {
       td[3].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
       const duration = new Date(end - start).toLocaleTimeString();
       td[4].textContent = duration;
-      base.rest.getAvailableSeats(viewModel.trip.id).then(function (seats) {
-        td[5].textContent = seats + " / " + viewModel.trip.seatCapacity;
-        const clone = document.importNode(template.content, true);
-        template.parentElement.appendChild(clone);
-      });
+      td[5].textContent = seats + " / " + viewModel.trip.seatCapacity;
       td[6].textContent = viewModel.trip.driverId;
       td[6].id = viewModel.trip.driverId;
       let now = new Date().getTime();
@@ -62,7 +63,6 @@ base.myTripsController = function () {
       const pt = this.pastTemplate();
       const ut = this.upcomingTemplate();
       model.forEach((d) => d.render(pt, ut));
-      controller.loadButtons();
     },
     pastTemplate: function () {
       return document.getElementById("past-trips-template");
