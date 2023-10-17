@@ -23,8 +23,16 @@ public class TripPassengerDataAccessTest extends BaseDataAccessTest {
     private TripDataAccess tripDao = new TripDataAccess(Config.instance().getDatabaseDriver());
 
     /**
-     * Test method for the bookTrip() function.
+     * Test method for the bookTrip() function, checks that it succesfully returns the correct tripPassenger object.
+     * 
+     * @desc Test method for the bookTrip() function, checks that it succesfully returns the correct tripPassenger
+     *       object.
+     * 
+     * @task ETS-1087
+     * 
+     * @story ETS-593
      */
+
     @Test
     public void bookTrip() {
         Trip trip = new Trip(1, 1, 1, 2, 1, 2, 2);
@@ -60,6 +68,15 @@ public class TripPassengerDataAccessTest extends BaseDataAccessTest {
         assertFalse(tripPassengerDao.cancelPassengerTrip(TEST.getId(), trip.getId()));
     }
 
+    /**
+     * Test method for checking that getAvailableSeats() returns the correct amount for a trip.
+     * 
+     * @desc Test for checking that getAvailableSeats() returns the correct amount of available seats for a trip.
+     * 
+     * @task ETS-1331
+     * 
+     * @story ETS-1330
+     */
     @Test
     public void getAvailableSeats() {
         Trip trip = new Trip(1, DRIVER.getId(), 1, 2, 1, 2, 2);
