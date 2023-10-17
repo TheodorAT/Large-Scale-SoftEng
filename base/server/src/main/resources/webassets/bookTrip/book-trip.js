@@ -86,6 +86,11 @@ base.searchTripController = function () {
         }
         return false;
       };
+      let date = new Date();
+      document
+        .getElementById("datetime")
+        .setAttribute("min", date.toLocaleDateString() + "T" + date.getHours() + ":" + date.getMinutes());
+
       document.getElementById("from").onkeyup = function (event) {
         controller.filterFunction("from");
       };
