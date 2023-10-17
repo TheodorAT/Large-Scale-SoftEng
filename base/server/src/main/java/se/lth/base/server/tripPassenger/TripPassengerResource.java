@@ -63,16 +63,24 @@ public class TripPassengerResource {
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public void cancelPassengerTrip(@PathParam("tripId") int tripId) {
-        if (!tripPassengerDao.cancelPassengerTrip(this.user.getId(), tripId)) {
+        if (!tripPassengerDao.cancelPassengerTrip(user.getId(), tripId)) {
             throw new WebApplicationException("Not found trip", Response.Status.NOT_FOUND);
         }
     }
 
+    /**
+     * Calls on the getAvailableSeats function in TripPassengerDataAccess using HTTP.
+     * 
+     * @param tripId
+     *            the unique ID for the trip
+     * 
+     * @return int Number of available seats.
+     */
     @Path("/availableSeats")
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public int getAvailableSeats(Trip trip) {
-        return tripPassengerDao.getAvailableSeats(trip);
+    public int getAvailableSeats(int tripId) {
+        return tripPassengerDao.getAvailableSeats(tripId);
     }
 
     /**

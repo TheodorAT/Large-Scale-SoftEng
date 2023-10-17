@@ -104,7 +104,7 @@ base.driverTripController = function () {
       const toId = controller.getLocationId(to.value.trim());
       const seats = document.getElementById("seats").value;
       const startTime = new Date(document.getElementById("startTime").value).getTime();
-      const status = 3;
+      const status = 1;
       const form = {
         fromLocationId: fromId,
         toLocationId: toId,
