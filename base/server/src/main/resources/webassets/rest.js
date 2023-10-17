@@ -353,19 +353,20 @@ base.rest = (function () {
 
     getDriverlessTrips: function () {
       return baseFetch("/rest/trip/requests", {
-        method: "GET"
-      }).then(res => res.json())
-        .then((trips) => trips.map((f) => new Trip(f)))
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
     },
 
     addDriverToDriverlessTrip: function (id, seats) {
       return baseFetch("/rest/trip/" + id, {
         method: "PUT",
         body: JSON.stringify(seats),
-        headers: jsonHeader
+        headers: jsonHeader,
       })
-      .then(res => res.json())
-      .then(trip => new Trip(trip))
-    }
+        .then((res) => res.json())
+        .then((trip) => new Trip(trip));
+    },
   };
 })();

@@ -72,7 +72,6 @@ base.driverTripController = function () {
 
   const controller = {
     load: function () {
-
       // FUNCTIONALITY FOR REGISTER TRIP FORM
       document.getElementById("driver-form").onsubmit = function (event) {
         event.preventDefault();
@@ -126,7 +125,6 @@ base.driverTripController = function () {
           });
         }
       });
-      
     },
     getLocationId: function (value) {
       return locations.find((location) => location.name + ", " + location.municipality == value)?.locationId;
@@ -205,28 +203,33 @@ base.driverTripController = function () {
       const addDriverButtons = document.getElementById("requestedtrips").querySelectorAll("button");
       addDriverButtons.forEach(
         (b) =>
-          (b.onclick = function (event) {    
+          (b.onclick = function (event) {
             let seats = document.getElementById("seats").value;
-            if (!seats)
-              seats = 3
-            base.rest.addDriverToDriverlessTrip(event.target.id, seats).then(function (trip) {
-              let fromlocation = controller.getLocationFromId(trip.fromLocationId);
-              let tolocation = controller.getLocationFromId(trip.toLocationId);
+            if (!seats) seats = 3;
+            base.rest
+              .addDriverToDriverlessTrip(event.target.id, seats)
+              .then(function (trip) {
+                let fromlocation = controller.getLocationFromId(trip.fromLocationId);
+                let tolocation = controller.getLocationFromId(trip.toLocationId);
 
-              document.getElementById("registeredTripsModal").textContent =
-                "TripID: #" +
-                trip.id +
-                " Departing from: " +
-                fromlocation.name + ", " + fromlocation.municipality +
-                " Destination: " +
-                tolocation.name + ", " + tolocation.municipality +
-                " Date: " +
-                new Date(trip.startTime).toLocaleDateString();
-              view.renderModal();
-            }).catch(err => {
-              console.log(err)
-            });
-            
+                document.getElementById("registeredTripsModal").textContent =
+                  "TripID: #" +
+                  trip.id +
+                  " Departing from: " +
+                  fromlocation.name +
+                  ", " +
+                  fromlocation.municipality +
+                  " Destination: " +
+                  tolocation.name +
+                  ", " +
+                  tolocation.municipality +
+                  " Date: " +
+                  new Date(trip.startTime).toLocaleDateString();
+                view.renderModal();
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           }),
       );
     },
