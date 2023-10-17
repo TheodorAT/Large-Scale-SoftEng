@@ -67,11 +67,23 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         assertTrue(userDao.getUsers().stream().anyMatch(u -> u.getRole().equals(Role.ADMIN)));
     }
 
+    /**
+     * Test that removing non-existing user returns false
+     * @desc test that removing non-existing user returns false
+     * @task ETS-973
+     * @story ETS-740
+     */
     @Test
     public void removeNoUser() {
         assertFalse(userDao.deleteUser(-1));
     }
 
+    /**
+     * Test that a user can remove themselves
+     * @desc test that a user can remove themselves
+     * @task ETS-974
+     * @story ETS-740
+     */
     @Test
     public void removeUser() {
         User user = userDao

@@ -95,6 +95,12 @@ public class UserResourceTest extends BaseResourceTest {
         target("user").path(Integer.toString(ADMIN.getId())).request().get(User.class);
     }
 
+    /**
+     * Test that we can delete a user and that we can't get the deleted user.
+     * @desc test deleting a user
+     * @task ETS-974
+     * @story ETS-740
+     */
     @Test(expected = NotFoundException.class)
     public void deleteYourselfAsUser() {
         login(TEST_CREDENTIALS);
@@ -105,6 +111,12 @@ public class UserResourceTest extends BaseResourceTest {
         target("user").path(Integer.toString(TEST.getId())).request().get(Void.class);
     }
 
+    /**
+     * Test that we can't delete another user as a user.
+     * @desc test deleting another user
+     * @task ETS-974
+     * @story ETS-740
+     */
     @Test(expected = ForbiddenException.class)
     public void deleteOtherUserAsUser() {
         Credentials newCredentials = new Credentials("pelle", "passphrase1", Role.USER, "User", "User",
@@ -160,12 +172,25 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(TEST.getRole(), responseTest.getRole());
     }
 
+    /**
+     * Test deleting yourself as admin
+     * @desc test deleting yourself as admin, expect exception
+     * @task ETS-973
+     * @story ETS-728
+     */
     @Test(expected = WebApplicationException.class)
     public void dontDeleteYourselfAsAdmin() {
         login(ADMIN_CREDENTIALS);
         target("user").path(Integer.toString(ADMIN.getId())).request().delete(Void.class);
     }
 
+
+    /**
+     * Test deleting another user as admin
+     * @desc assure that an admin can delete another user
+     * @task ETS-973
+     * @story ETS-728
+     */
     @Test(expected = NotFoundException.class)
     public void deleteTestUser() {
         login(ADMIN_CREDENTIALS);
@@ -173,6 +198,12 @@ public class UserResourceTest extends BaseResourceTest {
         target("user").path(Integer.toString(TEST.getId())).request().get(User.class);
     }
 
+    /**
+     * Test deleting a user that does not exist
+     * @desc assure that an admin cannot delete a user that doesn't exist
+     * @task ETS-973
+     * @story ETS-728
+     */
     @Test(expected = NotFoundException.class)
     public void deleteMissing() {
         login(ADMIN_CREDENTIALS);
