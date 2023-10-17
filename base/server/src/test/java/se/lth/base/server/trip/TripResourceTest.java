@@ -296,8 +296,11 @@ public class TripResourceTest extends BaseResourceTest {
 
     /**
      * Tests cancelling a trip as a driver.
+     * 
      * @desc test creating trips and cancelling one
+     * 
      * @task ETS-1296
+     * 
      * @story ETS-731
      */
     @Test
@@ -314,8 +317,7 @@ public class TripResourceTest extends BaseResourceTest {
         target("trip").request().post(Entity.entity(trip2, MediaType.APPLICATION_JSON), Trip.class);
         target("trip").request().post(Entity.entity(trip3, MediaType.APPLICATION_JSON), Trip.class);
 
-        target("trip").path("driver").path(Integer.toString(trip1.getId()))
-                .request().delete();
+        target("trip").path("driver").path(Integer.toString(trip1.getId())).request().delete();
 
         Trip new_first_trip = target("trip").path("" + trip1.getId()).request().get(Trip.class);
 

@@ -75,8 +75,11 @@ public class TripDataAccessTest extends BaseDataAccessTest {
 
     /**
      * Test cancelling a trip
+     * 
      * @desc Test cancelling a trip as a driver
+     * 
      * @task ETS-1296
+     * 
      * @story ETS-731
      */
     @Test

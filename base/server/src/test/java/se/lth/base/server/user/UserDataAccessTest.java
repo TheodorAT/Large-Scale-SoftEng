@@ -25,8 +25,11 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     /**
      * Test that a user can be added and retrieved.
+     * 
      * @desc test adding user to database and retrieving it
+     * 
      * @task ETS-1035
+     * 
      * @story ETS-742
      */
     @Test
@@ -39,8 +42,11 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     /**
      * Test adding two users with the same username
+     * 
      * @desc test adding two users with the same username, expect exception
+     * 
      * @task ETS-1035
+     * 
      * @story ETS-742
      */
     @Test(expected = DataAccessException.class)
@@ -53,8 +59,11 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     /**
      * Test adding a user with a too short username
+     * 
      * @desc test adding a user with a too short username, expect exception
+     * 
      * @task ETS-1035
+     * 
      * @story ETS-742
      */
     @Test(expected = DataAccessException.class)
@@ -69,8 +78,11 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     /**
      * Test that removing non-existing user returns false
+     * 
      * @desc test that removing non-existing user returns false
+     * 
      * @task ETS-973
+     * 
      * @story ETS-740
      */
     @Test
@@ -80,8 +92,11 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     /**
      * Test that a user can remove themselves
+     * 
      * @desc test that a user can remove themselves
+     * 
      * @task ETS-974
+     * 
      * @story ETS-740
      */
     @Test
