@@ -9,6 +9,7 @@ var base = base || {};
 base.driverTripController = function () {
   "use strict"; // add this to avoid some potential bugs
 
+  let model = [];
   let locations = [];
   let currentUser = {};
 
@@ -20,11 +21,9 @@ base.driverTripController = function () {
     this.trip = _trip;
     const viewModel = this;
 
-    this.render = function (pastTemplate, updomingTemplate) {
+    this.render = function (requestedTemplate) {
       let template;
-      let now = new Date().getTime();
-      // Depending if the trip is old or new it should update the past or upcoming table
-      viewModel.trip.startTime < now ? (template = pastTemplate) : (template = updomingTemplate);
+      template = requestedTemplate;
       this.update(template.content.querySelector("tr"));
       const clone = document.importNode(template.content, true);
       template.parentElement.appendChild(clone);
@@ -53,6 +52,12 @@ base.driverTripController = function () {
     render: function () {
       const myModal = new bootstrap.Modal(document.getElementById("driverModal"));
       myModal.show();
+      const rt = this.requestedTemplate();
+      model.forEach((d) => d.render(rt));
+      controller.loadButtons();
+    },
+    requestedTemplate: function () {
+      return document.getElementById("requested-trips-template");
     },
     createAddDriverButton: function (id) {
       let button = document.createElement("button");
@@ -112,7 +117,7 @@ base.driverTripController = function () {
         locations = array[1];
         let role = currentUser.role.name;
         //Admin gets all trips, should not be possible to book yourself as passenger if you are a driver, therefore no duplicates
-        if (role == "DRIVER") {
+        if (role == "DRIVER" || role == "ADMIN") {
           base.rest.getDriverlessTrips().then(function (trips) {
             model = trips.map((f) => new MyTripsViewModel(f));
             view.render();
