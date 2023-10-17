@@ -34,6 +34,22 @@ public class TripPassengerDataAccessTest extends BaseDataAccessTest {
         assertEquals(1, tripPassenger.getTripId());
     }
 
+    /**
+     * Test method for booking a trip as the driver. It should throw an IllegalArgumentException.
+     * 
+     * @desc Test booking a trip as the driver. Expected to throw an IllegalArgumentException.
+     * 
+     * @task ETS-1353
+     * 
+     * @story ETS-1339
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void bookTripAsDriver() {
+        Trip trip = new Trip(1, 1, 1, 2, 1, 2, 2);
+        tripDao.addTrip(TEST.getId(), trip);
+        tripPassengerDao.bookTrip(trip.getId(), TEST.getId());
+    }
+
     @Test
     public void cancelPassengerTrips() {
         Trip trip = new Trip(1, 1, 1, 2, 1, 2, 2);

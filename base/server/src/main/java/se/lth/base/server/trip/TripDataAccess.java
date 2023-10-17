@@ -89,6 +89,19 @@ public class TripDataAccess extends DataAccess<Trip> {
     }
 
     /**
+     * Deletes a trip from the database. Only trips with status REQUESTED can be deleted.
+     * 
+     * @param tripId
+     *            The ID of the trip to delete.
+     * 
+     * @return true if the trip was successfully deleted, false otherwise.
+     */
+    public boolean deleteTrip(int tripId) {
+        String sql = "DELETE FROM trips WHERE trip_id = ? AND status_id = 3";
+        return execute(sql, tripId) > 0;
+    }
+
+    /**
      * Retrieves a list of available trips based on the parameters. Retrieves a list of available trips based on the
      * parameters. Within a 24 hour period.
      * 
@@ -108,7 +121,7 @@ public class TripDataAccess extends DataAccess<Trip> {
 
         // End time is 24 hours after start time
         long endTime = startTime + 86400000;
-        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ? AND start_time >= ? AND start_time <= ?";
+        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ? AND start_time >= ? AND start_time <= ? AND status_id = 1";
         return query(sql, fromLocationId, toLocationId, new Timestamp(startTime), new Timestamp(endTime));
     }
 
@@ -149,6 +162,16 @@ public class TripDataAccess extends DataAccess<Trip> {
     public Trip getTrip(int tripId) {
         String sql = "SELECT * FROM trips WHERE trip_id = ?";
         return queryFirst(sql, tripId);
+    }
+
+    /**
+     * Returns a list of all trips in the database.
+     *
+     * @return a list of all trips
+     */
+    public List<Trip> getAllTrips() {
+        String sql = "SELECT * FROM trips";
+        return query(sql);
     }
 
     /**

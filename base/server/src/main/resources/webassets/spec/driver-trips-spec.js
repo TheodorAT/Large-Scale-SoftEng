@@ -30,7 +30,11 @@ describe("driverTripController", function () {
   afterEach(function () {
     document.body.removeChild(node);
   });
-
+  /**
+   * @desc test that locations are fetched from the server through the REST API on load
+   * @task ETS-975
+   * @story ETS-592
+   */
   it("should fetch locations on load", function (done) {
     controller.load();
     locationPromise
@@ -49,7 +53,11 @@ describe("driverTripController", function () {
         })
         .finally(done);
     });
-
+    /**
+     * @desc test that a call is made to submitDriverTrip after register button is clicked
+     * @task ETS-975
+     * @story ETS-592
+     */
     it("should call submitDriverTrip after button click", function () {
       const form = { from: "Malmö, Skåne", to: "Lund, Skåne", seats: 1, startTime: "2024-06-12T19:30" };
       spyOn(controller, "submitDriverTrip");
@@ -63,7 +71,11 @@ describe("driverTripController", function () {
       expect(controller.getLocationId).toHaveBeenCalledWith("Lund, Skåne");
       expect(controller.submitDriverTrip).toHaveBeenCalledWith();
     });
-
+    /**
+     * @desc test that no call is made to submitDriverTrip if form is empty
+     * @task ETS-975
+     * @story ETS-592
+     */
     it("should not submit if there is no input in form", function () {
       spyOn(controller, "submitDriverTrip");
       node.querySelector("button").click();
