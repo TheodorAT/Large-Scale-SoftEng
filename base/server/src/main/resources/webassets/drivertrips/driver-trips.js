@@ -220,6 +220,8 @@ base.driverTripController = function () {
                 " Date: " +
                 new Date(trip.startTime).toLocaleDateString();
               view.renderModal();
+            }).catch(err => {
+              console.log(err)
             });
             
           }),
