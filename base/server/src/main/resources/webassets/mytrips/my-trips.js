@@ -54,7 +54,6 @@ base.myTripsController = function () {
     render: function () {
       const pt = this.pastTemplate();
       const ut = this.upcomingTemplate();
-      console.log("templates:" + pt + ut);
       model.forEach((d) => d.render(pt, ut));
     },
     pastTemplate: function () {
@@ -121,7 +120,6 @@ base.myTripsController = function () {
               let driverTrips = array[0];
               let passengerTrips = array[1];
               let trips = driverTrips.concat(passengerTrips);
-              console.log("trippss", trips);
               controller.renderTrips(trips);
             });
             break;
