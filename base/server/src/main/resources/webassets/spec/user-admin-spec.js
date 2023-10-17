@@ -1,6 +1,6 @@
 /*
  * Unit tests for the user admin controller and user classes.
- * Author: Rasmus Ros, rasmus.ros@cs.lth.se
+ * Author: Amanda Nystedt
  */
 
 describe("user specs", function () {
@@ -9,23 +9,25 @@ describe("user specs", function () {
   const test = new base.User({ username: "Test", role: "USER", id: 2 });
 
   describe("User class", function () {
+    /**
+     * @desc test that isAdmin returns true if user is admin
+     * @task ETS-1405
+     * @story ETS-1404
+     */
     it("isAdmin should return true for ADMIN", function () {
       expect(admin.isAdmin()).toBe(true);
       expect(test.isAdmin()).toBe(false);
       expect(none.isAdmin()).toBe(false);
     });
+    /**
+     * @desc test that isNone returns true if user is none
+     * @task ETS-1405
+     * @story ETS-1404
+     */
     it("isNone should return true for NONE", function () {
       expect(admin.isNone()).toBe(false);
       expect(test.isNone()).toBe(false);
       expect(none.isNone()).toBe(true);
-    });
-  });
-  /*
-  describe("Role class", function () {
-    it("label should be capitalized", function () {
-      expect(none.role.label).toBe("None");
-      expect(admin.role.label).toBe("Admin");
-      expect(test.role.label).toBe("User");
     });
   });
 
@@ -60,161 +62,118 @@ describe("user specs", function () {
       document.body.removeChild(node);
     });
 
-    it("should have roles in drop down", function () {
-      const options = node.querySelectorAll("option");
-      expect(options.length).toBe(2);
-      expect(options[0].textContent).toBe(roles[0].label);
-      expect(options[1].textContent).toBe(roles[1].label);
-    });
-
-    it("should select user on click", function () {
-      const userBtn = node.querySelectorAll("#user-list button")[1];
-      expect(userBtn.textContent).toBe(startUsers[1].username);
-      expect(userBtn.classList.contains("active")).toBe(false);
-      userBtn.click();
-      const selected = node.querySelector("#user-list .active");
-      expect(selected).toBe(userBtn);
-      expect(selected.classList.contains("active")).toBe(true);
-    });
-
-    describe("add user", function () {
-      const credentials = { username: "new user", password: "qwerty123", role: roles[1].name };
-      const newUser = new base.User({ username: credentials.username, role: credentials.role, id: 3 });
+    describe("add admin", function () {
+      const userData = {
+        username: "newadmin",
+        password: "password123",
+        role: "ADMIN",
+        first_name: "Adminfirst",
+        last_name: "Adminlast",
+        email: "admin@email.com",
+      };
+      const newUser = new base.User({
+        username: userData.username,
+        role: userData.role,
+        first_name: userData.first_name,
+        last_name: userData.last_name,
+        email: userData.email,
+        id: 3,
+      });
       const userPromise = Promise.resolve(newUser);
 
       beforeEach(function () {
-        document.getElementById("new-user").click();
-        document.getElementById("set-username").value = credentials.username;
-        document.getElementById("set-password").value = credentials.password;
-        document.getElementById("set-role").selectedIndex = 1;
+        document.getElementById("input-firstname").value = userData.first_name;
+        document.getElementById("input-lastname").value = userData.last_name;
+        document.getElementById("input-username").value = userData.username;
+        document.getElementById("input-password").value = userData.password;
+        document.getElementById("input-email").value = userData.email;
         spyOn(base.rest, "addUser").and.returnValue(userPromise);
       });
-
-      it("should post username, password, and role", function (done) {
-        document.getElementById("submit-user").click();
+      /**
+       * @desc test that addUser is called with the user data
+       * @task ETS-1327
+       * @story ETS-756
+       */
+      it("should post the user data", function (done) {
+        document.getElementById("addNewBtn").click();
         userPromise
           .then(function () {
-            expect(base.rest.addUser).toHaveBeenCalledWith(credentials);
+            expect(base.rest.addUser).toHaveBeenCalledWith(userData);
           })
           .finally(done);
       });
-
-      it("should add and select user in user list", function (done) {
-        document.getElementById("submit-user").click();
+      /**
+       * @desc test that added admin is added to the user table
+       * @task ETS-1214
+       * @story ETS-858
+       */
+      it("should add admin in user list", function (done) {
+        document.getElementById("addNewBtn").click();
         userPromise
           .then(function () {
-            const newUserBtn = document.querySelectorAll("#user-list button")[2];
-            expect(newUserBtn.classList.contains("active")).toBe(true);
+            expect(base.rest.addUser).toHaveBeenCalledWith(userData);
+            let table = document.getElementById("user-table");
+            expect(table.rows.length).toBe(4);
+            let lastRow = table.rows[table.rows.length - 1];
+            const userIdDataCell = lastRow.querySelector(".user-id-data");
+            if (userIdDataCell) {
+              userIdColumnValue = userIdDataCell.textContent;
+              expect(userIdColumnValue).toBe("3");
+            }
           })
           .finally(done);
       });
-
-      it("should be possible to delete the added user", function (done) {
-        document.getElementById("submit-user").click();
+      /**
+       * @desc test that an added admin can be deleted and removed from table
+       * @task ETS-1215
+       * @story ETS-728
+       */
+      it("should be possible to delete the added admin", function (done) {
+        document.getElementById("addNewBtn").click();
         userPromise
           .then(function () {
             const deleteUserPromise = Promise.resolve({});
             spyOn(base.rest, "deleteUser").and.returnValue(deleteUserPromise);
-            document.getElementById("delete-user").click();
+            let table = document.getElementById("user-table");
+            let row = table.rows[table.rows.length - 1];
+            row.querySelector(".delete-user").click();
+            document.getElementById("modal-delete-user").click();
             return deleteUserPromise;
           })
           .then(function () {
-            const items = document.querySelectorAll("#user-list button");
-            expect(items.length).toBe(3);
-            expect(items[0].textContent).toBe(startUsers[0].username);
-            expect(items[1].textContent).toBe(startUsers[1].username);
-            expect(items[2].textContent).not.toBe(newUser.username); // should be add user button
+            let table = document.getElementById("user-table");
+            expect(base.rest.deleteUser).toHaveBeenCalledWith("3");
+            expect(table.rows.length).toBe(3);
+            let firstRow = table.rows[table.rows.length - 2];
+            let secondRow = table.rows[table.rows.length - 1];
+            const firstUsername = firstRow.querySelector(".username-data").textContent;
+            const secondUsername = secondRow.querySelector(".username-data").textContent;
+            expect(firstUsername).toBe(startUsers[0].username);
+            expect(secondUsername).toBe(startUsers[1].username);
           })
           .finally(done);
       });
     });
-
     describe("delete user", function () {
+      /**
+       * @desc test that deleteUser is called with userId when delete button is clicked and that user is removed from table
+       * @task ETS-1215
+       * @story ETS-728
+       */
       it("should be possible to delete a selected user", function (done) {
         const deleteUserPromise = Promise.resolve({});
         spyOn(base.rest, "deleteUser").and.returnValue(deleteUserPromise);
+        let table = document.getElementById("user-table");
+        let row = table.rows[table.rows.length - 1];
+        row.querySelector(".delete-user").click();
         document.getElementById("modal-delete-user").click();
         deleteUserPromise
           .then(function () {
-            const items = document.querySelectorAll("#user-table");
-            expect(items.length).toBe(2);
-          })
-          .finally(done);
-      });
-    });
-/*
-    describe("edit user", function () {
-      it("should allow editing of password after change button is pressed", function () {
-        const input = document.getElementById("set-password");
-        expect(input.disabled).toBe(true);
-        document.getElementById("change-password").click();
-        expect(input.disabled).toBe(false);
-      });
-
-      it("should allow skipping update of password", function (done) {
-        const userCredentials = { username: "New name", role: startUsers[0].role.name };
-        const userPromise = Promise.resolve(
-          new base.User({
-            username: userCredentials.username,
-            role: userCredentials.role,
-            id: startUsers[0].id,
-          }),
-        );
-        spyOn(base.rest, "putUser").and.returnValue(userPromise);
-        document.getElementById("set-username").value = userCredentials.username;
-        document.getElementById("submit-user").click();
-        userPromise
-          .then(function () {
-            expect(base.rest.putUser).toHaveBeenCalledWith("" + startUsers[0].id, userCredentials);
-          })
-          .finally(done);
-      });
-
-      it("should allow password to be changed", function (done) {
-        const userCredentials = { username: "New name", password: "new password", role: startUsers[0].role.name };
-        const userPromise = Promise.resolve(
-          new base.User({
-            username: userCredentials.username,
-            role: userCredentials.role,
-            id: startUsers[0].id,
-          }),
-        );
-        spyOn(base.rest, "putUser").and.returnValue(userPromise);
-        document.getElementById("set-username").value = userCredentials.username;
-        document.getElementById("set-password").disabled = false;
-        document.getElementById("set-password").value = userCredentials.password;
-        document.getElementById("submit-user").click();
-        userPromise
-          .then(function () {
-            expect(base.rest.putUser).toHaveBeenCalledWith("" + startUsers[0].id, userCredentials);
-          })
-          .finally(done);
-      });
-
-      it("should update the left user list menu with new new username", function (done) {
-        const userCredentials = { username: "New name", password: "new password", role: startUsers[0].role.name };
-        const userPromise = Promise.resolve(
-          new base.User({
-            username: userCredentials.username,
-            role: userCredentials.role,
-            id: startUsers[0].id,
-          }),
-        );
-        spyOn(base.rest, "putUser").and.returnValue(userPromise);
-        document.getElementById("set-username").value = userCredentials.username;
-        document.getElementById("set-password").disabled = false;
-        document.getElementById("set-password").value = userCredentials.password;
-        document.getElementById("submit-user").click();
-        userPromise
-          .then(function () {
-            const userBtns = document.querySelectorAll("#user-list button");
-            expect(userBtns.length).toBe(3);
-            expect(userBtns[0].textContent).toBe(userCredentials.username);
+            expect(base.rest.deleteUser).toHaveBeenCalledWith("2");
+            expect(table.rows.length).toBe(2);
           })
           .finally(done);
       });
     });
   });
-});
-*/
 });

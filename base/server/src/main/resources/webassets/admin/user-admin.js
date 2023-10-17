@@ -57,12 +57,12 @@ base.userAdminController = function () {
           }
         }
       });
-      const addModal = new bootstrap.Modal(document.getElementById("modalAddUser"));
       // When delete button is pressed inside the modal, it calls the REST API to delete the user
       document.getElementById("modal-delete-user").onclick = () => {
         controller.adminDeleteUser(userIdColumnValue, userRow);
         deleteModal.hide();
       };
+      const addModal = new bootstrap.Modal(document.getElementById("modalAddUser"));
       //When add new admin button is pressed, a modal register form is displayed
       document.getElementById("new-admin").onclick = function (event) {
         addModal.show();
