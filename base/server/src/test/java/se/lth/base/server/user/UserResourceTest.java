@@ -29,17 +29,26 @@ public class UserResourceTest extends BaseResourceTest {
     private static final GenericType<List<User>> USER_LIST = new GenericType<List<User>>() {
     };
 
+    /**
+     * Test case to ensure that a user who is not authenticated has the role NONE.
+     */
     @Test
     public void notAuthenticatedCurrentUser() {
         User user = target("user").request().get(User.class);
         assertEquals(Role.NONE, user.getRole());
     }
 
+    /**
+     * Tests that a ForbiddenException is thrown when attempting to get all users without authentication.
+     */
     @Test(expected = ForbiddenException.class)
     public void notAuthenticatedGetAllUsers() {
         target("user").path("all").request().get(USER_LIST);
     }
 
+    /**
+     * Tests the login functionality with cookies.
+     */
     @Test
     public void loginCookies() {
         Response response = target("user").path("login").request().post(Entity.json(TEST_CREDENTIALS));
@@ -55,6 +64,9 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(Role.USER, userWithCookie.getRole());
     }
 
+    /**
+     * Tests the login functionality with remember me cookie.
+     */
     @Test
     public void loginRememberMeCookie() {
         Response loginWithRememberMe = target("user").path("login").queryParam("remember", "true").request()
@@ -67,6 +79,10 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(-1, noMaxAge);
     }
 
+    /**
+     * Tests the logout functionality of the UserResource class. It tests that a user without a session cannot logout,
+     * that a logged in user can logout successfully, and that the user's role is set to NONE after logout.
+     */
     @Test
     public void logout() {
         Response noSessionLogout = target("user").path("logout").request().post(Entity.json(""));
@@ -266,6 +282,15 @@ public class UserResourceTest extends BaseResourceTest {
         return newUser;
     }
 
+    /**
+     * Test that an admin can change another users role
+     * 
+     * @desc Tests admins ability to change another users role
+     * 
+     * @task ETS-1283
+     * 
+     * @story ETS-738
+     */
     @Test
     public void updateUserRoleAsAdmin() {
         login(ADMIN_CREDENTIALS);
@@ -274,13 +299,31 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(Role.ADMIN, user.getRole());
     }
 
+    /**
+     * Test that a user cannot change their role to admin
+     * 
+     * @desc Tests to ensure that changing a users own role to admin is forbidden
+     * 
+     * @task ETS-1283
+     * 
+     * @story ETS-738
+     */
     @Test(expected = ForbiddenException.class)
     public void updateUserRoleAsUserToAdmin() {
         login(TEST_CREDENTIALS);
-        User user = target("user").path(Integer.toString(TEST.getId())).path("changerole").path(Role.ADMIN.toString())
-                .request().put(Entity.json(""), User.class);
+        target("user").path(Integer.toString(TEST.getId())).path("changerole").path(Role.ADMIN.toString()).request()
+                .put(Entity.json(""), User.class);
     }
 
+    /**
+     * Test that a user can change their own role. In this case to driver
+     * 
+     * @desc Tests the changing a users own role
+     * 
+     * @task ETS-1283
+     * 
+     * @story ETS-738
+     */
     @Test
     public void updateUserRole() {
         login(TEST_CREDENTIALS);
@@ -294,14 +337,7 @@ public class UserResourceTest extends BaseResourceTest {
         login(TEST_CREDENTIALS);
         Credentials newPassword = new Credentials("Test", "newPassword123", Role.USER);
 
-        Map<String, Credentials> credentialsMap = new HashMap<>();
-        credentialsMap.put("oldCredentials", TEST_CREDENTIALS);
-        credentialsMap.put("newCredentials", newPassword);
-
-        target("user").path("password").request().put(Entity.json(credentialsMap));
-
-        logout();
-        login(newPassword);
+        checkChangeCredentials(TEST_CREDENTIALS, newPassword);
     }
 
     @Test(expected = DataAccessException.class)
@@ -309,13 +345,7 @@ public class UserResourceTest extends BaseResourceTest {
         login(TEST_CREDENTIALS);
         Credentials newPassword = new Credentials("Test", "pass", Role.USER);
 
-        Map<String, Credentials> credentialsMap = new HashMap<>();
-        credentialsMap.put("oldCredentials", TEST_CREDENTIALS);
-        credentialsMap.put("newCredentials", newPassword);
-
-        target("user").path("password").request().put(Entity.json(credentialsMap));
-        logout();
-        login(newPassword);
+        checkChangeCredentials(TEST_CREDENTIALS, newPassword);
     }
 
     @Test(expected = DataAccessException.class)
@@ -324,12 +354,25 @@ public class UserResourceTest extends BaseResourceTest {
         Credentials wrongOldPassword = new Credentials("Test", "Wrongpassword", Role.USER);
         Credentials newPassword = new Credentials("Test", "pass", Role.USER);
 
+        checkChangeCredentials(wrongOldPassword, newPassword);
+    }
+
+    /**
+     * Helper method to check if a user's credentials can be changed successfully. Can throw a DataAccessException if
+     * the old credentials are invalid.
+     * 
+     * @param oldCredentials
+     *            The passed input of the users old credentials.
+     * @param newCredentials
+     *            The new credentials to be set for the user.
+     */
+    private void checkChangeCredentials(Credentials oldCredentials, Credentials newCredentials) {
         Map<String, Credentials> credentialsMap = new HashMap<>();
-        credentialsMap.put("oldCredentials", wrongOldPassword);
-        credentialsMap.put("newCredentials", newPassword);
+        credentialsMap.put("oldCredentials", oldCredentials);
+        credentialsMap.put("newCredentials", newCredentials);
 
         target("user").path("password").request().put(Entity.json(credentialsMap));
         logout();
-        login(newPassword);
+        login(newCredentials);
     }
 }

@@ -204,6 +204,15 @@ public class TripDataAccessTest extends BaseDataAccessTest {
         assertEquals(TripStatus.ACTIVE.getTripStatus(), trip.getStatus());
     }
 
+    /**
+     * Tests the getTripsWithoutDriver method by adding 3 trips with a driverId of 0. The returned list should be 3
+     * 
+     * @desc Test getTripsWithoutDriver method
+     * 
+     * @task ETS-1347
+     * 
+     * @story ETS-1339
+     */
     @Test
     public void getTripsWithoutDriver() {
         Trip reqeustTrip1 = tripDao.addTrip(0, new Trip(0, 0, 1, 2, 1000, 3000, 4));

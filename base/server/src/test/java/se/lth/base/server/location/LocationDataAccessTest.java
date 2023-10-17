@@ -16,8 +16,8 @@ public class LocationDataAccessTest extends BaseDataAccessTest {
     private LocationDataAccess locationDataAccess = new LocationDataAccess(Config.instance().getDatabaseDriver());
 
     /**
-     * Test getAll method in LocationDataAccess class. It tests if the size of the
-     * list matches the inputted location data.
+     * Test getAll method in LocationDataAccess class. It tests if the size of the list matches the inputted location
+     * data.
      * 
      * @desc Test getAll method in LocationDataAccess class.
      * 

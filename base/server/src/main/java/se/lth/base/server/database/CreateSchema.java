@@ -38,7 +38,7 @@ public class CreateSchema {
     public void createSchema() {
         try (Connection conn = new DataAccess<>(driverUrl, null).getConnection()) {
             runScript(conn);
-            // Insert location data into database 
+            // Insert location data into database
             insertLocations("dataleverans/areas.csv");
         } catch (SQLException e) {
             throw new DataAccessException(e, ErrorType.UNKNOWN);

@@ -333,7 +333,7 @@ public class TripResourceTest extends BaseResourceTest {
 
         target("trip").path("driver").path(Integer.toString(trip1.getId())).request().delete();
 
-        Trip new_first_trip = target("trip").path("" + trip1.getId()).request().get(Trip.class);
+        Trip new_first_trip = target("trip").path(Integer.toString(trip1.getId())).request().get(Trip.class);
 
         assertEquals(new_first_trip.getStatus(), TripStatus.CANCELLED.getTripStatus());
     }
@@ -353,7 +353,7 @@ public class TripResourceTest extends BaseResourceTest {
         List<Trip> trips = target("trip").path("requests").request().get(TRIP_LIST);
         assertEquals(1, trips.size());
 
-        target("tripPassenger").path(returnedTrip.getId() + "").request().delete();
+        target("tripPassenger").path(Integer.toString(returnedTrip.getId())).request().delete();
         trips = target("trip").path("requests").request().get(TRIP_LIST);
         assertEquals(0, trips.size());
     }
@@ -368,8 +368,8 @@ public class TripResourceTest extends BaseResourceTest {
     @Test
     public void requestTrip() {
         Trip returnedTrip = createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
-        List<TripPassenger> tripPassengers = target("tripPassenger").path("" + returnedTrip.getId()).request()
-                .get(TRIP_PASSENGER_LIST);
+        List<TripPassenger> tripPassengers = target("tripPassenger").path(Integer.toString(returnedTrip.getId()))
+                .request().get(TRIP_PASSENGER_LIST);
         assertEquals(0, returnedTrip.getDriverId());
         assertEquals(TEST.getId(), tripPassengers.get(0).getPassengerId());
     }
@@ -416,6 +416,15 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(ADMIN.getId(), updatedTrip.getDriverId());
     }
 
+    /**
+     * Tests the GET request at trip/requests to get all trips without a driver.
+     * 
+     * @desc Test the getTripsWithoutDriver method in the TripResource class
+     * 
+     * @task ETS-1347
+     * 
+     * @story ETS-1339
+     */
     @Test
     public void getTripsWithoutDriver() {
         createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);
@@ -467,7 +476,7 @@ public class TripResourceTest extends BaseResourceTest {
 
         Entity<Integer> eSeatCapacity = Entity.entity(4, MediaType.APPLICATION_JSON);
 
-        return target("trip").path("" + tripId).request().put(eSeatCapacity, Trip.class);
+        return target("trip").path(Integer.toString(tripId)).request().put(eSeatCapacity, Trip.class);
     }
 
     /**
@@ -486,7 +495,7 @@ public class TripResourceTest extends BaseResourceTest {
 
         int tripId = returnedTrip.getId();
 
-        Trip updatedTrip = target("trip").path("" + returnedTrip.getId()).request().get(Trip.class);
+        Trip updatedTrip = target("trip").path(Integer.toString(returnedTrip.getId())).request().get(Trip.class);
 
         assertEquals(tripId, updatedTrip.getId());
     }

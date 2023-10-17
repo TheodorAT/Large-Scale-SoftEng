@@ -108,11 +108,17 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         assertTrue(userDao.getUsers().stream().noneMatch(u -> u.getName().equals("Sven")));
     }
 
+    /**
+     * Test case for authenticating a user that does not exist. Should throw DataAccessException.
+     */
     @Test(expected = DataAccessException.class)
     public void authenticateNoUser() {
         userDao.authenticate(new Credentials("Waldo", "?", Role.NONE, "User", "User", "user@user4.se", "+4600000001"));
     }
 
+    /**
+     * Test case for authenticating a user that is created.
+     */
     @Test
     public void authenticateNewUser() {
         userDao.addUser(new Credentials("Pelle", "!2", Role.USER, "User", "User", "user@user5.se", "+4600000001"));
@@ -121,6 +127,9 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         assertNotNull(pellesSession.getSessionId());
     }
 
+    /**
+     * Tests the authentication of the same user twice. The two sessions should have different session ids.
+     */
     @Test
     public void authenticateNewUserTwice() {
         userDao.addUser(new Credentials("Elin", "password", Role.USER, "User", "User", "user@user7.se", "+4600000001"));
@@ -217,6 +226,15 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         System.out.println(session2);
     }
 
+    /**
+     * Test that the role of a user can be changed.
+     * 
+     * @desc Test that the role of a user can be changed.
+     * 
+     * @task ETS-1283
+     * 
+     * @story ETS-738
+     */
     @Test
     public void updateUserRole() {
         userDao.updateUserRole(2, Role.ADMIN);
@@ -224,38 +242,87 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         assertEquals(Role.ADMIN, user.getRole());
     }
 
+    /**
+     * Test that a users password can be changed.
+     * 
+     * @desc Test that a users password can be changed.
+     * 
+     * @task ETS-1310
+     * 
+     * @story ETS-739
+     */
     @Test
     public void changePassword() {
         Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se",
                 "+4600000001");
-        User user = userDao.addUser(oldCredentials);
-        Session session1 = userDao.authenticate(new Credentials("Sven", "password", Role.USER));
-        Credentials newCredentials = new Credentials("Sven", "newPassword123123", Role.USER);
-        userDao.updateUserPassword(user.getId(), oldCredentials, newCredentials);
-        Session session2 = userDao.authenticate(newCredentials);
+        User user = getAuthenticatedUser(oldCredentials);
+        checkPasswordChange(user, oldCredentials, "newPassword123123");
     }
 
+    /**
+     * Test that a users password cannot be changed if the old password is incorrect.
+     * 
+     * @desc Test that a users password cannot be changed if the old credentials are incorrect.
+     * 
+     * @task ETS-1310
+     * 
+     * @story ETS-739
+     */
     @Test(expected = DataAccessException.class)
     public void changePasswordIncorrectOldCredentials() {
         Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se",
                 "+4600000001");
-        User user = userDao.addUser(oldCredentials);
-        Session session1 = userDao.authenticate(new Credentials("Sven", "password", Role.USER));
+
+        User user = getAuthenticatedUser(oldCredentials);
         Credentials incorrectOldCredentials = new Credentials("Sven", "wrongPassword", Role.USER, "User", "User",
                 "user@user3.se", "+4600000001");
-        Credentials newCredentials = new Credentials("Sven", "newPassword123123", Role.USER);
-        userDao.updateUserPassword(user.getId(), incorrectOldCredentials, newCredentials);
-        Session session2 = userDao.authenticate(newCredentials);
+        checkPasswordChange(user, incorrectOldCredentials, "newPassword123123");
     }
 
+    /**
+     * Test that a users password cannot be changed if the new password does not meet the requirements.
+     * 
+     * @desc Test the password requirements.
+     * 
+     * @task ETS-1310
+     * 
+     * @story ETS-739
+     */
     @Test(expected = DataAccessException.class)
     public void changeInvalidPassword() {
         Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se",
                 "+4600000001");
-        User user = userDao.addUser(oldCredentials);
-        Session session1 = userDao.authenticate(new Credentials("Sven", "password", Role.USER));
-        Credentials newCredentials = new Credentials("Sven", "pass", Role.USER);
+        User user = getAuthenticatedUser(oldCredentials);
+        checkPasswordChange(user, oldCredentials, "pass");
+    }
+
+    /**
+     * Adds a new user with the given credentials to the database and authenticates them.
+     * 
+     * @param credentials
+     *            the user's login credentials
+     * 
+     * @return the authenticated user
+     */
+    private User getAuthenticatedUser(Credentials credentials) {
+        User user = userDao.addUser(credentials);
+        userDao.authenticate(credentials);
+        return user;
+    }
+
+    /**
+     * Helper method to check if a user's password can be changed successfully.
+     * 
+     * @param user
+     *            the user whose password will be changed
+     * @param oldCredentials
+     *            the user's old credentials
+     * @param newPassword
+     *            the new password to be set
+     */
+    private void checkPasswordChange(User user, Credentials oldCredentials, String newPassword) {
+        Credentials newCredentials = new Credentials("Sven", newPassword, Role.USER);
         userDao.updateUserPassword(user.getId(), oldCredentials, newCredentials);
-        Session session2 = userDao.authenticate(newCredentials);
+        userDao.authenticate(newCredentials);
     }
 }
