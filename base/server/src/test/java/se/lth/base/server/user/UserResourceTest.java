@@ -95,6 +95,15 @@ public class UserResourceTest extends BaseResourceTest {
         target("user").path(Integer.toString(ADMIN.getId())).request().get(User.class);
     }
 
+    /**
+     * Test that we can delete a user and that we can't get the deleted user.
+     * 
+     * @desc test deleting a user
+     * 
+     * @task ETS-974
+     * 
+     * @story ETS-740
+     */
     @Test(expected = NotFoundException.class)
     public void deleteYourselfAsUser() {
         login(TEST_CREDENTIALS);
@@ -105,6 +114,15 @@ public class UserResourceTest extends BaseResourceTest {
         target("user").path(Integer.toString(TEST.getId())).request().get(Void.class);
     }
 
+    /**
+     * Test that we can't delete another user as a user.
+     * 
+     * @desc test deleting another user
+     * 
+     * @task ETS-974
+     * 
+     * @story ETS-740
+     */
     @Test(expected = ForbiddenException.class)
     public void deleteOtherUserAsUser() {
         Credentials newCredentials = new Credentials("pelle", "passphrase1", Role.USER, "User", "User",
@@ -130,6 +148,15 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(Role.ALL_ROLES, roles);
     }
 
+    /**
+     * Test that we can add a new user and that we can login as the new user.
+     * 
+     * @desc test adding users and logging in
+     * 
+     * @task ETS-1035
+     * 
+     * @story ETS-742
+     */
     @Test
     public void testAddUser() {
         Credentials newCredentials = new Credentials("pelle", "passphrase1", Role.USER, "User", "User",
@@ -154,12 +181,30 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(TEST.getRole(), responseTest.getRole());
     }
 
+    /**
+     * Test deleting yourself as admin
+     * 
+     * @desc test deleting yourself as admin, expect exception
+     * 
+     * @task ETS-973
+     * 
+     * @story ETS-728
+     */
     @Test(expected = WebApplicationException.class)
     public void dontDeleteYourselfAsAdmin() {
         login(ADMIN_CREDENTIALS);
         target("user").path(Integer.toString(ADMIN.getId())).request().delete(Void.class);
     }
 
+    /**
+     * Test deleting another user as admin
+     * 
+     * @desc assure that an admin can delete another user
+     * 
+     * @task ETS-973
+     * 
+     * @story ETS-728
+     */
     @Test(expected = NotFoundException.class)
     public void deleteTestUser() {
         login(ADMIN_CREDENTIALS);
@@ -167,6 +212,15 @@ public class UserResourceTest extends BaseResourceTest {
         target("user").path(Integer.toString(TEST.getId())).request().get(User.class);
     }
 
+    /**
+     * Test deleting a user that does not exist
+     * 
+     * @desc assure that an admin cannot delete a user that doesn't exist
+     * 
+     * @task ETS-973
+     * 
+     * @story ETS-728
+     */
     @Test(expected = NotFoundException.class)
     public void deleteMissing() {
         login(ADMIN_CREDENTIALS);
@@ -198,6 +252,14 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(newTest.getRole(), user.getRole());
     }
 
+    /**
+     * Helper method to create a new user
+     * 
+     * @param newCredentials
+     *            the credentials of the new user
+     * 
+     * @return the new user
+     */
     public User createNewUser(Credentials newCredentials) {
         login(ADMIN_CREDENTIALS);
         User newUser = target("user").request().post(Entity.json(newCredentials), User.class);
