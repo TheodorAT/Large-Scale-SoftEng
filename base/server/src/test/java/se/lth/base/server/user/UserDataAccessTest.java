@@ -23,6 +23,12 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     private final UserDataAccess userDao = new UserDataAccess(Config.instance().getDatabaseDriver());
 
+    /**
+     * Test that a user can be added and retrieved.
+     * @desc test adding user to database and retrieving it
+     * @task ETS-1035
+     * @story ETS-742
+     */
     @Test
     public void addNewUser() {
         userDao.addUser(
@@ -31,6 +37,12 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         assertTrue(users.stream().anyMatch(u -> u.getName().equals("Generic") && u.getRole().equals(Role.USER)));
     }
 
+    /**
+     * Test adding two users with the same username
+     * @desc test adding two users with the same username, expect exception
+     * @task ETS-1035
+     * @story ETS-742
+     */
     @Test(expected = DataAccessException.class)
     public void addDuplicatedUser() {
         userDao.addUser(
@@ -39,6 +51,12 @@ public class UserDataAccessTest extends BaseDataAccessTest {
                 new Credentials("Gandalf", "vapenation", Role.USER, "User", "User", "user@user01.se", "+4600000001"));
     }
 
+    /**
+     * Test adding a user with a too short username
+     * @desc test adding a user with a too short username, expect exception
+     * @task ETS-1035
+     * @story ETS-742
+     */
     @Test(expected = DataAccessException.class)
     public void addShortUser() {
         userDao.addUser(new Credentials("Gry", "no", Role.USER, "User", "User", "user@user02.se", "+4600000001"));

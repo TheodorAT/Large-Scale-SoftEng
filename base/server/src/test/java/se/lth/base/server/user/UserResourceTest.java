@@ -130,6 +130,12 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(Role.ALL_ROLES, roles);
     }
 
+    /**
+     * Test that we can add a new user and that we can login as the new user.
+     * @desc test adding users and logging in
+     * @task ETS-1035
+     * @story ETS-742
+     */
     @Test
     public void testAddUser() {
         Credentials newCredentials = new Credentials("pelle", "passphrase1", Role.USER, "User", "User",
@@ -198,6 +204,11 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(newTest.getRole(), user.getRole());
     }
 
+    /**
+     * Helper method to create a new user
+     * @param newCredentials the credentials of the new user
+     * @return the new user
+     */
     public User createNewUser(Credentials newCredentials) {
         login(ADMIN_CREDENTIALS);
         User newUser = target("user").request().post(Entity.json(newCredentials), User.class);
