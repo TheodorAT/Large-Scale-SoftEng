@@ -179,8 +179,8 @@ describe("myTripsController", function () {
   });
   /**
    * @desc Test that the number of available seats is displayed correctly for each trip in the table.
-   * @task ETS-1267
-   * @story ETS-723
+   * @task ETS-1337
+   * @story ETS-1330
    */
   it("should display the correct number of seats", function () {
     const rows = node.querySelectorAll("tbody tr");
@@ -193,7 +193,7 @@ describe("myTripsController", function () {
   });
   /**
    * @desc Test that the trip status is displayed correctly for trips with different statuses.
-   * @task ETS-1267
+   * @task ETS-1340
    * @story ETS-723
    */
   it("should display the correct status for different trip statuses", function () {
