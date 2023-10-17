@@ -49,9 +49,11 @@ base.driverTripController = function () {
 
   const view = {
     // Opens the modal/dialog
-    render: function () {
+    renderModal: function () {
       const myModal = new bootstrap.Modal(document.getElementById("driverModal"));
       myModal.show();
+    },
+    render: function () {
       const rt = this.requestedTemplate();
       model.forEach((d) => d.render(rt));
       controller.loadButtons();
@@ -196,16 +198,15 @@ base.driverTripController = function () {
         document.getElementById("from").classList.remove("is-invalid");
         document.getElementById("to").classList.remove("is-invalid");
         document.getElementById("driver-form").reset();
-        view.render();
+        view.renderModal();
       });
     },
     loadButtons: function () {
-      const addDriverButtons = document.getElementById("mytrips").querySelectorAll("button");
+      const addDriverButtons = document.getElementById("requestedtrips").querySelectorAll("button");
       addDriverButtons.forEach(
         (b) =>
           (b.onclick = function (event) {            
             base.rest.addDriverToDriverlessTrip(event.target.id).then(function (trip) {
-
               let fromlocation = controller.getLocationFromId(trip.fromLocationId);
               let tolocation = controller.getLocationFromId(trip.toLocationId);
 
@@ -218,7 +219,7 @@ base.driverTripController = function () {
                 tolocation.name + ", " + tolocation.municipality +
                 " Date: " +
                 new Date(trip.startTime).toLocaleDateString();
-              view.render();
+              view.renderModal();
             });
             
           }),
