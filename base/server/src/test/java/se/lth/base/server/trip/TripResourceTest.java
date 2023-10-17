@@ -125,11 +125,13 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of all trips belonging to current driver user.
+     * Test method for getTripsFromDriver(), validates the retrieval of all trips created by the current driver user.
      * 
-     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to database using HTTP POST request. 3.
-     * Retrieve list of trips for driver using HTTP GET. 4. Compare size of list with number of added trips. 5. Compare
-     * IDs of trips.
+     * @desc validates that getTripsFromDriver() returns the correct list of booked trips for a specific passenger id.
+     * 
+     * @task ETS-1306
+     * 
+     * @story ETS-27
      */
     @Test
     public void getTripsFromDriver() {
@@ -153,12 +155,13 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of all trips belonging to a specific driver.
+     * Test method for getTripsFromDriver(), validates the retrieval of all trips created by a specific driverId.
      * 
-     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to database using HTTP POST request. 3.
-     * Validate that non admin user is not able to retrieve list using driver/{driverId} path. 4. Sign in to admin
-     * account. 5. Retrieve list of trips for driverId using HTTP GET. 6. Compare size of list with number of added
-     * trips. 7. Compare IDs of trips.
+     * @desc validates that getTripsFromDriver() returns the correct list of created trips for a specific driverId.
+     * 
+     * @task ETS-1306
+     * 
+     * @story ETS-27
      */
     @Test
     public void getTripsFromDriverId() {
@@ -189,6 +192,16 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(t2.getId(), trips.get(1).getId());
     }
 
+    /**
+     * Test method for getTripsAsPassenger(), validates the retrieval of all trips booked by the current passenger user.
+     * 
+     * @desc validates that getTripsAsPassenger() returns the correct list of booked trips by the current passenger
+     *       user.
+     * 
+     * @task ETS-1306
+     * 
+     * @story ETS-27
+     */
     @Test
     public void getTripsAsPassenger() {
         addTestTrips();
@@ -201,13 +214,14 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of all trips booked by a specific passengerId.
+     * Test method for getTripsAsPassenger(), validates the retrieval of all trips booked by a specific passengerId.
      * 
-     * Test procedure: 1. Sign in to driver account. 2. Add trips for driver to database using HTTP POST request. 3.
-     * Switch to passenger account. 4. Add booked trips as passenger to database using HTTP POST. 4. Validate that non
-     * admin user is not able to retrieve list using passenger/{passengerId} path. 5. Sign in to admin account. 6.
-     * Retrieve list of booked trips for passengerId. 7. Compare size of list with number of booked trips. 8. Compare
-     * IDs of trips.
+     * 
+     * @desc validates that getTripsAsPassenger() returns the correct list of booked trips for a specific passenger id.
+     * 
+     * @task ETS-1306
+     * 
+     * @story ETS-27
      */
     @Test
     public void getTripsAsPassengerId() {
@@ -294,6 +308,15 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(toLocationId, trips.get(0).getToLocationId());
     }
 
+    /**
+     * Tests cancelling a trip as a driver.
+     * 
+     * @desc test creating trips and cancelling one
+     * 
+     * @task ETS-1296
+     * 
+     * @story ETS-731
+     */
     @Test
     public void cancelDriverTrip() {
         logout();
@@ -308,6 +331,11 @@ public class TripResourceTest extends BaseResourceTest {
         target("trip").request().post(Entity.entity(trip2, MediaType.APPLICATION_JSON), Trip.class);
         target("trip").request().post(Entity.entity(trip3, MediaType.APPLICATION_JSON), Trip.class);
 
+        target("trip").path("driver").path(Integer.toString(trip1.getId())).request().delete();
+
+        Trip new_first_trip = target("trip").path("" + trip1.getId()).request().get(Trip.class);
+
+        assertEquals(new_first_trip.getStatus(), TripStatus.CANCELLED.getTripStatus());
     }
 
     /**

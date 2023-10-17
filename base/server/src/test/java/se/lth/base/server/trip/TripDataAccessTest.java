@@ -73,6 +73,15 @@ public class TripDataAccessTest extends BaseDataAccessTest {
         assertEquals(sumOfIds, trip4.getId() + trip5.getId());
     }
 
+    /**
+     * Test cancelling a trip
+     * 
+     * @desc Test cancelling a trip as a driver
+     * 
+     * @task ETS-1296
+     * 
+     * @story ETS-731
+     */
     @Test
     public void cancelTrips() {
         Trip trip1 = tripDao.addTrip(TEST.getId(), new Trip(1, 1, 1, 2, 10000, 10400, 5));
@@ -87,11 +96,13 @@ public class TripDataAccessTest extends BaseDataAccessTest {
     }
 
     /**
-     * Test method for retrieving all trips belonging to a driver.
+     * Test method for getTripsFromDriver(), validates the retrieval of all trips created by a driver.
      * 
-     * Test procedure: 1. Create sample of trips and add them to the database. 2. Retrieve list of trips belonging to
-     * driver with Test ID. 3. Check that length of list equals number of added trips. 4. Check that trip IDs match.
+     * @desc validates that getTripsFromDriver() returns the correct list of created trips by a driver.
      * 
+     * @task ETS-1306
+     * 
+     * @story ETS-27
      */
 
     @Test
@@ -106,11 +117,13 @@ public class TripDataAccessTest extends BaseDataAccessTest {
     }
 
     /**
-     * Test method for retrieving all trips belonging to a passenger.
+     * Test method for getTripsAsPassenger(), validates the retrieval of all trips booked by a passenger.
      * 
-     * Test procedure: 1. Create sample of trips and add them to the database. 2. Book trips with test ID. 3. Retrieve
-     * list of trips booked with Test ID. 3. Check that length of list equals number of booked trips. 4. Check that trip
-     * IDs match.
+     * @desc validates that getTripsAsPassenger() returns the correct list of booked trips by a passenger.
+     * 
+     * @task ETS-1306
+     * 
+     * @story ETS-27
      */
 
     @Test

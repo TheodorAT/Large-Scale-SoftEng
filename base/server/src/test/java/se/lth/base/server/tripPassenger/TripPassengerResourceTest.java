@@ -32,7 +32,13 @@ public class TripPassengerResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test for the createTripPassenger() function.
+     * Test for the createTripPassenger() function, checks that it correctly executes the bookTrip() function.
+     * 
+     * @desc Checks that it correctly calls on the bookTrip() function.
+     * 
+     * @task ETS-1087
+     * 
+     * @story ETS-593
      */
     @Test
     public void createTripPassenger() {
@@ -101,6 +107,15 @@ public class TripPassengerResourceTest extends BaseResourceTest {
 
     }
 
+    /**
+     * Test method for checking that getAvailableSeats() returns the correct amount of available seats for a trip.
+     * 
+     * @desc Test for checking that getAvailableSeats() returns the correct amount of available seats for a trip.
+     * 
+     * @task ETS-1331
+     * 
+     * @story ETS-1330
+     */
     @Test
     public void getAvailableSeats() {
         logout();
