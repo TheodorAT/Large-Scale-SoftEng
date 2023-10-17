@@ -202,24 +202,14 @@ base.searchTripController = function () {
       );
     },
     renderTrips: function (trips) {
-      let availableSeatsMap = new Map();
       // Collect all trip IDs
       const tripIds = trips.map((trip) => trip.id);
-
       // Fetch available seats for all trips
-      Promise.all(
-        tripIds.map((tripId) => {
-          // If not, make the request and store the result in the map
-          return base.rest.getAvailableSeats(tripId).then((seats) => {
-            availableSeatsMap.set(tripId, seats);
-            return seats;
-          });
-        }),
-      ).then((seatsInfo) => {
+      Promise.all(tripIds.map(base.rest.getAvailableSeats)).then((seats) => {
         // Update MyTripsViewModel instances with available seats
         model = trips.map((trip, index) => {
-          const availableSeats = seatsInfo[index];
-          return new TripViewModel(trip, availableSeats);
+          const availableSeats = seats[index];
+          return new MyTripsViewModel(trip, availableSeats);
         });
         view.render();
       });

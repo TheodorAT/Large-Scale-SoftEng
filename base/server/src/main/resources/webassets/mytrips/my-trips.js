@@ -136,21 +136,13 @@ base.myTripsController = function () {
       });
     },
     renderTrips: function (trips) {
-      let availableSeatsMap = new Map();
       // Collect all trip IDs
       const tripIds = trips.map((trip) => trip.id);
       // Fetch available seats for all trips
-      Promise.all(
-        tripIds.map(async (tripId) => {
-          // If not, make the request and store the result in the map
-          const seats = await base.rest.getAvailableSeats(tripId);
-          availableSeatsMap.set(tripId, seats);
-          return seats;
-        }),
-      ).then((seatsInfo) => {
+      Promise.all(tripIds.map(base.rest.getAvailableSeats)).then((seats) => {
         // Update MyTripsViewModel instances with available seats
         model = trips.map((trip, index) => {
-          const availableSeats = seatsInfo[index];
+          const availableSeats = seats[index];
           return new MyTripsViewModel(trip, availableSeats);
         });
         view.render();
