@@ -53,7 +53,6 @@ base.rest = (function () {
     config.credentials = "same-origin";
     return fetch(url, config)
       .then(function (response) {
-        console.log(response);
         if (!response.ok) {
           return new Promise((resolve) => resolve(response.json())).then(function (errorJson) {
             const status = errorJson.status;
@@ -359,14 +358,14 @@ base.rest = (function () {
         .then((trips) => trips.map((f) => new Trip(f)))
     },
 
-    addDriverToDriverlessTrip: function (id) {
+    addDriverToDriverlessTrip: function (id, seats) {
       return baseFetch("/rest/trip/" + id, {
         method: "PUT",
-        body: JSON.stringify(3),
+        body: JSON.stringify(seats),
         headers: jsonHeader
       })
       .then(res => res.json())
-      .then(trip => new Trip(f))
+      .then(trip => new Trip(trip))
     }
   };
 })();

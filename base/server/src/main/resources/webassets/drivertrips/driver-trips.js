@@ -205,8 +205,11 @@ base.driverTripController = function () {
       const addDriverButtons = document.getElementById("requestedtrips").querySelectorAll("button");
       addDriverButtons.forEach(
         (b) =>
-          (b.onclick = function (event) {            
-            base.rest.addDriverToDriverlessTrip(event.target.id).then(function (trip) {
+          (b.onclick = function (event) {    
+            let seats = document.getElementById("seats").value;
+            if (!seats)
+              seats = 3
+            base.rest.addDriverToDriverlessTrip(event.target.id, seats).then(function (trip) {
               let fromlocation = controller.getLocationFromId(trip.fromLocationId);
               let tolocation = controller.getLocationFromId(trip.toLocationId);
 
