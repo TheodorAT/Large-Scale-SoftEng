@@ -103,11 +103,11 @@ describe("user specs", function () {
           .finally(done);
       });
       /**
-       * @desc test that added user is added to the user table
+       * @desc test that added admin is added to the user table
        * @task ETS-1214
        * @story ETS-858
        */
-      it("should add user in user list", function (done) {
+      it("should add admin in user list", function (done) {
         document.getElementById("addNewBtn").click();
         userPromise
           .then(function () {
@@ -124,11 +124,11 @@ describe("user specs", function () {
           .finally(done);
       });
       /**
-       * @desc test that an added user can be deleted and removed from table
+       * @desc test that an added admin can be deleted and removed from table
        * @task ETS-1215
        * @story ETS-728
        */
-      it("should be possible to delete the added user", function (done) {
+      it("should be possible to delete the added admin", function (done) {
         document.getElementById("addNewBtn").click();
         userPromise
           .then(function () {
