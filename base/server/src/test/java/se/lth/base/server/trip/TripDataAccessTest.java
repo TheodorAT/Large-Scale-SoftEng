@@ -73,6 +73,15 @@ public class TripDataAccessTest extends BaseDataAccessTest {
         assertEquals(sumOfIds, trip4.getId() + trip5.getId());
     }
 
+    /**
+     * Test cancelling a trip
+     * 
+     * @desc Test cancelling a trip as a driver
+     * 
+     * @task ETS-1296
+     * 
+     * @story ETS-731
+     */
     @Test
     public void cancelTrips() {
         Trip trip1 = tripDao.addTrip(TEST.getId(), new Trip(1, 1, 1, 2, 10000, 10400, 5));
