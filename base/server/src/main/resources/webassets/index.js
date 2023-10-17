@@ -16,6 +16,10 @@ base.mainController = (function () {
       partial: "drivertrips/driver-trips.html",
       controller: base.driverTripController,
     },
+    "change-password": {
+      partial: "changePassword/change-password.html",
+      controller: base.changePasswordController,
+    },
     admin: {
       partial: "admin/user-admin.html",
       controller: base.userAdminController,

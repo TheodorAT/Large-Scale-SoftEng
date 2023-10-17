@@ -372,5 +372,19 @@ base.rest = (function () {
         headers: jsonHeader,
       }).then((response) => response.json());
     },
+    changePassword: function (oldPassword, newPassword) {
+      return base.rest.getUser().then((user) => {
+        const username = user.username;
+        var passObj = {
+          oldCredentials: { username: username, password: oldPassword },
+          newCredentials: { username: username, password: newPassword },
+        };
+        return baseFetch("/rest/user/password", {
+          method: "PUT",
+          body: JSON.stringify(passObj),
+          headers: jsonHeader,
+        });
+      });
+    },
   };
 })();
