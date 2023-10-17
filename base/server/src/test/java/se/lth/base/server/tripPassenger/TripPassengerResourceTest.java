@@ -78,6 +78,34 @@ public class TripPassengerResourceTest extends BaseResourceTest {
         target("tripPassenger").request().post(tripId, TripPassenger.class);
     }
 
+    /**
+     * Tests that a BadRequestException is thrown when trying to book a trip with no available seats.
+     * 
+     * @desc Tests that a BadRequestException is thrown when trying to book a trip with no available seats.
+     * 
+     * @task ETS-1407
+     * 
+     * @story ETS-1330
+     */
+    @Test(expected = javax.ws.rs.BadRequestException.class)
+    public void bookTripNoAvailableSeats() {
+        logout();
+        login(DRIVER_CREDENTIALS);
+        Trip t = new Trip(1, 1, 1, 2, 1, 2, 1);
+        Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
+        target("trip").request().post(e, Trip.class);
+
+        logout();
+        login(ADMIN_CREDENTIALS);
+        int tripId = t.getId();
+        Entity<Integer> ti = Entity.entity(tripId, MediaType.APPLICATION_JSON);
+        target("tripPassenger").request().post(ti, TripPassenger.class);
+
+        logout();
+        login(TEST_CREDENTIALS);
+        target("tripPassenger").request().post(ti, TripPassenger.class);
+    }
+
     @Test
     public void cancelPassengerTrip() {
         logout();
