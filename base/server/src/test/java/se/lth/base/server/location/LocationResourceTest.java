@@ -20,11 +20,20 @@ public class LocationResourceTest extends BaseResourceTest {
         login(TEST_CREDENTIALS);
     }
 
+    /**
+     * Test GET request for path "location/all" to get all locations from the database.
+     * 
+     * @desc Test GET request for path "location/all"
+     * 
+     * @task ETS-1092
+     * 
+     * @story ETS-592
+     */
     @Test
     public void getAll() {
         List<Location> locations = target("location").path("all").request().get(LOCATION_LIST);
 
-        // assertEquals(3, locations.size());
-        // assertEquals("Test Location 1", locations.get(0).getName());
+        assertEquals(947, locations.size());
+        assertEquals("Axelstorp", locations.get(0).getName());
     }
 }
