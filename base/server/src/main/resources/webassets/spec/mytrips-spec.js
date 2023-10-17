@@ -81,7 +81,11 @@ describe("myTripsController", function () {
   afterEach(function () {
     document.body.removeChild(node);
   });
-
+  /**
+   * @desc test that both passenger and driver trips are fetched and displayed in table, on load when user is admin
+   * @task ETS-1267
+   * @story ETS-723
+   */
   it("should fetch passenger and driver trips on load when admin", function (done) {
     controller.load();
     let promise = [locationPromise, adminPromise];
@@ -98,7 +102,11 @@ describe("myTripsController", function () {
       })
       .finally(done);
   });
-
+  /**
+   * @desc test that only passenger trips are fetched on load and displayed in table, when user is passenger
+   * @task ETS-1267
+   * @story ETS-723
+   */
   it("should only fetch passenger trips on load when passenger", function (done) {
     userPromise = Promise.resolve(test);
     base.rest.getUser = jasmine.createSpy().and.returnValue(userPromise);
@@ -123,7 +131,11 @@ describe("myTripsController", function () {
       })
       .finally(done);
   });
-
+  /**
+   * @desc test that desination and orgin of trip is displayed in table
+   * @task ETS-1267
+   * @story ETS-723
+   */
   it("should have display destination and origin in table", function (done) {
     controller.load();
     let promise = [locationPromise, adminPromise];

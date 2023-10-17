@@ -112,14 +112,19 @@ base.searchTripController = function () {
         let from = document.getElementById("reqfrom");
         let to = document.getElementById("reqto");
         let startTime = document.getElementById("reqdate");
-        //TODO
-        // Ask backend for requestTrip-bookings rest calls.
-        //base.rest.requestTrip({ fromLocationId: from.getAttribute("from");, toLocationId: to.getAttribute("to"), startTime: startTime.getAttribute("time") })
-        controller.updateModal(
-          "The trip was requested (TODO: rest-call not implemented yet)!",
-          "From: " + from.innerText + " To: " + to.innerText + " Date: " + startTime.innerText,
-          true,
-        );
+        base.rest
+          .requestTrip({
+            fromLocationId: from.getAttribute("from"),
+            toLocationId: to.getAttribute("to"),
+            startTime: startTime.getAttribute("time"),
+          })
+          .then((trip) => {
+            controller.updateModal(
+              "The trip was requested!",
+              "From: " + from.innerText + " To: " + to.innerText + " Date: " + startTime.innerText,
+              true,
+            );
+          });
       };
     },
     getLocationId: function (value) {
@@ -174,13 +179,17 @@ base.searchTripController = function () {
         (b) =>
           (b.onclick = function (event) {
             const tripId = event.target.id;
+            let tr = event.target.parentElement.parentElement;
             base.rest
               .bookTrip(tripId)
               .then((bookedTrip) => {
                 document.getElementById("available-trips").hidden = true;
+                let from = tr.children[1].innerText;
+                let to = tr.children[2].innerText;
+                let start = tr.children[3].innerText;
                 controller.updateModal(
                   "The trip was booked successfully!",
-                  "TODO restcall to get tripinfo by id",
+                  "From: " + from + ". To: " + to + ". Date & time: " + start + ".",
                   true,
                 );
               })

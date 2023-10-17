@@ -63,13 +63,14 @@ public class TripDataAccess extends DataAccess<Trip> {
         // REQUESTED
         if (driverId == 0) {
             params[0] = null;
+            params[5] = 0;
             params[6] = TripStatus.REQUESTED.getTripStatus();
         }
 
         int trip_id = insert(sql, params);
 
         return new Trip(trip_id, driverId, trip.getFromLocationId(), trip.getToLocationId(), trip.getStartTime(),
-                end_time, trip.getSeatCapacity(), (int) params[6]);
+                end_time, (int) params[5], (int) params[6]);
     }
 
     /**
@@ -85,6 +86,19 @@ public class TripDataAccess extends DataAccess<Trip> {
     public boolean cancelDriverTrip(int driverId, int tripId) {
         String sql = "UPDATE trips SET status_id = (SELECT status_id FROM trip_status WHERE trip_status.status = ?) WHERE driver_id = ? AND trip_id = ?";
         return execute(sql, "CANCELLED", driverId, tripId) > 0;
+    }
+
+    /**
+     * Deletes a trip from the database. Only trips with status REQUESTED can be deleted.
+     * 
+     * @param tripId
+     *            The ID of the trip to delete.
+     * 
+     * @return true if the trip was successfully deleted, false otherwise.
+     */
+    public boolean deleteTrip(int tripId) {
+        String sql = "DELETE FROM trips WHERE trip_id = ? AND status_id = 3";
+        return execute(sql, tripId) > 0;
     }
 
     /**
@@ -107,7 +121,7 @@ public class TripDataAccess extends DataAccess<Trip> {
 
         // End time is 24 hours after start time
         long endTime = startTime + 86400000;
-        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ? AND start_time >= ? AND start_time <= ?";
+        String sql = "SELECT * FROM trips WHERE from_location_id = ? AND to_location_id = ? AND start_time >= ? AND start_time <= ? AND status_id = 1";
         return query(sql, fromLocationId, toLocationId, new Timestamp(startTime), new Timestamp(endTime));
     }
 
@@ -151,6 +165,16 @@ public class TripDataAccess extends DataAccess<Trip> {
     }
 
     /**
+     * Returns a list of all trips in the database.
+     *
+     * @return a list of all trips
+     */
+    public List<Trip> getAllTrips() {
+        String sql = "SELECT * FROM trips";
+        return query(sql);
+    }
+
+    /**
      * Updates the driver of a trip with the given driver ID and trip ID. The driver ID must not be null and the trip
      * must not already have a driver assigned.
      * 
@@ -158,13 +182,24 @@ public class TripDataAccess extends DataAccess<Trip> {
      *            The ID of the driver to assign to the trip
      * @param tripId
      *            The ID of the trip to update
+     * @param seatCapacity
+     *            The seat capacity of the trip
      * 
      * @return Updated Trip object
      */
-    public Trip updateDriver(int driverId, int tripId) {
-        String sql = "UPDATE trips SET driver_id = ?, status_id = ? WHERE trip_id = ? AND driver_id IS NULL";
-        execute(sql, driverId, TripStatus.ACTIVE.getTripStatus(), tripId);
+    public Trip updateDriver(int driverId, int tripId, int seatCapacity) {
+        String sql = "UPDATE trips SET driver_id = ?, status_id = ?, seat_capacity = ? WHERE trip_id = ? AND driver_id IS NULL";
+        execute(sql, driverId, TripStatus.ACTIVE.getTripStatus(), seatCapacity, tripId);
         return getTrip(tripId);
+    }
+
+    /**
+     * Retrieves a list of requested trips without a driver.
+     * 
+     * @return A list of trips without driver.
+     */
+    public List<Trip> getTripsWithoutDriver() {
+        return query("SELECT * FROM trips WHERE driver_id IS NULL");
     }
 
 }
