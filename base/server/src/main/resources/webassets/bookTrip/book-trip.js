@@ -8,20 +8,21 @@ base.searchTripController = function () {
   "use strict"; // add this to avoid some potential bugs
 
   let model = [];
-  let currentUser = {};
   let locations = [];
 
-  const TripViewModel = function (_trip) {
+  const TripViewModel = function (_trip, _seats) {
     this.trip = _trip;
+    this.seats = _seats;
     const viewModel = this;
 
     this.render = function (template) {
-      this.update(template.content.querySelector("tr"));
+      viewModel.update(template);
       const clone = document.importNode(template.content, true);
       template.parentElement.appendChild(clone);
       controller.loadButtons();
     };
-    this.update = function (trElement) {
+    this.update = function (template) {
+      const trElement = template.content.querySelector("tr");
       const td = trElement.children;
       td[0].textContent = viewModel.trip.id;
       let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
@@ -32,10 +33,10 @@ base.searchTripController = function () {
       td[3].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
       const end = viewModel.trip.endTime;
       td[4].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
-      td[5].textContent = new Date(end - start).toLocaleTimeString();
-      td[6].textContent = viewModel.trip.seatCapacity;
+      const duration = new Date(end - start).toLocaleTimeString();
+      td[5].textContent = duration;
+      td[6].textContent = this.seats + " / " + viewModel.trip.seatCapacity;
       td[7].textContent = viewModel.trip.driverId;
-      let now = new Date().getTime();
       // Book Button //
       //If button already has already been added, it needs to be replaced
       if (td[8].children[0]) {
@@ -95,9 +96,6 @@ base.searchTripController = function () {
         locations = l;
         controller.setLocations("from", l);
         controller.setLocations("to", l);
-      });
-      base.rest.getUser().then(function (user) {
-        currentUser = user;
       });
       document.getElementById("mytrips").onclick = function (event) {
         event.preventDefault();
@@ -203,6 +201,29 @@ base.searchTripController = function () {
           }),
       );
     },
+    renderTrips: function (trips) {
+      let availableSeatsMap = new Map();
+      // Collect all trip IDs
+      const tripIds = trips.map((trip) => trip.id);
+
+      // Fetch available seats for all trips
+      Promise.all(
+        tripIds.map((tripId) => {
+          // If not, make the request and store the result in the map
+          return base.rest.getAvailableSeats(tripId).then((seats) => {
+            availableSeatsMap.set(tripId, seats);
+            return seats;
+          });
+        }),
+      ).then((seatsInfo) => {
+        // Update MyTripsViewModel instances with available seats
+        model = trips.map((trip, index) => {
+          const availableSeats = seatsInfo[index];
+          return new TripViewModel(trip, availableSeats);
+        });
+        view.render();
+      });
+    },
     loadTrips: function () {
       const from = document.getElementById("from").value;
       const to = document.getElementById("to").value;
@@ -223,11 +244,7 @@ base.searchTripController = function () {
         } else {
           document.getElementById("request-trip").hidden = true;
           document.getElementById("available-trips").hidden = false;
-          trips.forEach((trip) => {
-            const vm = new TripViewModel(trip);
-            model.push(vm); // append the trip to the end of the model array
-            vm.render(view.template()); // append the trip to the table
-          });
+          controller.renderTrips(trips);
         }
       });
       document.getElementById("from").classList.remove("is-invalid");

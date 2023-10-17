@@ -12,8 +12,9 @@ base.myTripsController = function () {
   let locations = [];
   let currentUser = {};
 
-  const MyTripsViewModel = function (_trip) {
+  const MyTripsViewModel = function (_trip, _seats) {
     this.trip = _trip;
+    this.seats = _seats;
     const viewModel = this;
 
     this.render = function (pastTemplate, updomingTemplate) {
@@ -21,12 +22,14 @@ base.myTripsController = function () {
       let now = new Date().getTime();
       // Depending if the trip is old or new it should update the past or upcoming table
       viewModel.trip.startTime < now ? (template = pastTemplate) : (template = updomingTemplate);
-      this.update(template.content.querySelector("tr"));
+      viewModel.update(template);
       const clone = document.importNode(template.content, true);
       template.parentElement.appendChild(clone);
+      controller.loadButtons();
     };
-    // Update a single table row to display a trip
-    this.update = function (trElement) {
+    // Update a single table row to display a trip, and
+    this.update = function (template) {
+      const trElement = template.content.querySelector("tr");
       const td = trElement.children;
       let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
       let tolocation = controller.getLocationFromId(viewModel.trip.toLocationId);
@@ -38,7 +41,7 @@ base.myTripsController = function () {
       td[3].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
       const duration = new Date(end - start).toLocaleTimeString();
       td[4].textContent = duration;
-      td[5].textContent = viewModel.trip.seatCapacity;
+      td[5].textContent = this.seats + " / " + viewModel.trip.seatCapacity;
       td[6].textContent = viewModel.trip.driverId == 0 ? "Requested" : viewModel.trip.driverId;
       td[6].id = viewModel.trip.driverId;
       let button = view.createStatus(viewModel.trip);
@@ -51,8 +54,8 @@ base.myTripsController = function () {
     render: function () {
       const pt = this.pastTemplate();
       const ut = this.upcomingTemplate();
+      console.log("templates:" + pt + ut);
       model.forEach((d) => d.render(pt, ut));
-      controller.loadButtons();
     },
     pastTemplate: function () {
       return document.getElementById("past-trips-template");
@@ -118,23 +121,41 @@ base.myTripsController = function () {
               let driverTrips = array[0];
               let passengerTrips = array[1];
               let trips = driverTrips.concat(passengerTrips);
-              // Create MyTripsViewModel instances for each trip
-              model = trips.map((trip) => new MyTripsViewModel(trip));
-              view.render();
+              console.log("trippss", trips);
+              controller.renderTrips(trips);
             });
             break;
           case "DRIVER":
             driverPromise.then(function (trips) {
-              model = trips.map((f) => new MyTripsViewModel(f));
-              view.render();
+              controller.renderTrips(trips);
             });
             break;
           case "USER":
             passengerPromise.then(function (trips) {
-              model = trips.map((f) => new MyTripsViewModel(f));
-              view.render();
+              controller.renderTrips(trips);
             });
         }
+      });
+    },
+    renderTrips: function (trips) {
+      let availableSeatsMap = new Map();
+      // Collect all trip IDs
+      const tripIds = trips.map((trip) => trip.id);
+      // Fetch available seats for all trips
+      Promise.all(
+        tripIds.map(async (tripId) => {
+          // If not, make the request and store the result in the map
+          const seats = await base.rest.getAvailableSeats(tripId);
+          availableSeatsMap.set(tripId, seats);
+          return seats;
+        }),
+      ).then((seatsInfo) => {
+        // Update MyTripsViewModel instances with available seats
+        model = trips.map((trip, index) => {
+          const availableSeats = seatsInfo[index];
+          return new MyTripsViewModel(trip, availableSeats);
+        });
+        view.render();
       });
     },
     getLocationFromId: function (id) {
@@ -156,7 +177,9 @@ base.myTripsController = function () {
               });
             } else {
               base.rest.cancelDriverTrip(event.target.id).then(function () {
-                tripRow.remove();
+                let button = view.createStatusButtons(event.target.id, "Cancelled", "bg-danger");
+                let td = tripRow.children;
+                td[7].children[0] ? td[7].children[0].replaceWith(button) : td[7].appendChild(button);
               });
             }
           }),

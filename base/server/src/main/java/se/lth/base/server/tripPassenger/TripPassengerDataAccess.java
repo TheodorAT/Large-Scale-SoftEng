@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import se.lth.base.server.Config;
 import se.lth.base.server.database.DataAccess;
 import se.lth.base.server.database.Mapper;
 
@@ -68,9 +69,10 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
         String sql = "DELETE FROM trip_passengers WHERE user_id = ? AND trip_id = ?";
         // If the trip is a request, delete it from the database
         if (tripDao.getTrip(tripId).getStatus() == TripStatus.REQUESTED.getTripStatus()) {
-            tripDao.deleteTrip(tripId);
+            return tripDao.deleteTrip(tripId);
+        } else {
+            return execute(sql, passengerId, tripId) > 0;
         }
-        return execute(sql, passengerId, tripId) > 0;
     }
 
     /**
@@ -86,10 +88,23 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
         return query(sql, tripId);
     }
 
-    public int getAvailableSeats(Trip trip) {
+    /**
+     * Returns the number of available seats for a specific trip
+     * 
+     * @param tripId
+     *            The unique identifier of the trip
+     * 
+     * @return int Number of available seats
+     */
+    public int getAvailableSeats(int tripId) {
         String sql = "SELECT COUNT(*) FROM trip_passengers WHERE trip_id = ?";
-        int bookedSeats = count(sql, trip.getId());
-        int availableSeats = trip.getSeatCapacity() - bookedSeats;
+        int bookedSeats = count(sql, tripId);
+
+        TripDataAccess tripDao = new TripDataAccess(Config.instance().getDatabaseDriver());
+        Trip trip = tripDao.getTrip(tripId);
+        int seat_capacity = trip.getSeatCapacity();
+
+        int availableSeats = seat_capacity - bookedSeats;
         return availableSeats;
     }
 }
