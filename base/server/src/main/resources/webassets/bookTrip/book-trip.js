@@ -206,10 +206,10 @@ base.searchTripController = function () {
       const tripIds = trips.map((trip) => trip.id);
       // Fetch available seats for all trips
       Promise.all(tripIds.map(base.rest.getAvailableSeats)).then((seats) => {
-        // Update MyTripsViewModel instances with available seats
+        // Update TripViewModel instances with available seats
         model = trips.map((trip, index) => {
           const availableSeats = seats[index];
-          return new MyTripsViewModel(trip, availableSeats);
+          return new TripViewModel(trip, availableSeats);
         });
         view.render();
       });
