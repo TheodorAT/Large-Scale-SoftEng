@@ -276,10 +276,24 @@ base.rest = (function () {
      * Fetches the trips of the driver
      * returns: an array of Trips
      *
-     * example: const trips = base.rest.getDriverTrips(1);
+     * example: const trips = base.rest.getDriverTrips();
      */
     getDriverTrips: function () {
       return baseFetch("/rest/trip/driver", {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
+    },
+
+    /*
+     * Fetches the trips without driver
+     * returns: an array of Trips
+     *
+     * example: const trips = base.rest.getRequestedTrips();
+     */
+    getRequestedTrips: function () {
+      return baseFetch("/rest/trip/requests", {
         method: "GET",
       })
         .then((response) => response.json())
@@ -318,7 +332,7 @@ base.rest = (function () {
      * Fetches the trips of the passenger
      * returns: an array of Trips
      *
-     * example: const trips = base.rest.getPassengerTrips(1);
+     * example: const trips = base.rest.getPassengerTrips();
      */
     getPassengerTrips: function () {
       return baseFetch("/rest/trip/passenger", {
@@ -367,6 +381,14 @@ base.rest = (function () {
       })
         .then((res) => res.json())
         .then((trip) => new Trip(trip));
+    },
+
+    getAvailableSeats: function (tripId) {
+      return baseFetch("rest/tripPassenger/availableSeats", {
+        method: "POST",
+        body: JSON.stringify(tripId),
+        headers: jsonHeader,
+      }).then((response) => response.json());
     },
   };
 })();

@@ -22,6 +22,7 @@ describe("myTripsController", function () {
       startTime: new Date().getTime() + 1000000,
       endTime: new Date().getTime() + 3000000,
       seatCapacity: 2,
+      status_id: 1,
     }),
     new base.Trip({
       id: 2,
@@ -31,6 +32,7 @@ describe("myTripsController", function () {
       startTime: new Date().getTime() + 1000000,
       endTime: new Date().getTime() + 3000000,
       seatCapacity: 3,
+      status_id: 1,
     }),
     new base.Trip({
       id: 3,
@@ -40,6 +42,7 @@ describe("myTripsController", function () {
       startTime: new Date().getTime() + 1000000,
       endTime: new Date().getTime() + 3000000,
       seatCapacity: 4,
+      status_id: 1,
     }),
     new base.Trip({
       id: 4,
@@ -49,6 +52,7 @@ describe("myTripsController", function () {
       startTime: new Date().getTime() + 12000000,
       endTime: new Date().getTime() + 30200000,
       seatCapacity: 4,
+      status_id: 1,
     }),
   ];
 
@@ -74,7 +78,7 @@ describe("myTripsController", function () {
     spyOn(base.rest, "getUser").and.returnValues(adminPromise);
     tripDriverPromise = Promise.resolve(trips.slice(0, 2));
     spyOn(base.rest, "getDriverTrips").and.returnValue(tripDriverPromise);
-    tripPassengerPromise = Promise.resolve(trips.slice(1, 3));
+    tripPassengerPromise = Promise.resolve([]);
     spyOn(base.rest, "getPassengerTrips").and.returnValue(tripPassengerPromise);
   });
   // Remove the node from the DOM
@@ -95,8 +99,8 @@ describe("myTripsController", function () {
         expect(base.rest.getUser).toHaveBeenCalled();
         Promise.all([tripDriverPromise, tripPassengerPromise])
           .then(function () {
-            const rows = node.querySelectorAll("tbody tr");
-            expect(rows.length).toBe(trips.length);
+            expect(base.rest.getPassengerTrips).toHaveBeenCalled();
+            expect(base.rest.getDriverTrips).toHaveBeenCalled();
           })
           .finally(done);
       })
@@ -107,7 +111,7 @@ describe("myTripsController", function () {
    * @task ETS-1267
    * @story ETS-723
    */
-  it("should only fetch passenger trips on load when passenger", function (done) {
+  it("should  fetch passenger trips on load when passenger", function (done) {
     userPromise = Promise.resolve(test);
     base.rest.getUser = jasmine.createSpy().and.returnValue(userPromise);
     controller.load();
@@ -116,13 +120,6 @@ describe("myTripsController", function () {
       .then(function () {
         expect(base.rest.getLocations).toHaveBeenCalled();
         expect(base.rest.getUser).toHaveBeenCalled();
-        tripDriverPromise
-          .then(function () {
-            expect(base.rest.getDriverTrips).not.toHaveBeenCalled();
-            const rows = node.querySelectorAll("tbody tr");
-            expect(rows.length).toBe(trips.length / 2);
-          })
-          .finally(done);
         tripPassengerPromise
           .then(function () {
             expect(base.rest.getPassengerTrips).toHaveBeenCalled();

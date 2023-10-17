@@ -65,10 +65,10 @@ public class TripPassengerDataAccessTest extends BaseDataAccessTest {
         Trip trip = new Trip(1, DRIVER.getId(), 1, 2, 1, 2, 2);
         tripDao.addTrip(DRIVER.getId(), trip);
 
-        assertEquals(2, tripPassengerDao.getAvailableSeats(trip));
+        assertEquals(2, tripPassengerDao.getAvailableSeats(trip.getId()));
 
         tripPassengerDao.bookTrip(trip.getId(), TEST.getId());
-        assertEquals(1, tripPassengerDao.getAvailableSeats(trip));
+        assertEquals(1, tripPassengerDao.getAvailableSeats(trip.getId()));
     }
 
 }
