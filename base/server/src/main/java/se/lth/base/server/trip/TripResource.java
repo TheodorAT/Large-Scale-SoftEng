@@ -178,7 +178,6 @@ public class TripResource {
     public Trip updateDriver(@PathParam("tripId") int tripId, int seatCapacity) {
         Trip trip = tripDao.updateDriver(this.user.getId(), tripId, seatCapacity);
         if (trip == null) {
-            System.out.println("HELLOOOOO");
             throw new WebApplicationException("Trip not found", Response.Status.NOT_FOUND);
         }
         return trip;
