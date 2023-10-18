@@ -412,7 +412,6 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-<<<<<<< HEAD
      * Tests the getTripsWithoutDriver method of the TripResource class. Creates sample of driverless trips, and checks
      * if the request retrieved the same and only trips.
      * 

@@ -110,6 +110,13 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     /**
      * Test case for authenticating a user that does not exist. Should throw DataAccessException.
+     * 
+     * @desc Test for authenticating a user that does not exist
+     *
+     * @task ETS-974
+     * 
+     * @story ETS-740
+     *
      */
     @Test(expected = DataAccessException.class)
     public void authenticateNoUser() {
@@ -118,6 +125,12 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     /**
      * Test case for authenticating a user that is created.
+     *
+     * @desc Test for authenticating a user that is created
+     *
+     * @task ETS-974
+     * 
+     * @story ETS-740
      */
     @Test
     public void authenticateNewUser() {
@@ -129,6 +142,12 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     /**
      * Tests the authentication of the same user twice. The two sessions should have different session ids.
+     *
+     * @desc Test for authenticating the same user twice
+     *
+     * @task ETS-974
+     * 
+     * @story ETS-740
      */
     @Test
     public void authenticateNewUserTwice() {
@@ -146,6 +165,12 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     /**
      * Test case for removing a session that does not exist. Should return false.
+     *
+     * @desc Test for removing a session that does not exist
+     *
+     * @task ETS-974
+     * 
+     * @story ETS-740
      */
     @Test
     public void removeNoSession() {
@@ -155,6 +180,12 @@ public class UserDataAccessTest extends BaseDataAccessTest {
     /**
      * Test case for removing a valid session, should return true. Also tests that subsequent removals of the same
      * return false.
+     *
+     * @desc Test for removing a valid session
+     *
+     * @task ETS-974
+     * 
+     * @story ETS-740
      */
     @Test
     public void removeSession() {
@@ -168,6 +199,12 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     /**
      * Test case for authenticating a user with incorrect credentials. Should throw DataAccessException.
+     * 
+     * @desc Test for authenticating a user with incorrect credentials
+     *
+     * @task ETS-974
+     * 
+     * @story ETS-740
      */
     @Test(expected = DataAccessException.class)
     public void failedAuthenticate() {
@@ -179,6 +216,12 @@ public class UserDataAccessTest extends BaseDataAccessTest {
 
     /**
      * Test case for checking a session.
+     *
+     * @desc Test for checking a session
+     * 
+     * @task ETS-974
+     * 
+     * @story ETS-740
      */
     @Test
     public void checkSession() {
@@ -193,6 +236,12 @@ public class UserDataAccessTest extends BaseDataAccessTest {
     /**
      * Test case for checking a session that does not exist. Should throw DataAccessException. Exception is caught in
      * test.
+     *
+     * @desc Test for checking a session that does not exist
+     *
+     * @task ETS-974
+     * 
+     * @story ETS-740
      */
     @Test
     public void checkRemovedSession() {

@@ -31,6 +31,12 @@ public class UserResourceTest extends BaseResourceTest {
 
     /**
      * Test case to ensure that a user who is not authenticated has the role NONE.
+     *
+     * @desc Test that a user who is not authenticated has the role NONE.
+     *
+     * @task ETS-974
+     * 
+     * @story ETS-740
      */
     @Test
     public void notAuthenticatedCurrentUser() {
@@ -40,6 +46,12 @@ public class UserResourceTest extends BaseResourceTest {
 
     /**
      * Tests that a ForbiddenException is thrown when attempting to get all users without authentication.
+     *
+     * @desc Test that a ForbiddenException is thrown when attempting to get all users without authentication.
+     *
+     * @task ETS-974
+     * 
+     * @story ETS-740
      */
     @Test(expected = ForbiddenException.class)
     public void notAuthenticatedGetAllUsers() {
@@ -48,6 +60,12 @@ public class UserResourceTest extends BaseResourceTest {
 
     /**
      * Tests the login functionality with cookies.
+     *
+     * @desc Test the login functionality with cookies
+     *
+     * @task ETS-974
+     * 
+     * @story ETS-740
      */
     @Test
     public void loginCookies() {
@@ -66,6 +84,12 @@ public class UserResourceTest extends BaseResourceTest {
 
     /**
      * Tests the login functionality with remember me cookie.
+     * 
+     * @desc Test the login functionality with remember me cookie
+     *
+     * @task ETS-974
+     * 
+     * @story ETS-740
      */
     @Test
     public void loginRememberMeCookie() {
@@ -82,6 +106,12 @@ public class UserResourceTest extends BaseResourceTest {
     /**
      * Tests the logout functionality of the UserResource class. It tests that a user without a session cannot logout,
      * that a logged in user can logout successfully, and that the user's role is set to NONE after logout.
+     *
+     * @desc Test the logout functionality of the UserResource class
+     *
+     * @task ETS-974
+     * 
+     * @story ETS-740
      */
     @Test
     public void logout() {
