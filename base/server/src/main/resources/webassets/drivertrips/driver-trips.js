@@ -111,7 +111,11 @@ base.driverTripController = function () {
       });
 
       // default seats
-      document.getElementById("seats").value = DEFAULT_SEATS;
+      let seatsInput = document.getElementById("seats");
+      seatsInput.value = DEFAULT_SEATS;
+      seatsInput.addEventListener("input", function () {
+        controller.updateSeatCountOnButtons(this.value);
+      });
 
       // FUNCTIONALITY FOR REQUEST TRIPS TABLE
       let userPromise = base.rest.getUser();
@@ -236,6 +240,12 @@ base.driverTripController = function () {
           }),
       );
     },
+    updateSeatCountOnButtons(seatCount) {
+      const buttons = document.querySelectorAll("button.btn-success");
+      buttons.forEach((button) => {
+        button.innerHTML = `Add me as driver with ${seatCount} seats`;
+      });
+    }
   };
 
   return controller;
