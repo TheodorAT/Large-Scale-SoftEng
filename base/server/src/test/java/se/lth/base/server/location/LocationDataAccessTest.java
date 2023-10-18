@@ -21,4 +21,19 @@ public class LocationDataAccessTest extends BaseDataAccessTest {
         // assertEquals(3, locations.size());
         // assertEquals("Test Location 1", locations.get(0).getName());
     }
+
+    /**
+     * Test calculating the haversine distance between the first 2 locations in the database.
+     * 
+     * @desc Test the calculateDistance method in LocationDataAccess.
+     *
+     * @task ETS-1413
+     * 
+     * @story ETS-592
+     */
+    @Test
+    public void calculateDistance() {
+        double distance = locationDataAccess.calculateDistance(1, 2);
+        assertEquals(4.54, distance, 0.01);
+    }
 }

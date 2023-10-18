@@ -30,6 +30,19 @@ public class LocationDataAccess extends DataAccess<Location> {
         super(driverUrl, new LocationMapper());
     }
 
+    public Location getLocation(int locationId) {
+        String sql = "SELECT * FROM locations WHERE location_id = ?";
+        return queryFirst(sql, locationId);
+    }
+
+    public double calculateDistance(int fromId, int toId) {
+        String sql = "SELECT * FROM locations WHERE location_id = ?";
+        Location from = queryFirst(sql, fromId);
+        Location to = queryFirst(sql, toId);
+
+        return Location.calculateDistance(from, to);
+    }
+
     /**
      * Retrieves a list of all locations from the database.
      *
