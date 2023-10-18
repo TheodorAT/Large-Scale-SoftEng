@@ -42,9 +42,8 @@ base.driverTripController = function () {
         controller.filterFunction("to");
       };
       let date = new Date();
-      document
-        .getElementById("startTime")
-        .setAttribute("min", date.toLocaleDateString() + "T" + date.getHours() + ":" + date.getMinutes());
+      let time = date.toLocaleTimeString().split(":").slice(0, 2).join(":");
+      document.getElementById("startTime").setAttribute("min", date.toLocaleDateString() + "T" + time);
 
       document.getElementById("mytrips").onclick = function (event) {
         event.preventDefault();
