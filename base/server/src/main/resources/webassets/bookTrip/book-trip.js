@@ -33,8 +33,12 @@ base.searchTripController = function () {
       td[3].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
       const end = viewModel.trip.endTime;
       td[4].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
-      const duration = new Date(end - start).toLocaleTimeString();
-      td[5].textContent = duration;
+      const totalMilliseconds = new Date(end).getTime() - new Date(start).getTime();
+      const hours = Math.floor(totalMilliseconds / 3600000); // Extract hours
+      const minutes = Math.floor((totalMilliseconds % 3600000) / 60000); // Extract minutes
+      // Format the hours and minutes as "HH:mm"
+      const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+      td[5].textContent = formattedTime;
       td[6].textContent = this.seats + " / " + viewModel.trip.seatCapacity;
       td[7].textContent = viewModel.trip.driverId;
       // Book Button //
