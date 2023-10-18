@@ -131,7 +131,7 @@ public class TripResourceTest extends BaseResourceTest {
      * 
      * @task ETS-1306
      * 
-     * @story ETS-27
+     * @story ETS-723
      */
     @Test
     public void getTripsFromDriver() {
@@ -161,7 +161,7 @@ public class TripResourceTest extends BaseResourceTest {
      * 
      * @task ETS-1306
      * 
-     * @story ETS-27
+     * @story ETS-723
      */
     @Test
     public void getTripsFromDriverId() {
@@ -200,7 +200,7 @@ public class TripResourceTest extends BaseResourceTest {
      * 
      * @task ETS-1306
      * 
-     * @story ETS-27
+     * @story ETS-723
      */
     @Test
     public void getTripsAsPassenger() {
@@ -221,7 +221,7 @@ public class TripResourceTest extends BaseResourceTest {
      * 
      * @task ETS-1306
      * 
-     * @story ETS-27
+     * @story ETS-723
      */
     @Test
     public void getTripsAsPassengerId() {

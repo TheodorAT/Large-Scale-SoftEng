@@ -99,12 +99,36 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(Role.NONE, currentUserAfterLogout.getRole());
     }
 
+    /**
+     * Tests the GET request for user/all does not return a list of all users when called by a user. Should return a
+     * ForbiddenException.
+     * 
+     * @desc Test that all users can not be retrieved by a user.
+     * 
+     * @task ?
+     * 
+     * @story ?
+     * 
+     * @epic ETS-830
+     */
     @Test(expected = ForbiddenException.class)
     public void getAllUsersAsUser() {
         login(TEST_CREDENTIALS);
         target("user").path("all").request().get(USER_LIST);
     }
 
+    /**
+     * Tests the GET request for user/{id} does not return a user when called by a user. Should return a
+     * ForbiddenException.
+     * 
+     * @desc Test that a user can not be retrieved by a user. Using path user/{id}
+     * 
+     * @task ?
+     * 
+     * @story ?
+     * 
+     * @epic ETS-830
+     */
     @Test(expected = ForbiddenException.class)
     public void getUserAsUser() {
         login(TEST_CREDENTIALS);
@@ -148,6 +172,17 @@ public class UserResourceTest extends BaseResourceTest {
         target("user").path(Integer.toString(newUser.getId())).request().delete(Void.class);
     }
 
+    /**
+     * Tests the GET request for user/all. Should return a list of all users.
+     * 
+     * @desc Test that all users can be retrieved by an admin.
+     * 
+     * @task ?
+     * 
+     * @story ?
+     * 
+     * @epic ETS-830
+     */
     @Test
     public void getAllUsers() {
         login(ADMIN_CREDENTIALS);
@@ -156,6 +191,17 @@ public class UserResourceTest extends BaseResourceTest {
         assertTrue(users.stream().mapToInt(User::getId).anyMatch(id -> id == TEST.getId()));
     }
 
+    /**
+     * Tests the GET request for user/roles. Should return a set of all roles.
+     * 
+     * @desc Test that all roles can be retrieved by an admin.
+     * 
+     * @task ?
+     * 
+     * @story ?
+     * 
+     * @epic ETS-830
+     */
     @Test
     public void getRoles() {
         login(ADMIN_CREDENTIALS);
@@ -188,6 +234,17 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(newUser.getId(), currentUser.getId());
     }
 
+    /**
+     * Tests the GET request for user/{id}. Should return the user with the id {id}.
+     * 
+     * @desc Test that a user can be retrieved by id.
+     * 
+     * @task ?
+     * 
+     * @story ?
+     * 
+     * @epic ETS-830
+     */
     @Test
     public void getUser() {
         login(ADMIN_CREDENTIALS);
@@ -243,12 +300,34 @@ public class UserResourceTest extends BaseResourceTest {
         target("user").path(Integer.toString(-1)).request().delete(Void.class);
     }
 
+    /**
+     * Tests that updating a non-existing user results in a NotFoundException being thrown.
+     * 
+     * @desc test updating a non-existing user
+     * 
+     * @task ?
+     * 
+     * @story ?
+     * 
+     * @epic ETS-830
+     */
     @Test(expected = NotFoundException.class)
     public void updateMissing() {
         login(ADMIN_CREDENTIALS);
         target("user").path(Integer.toString(-1)).request().put(Entity.json(TEST_CREDENTIALS), User.class);
     }
 
+    /**
+     * Tests that admin cannot demote themselves. Using request PUT on user/{id}
+     * 
+     * @desc test that admin cannot demote themselves
+     * 
+     * @task ?
+     * 
+     * @story ?
+     * 
+     * @epic ETS-830
+     */
     @Test(expected = WebApplicationException.class)
     public void dontDemoteYourself() {
         login(ADMIN_CREDENTIALS);
@@ -257,6 +336,17 @@ public class UserResourceTest extends BaseResourceTest {
         target("user").path(Integer.toString(ADMIN.getId())).request().put(Entity.json(update), User.class);
     }
 
+    /**
+     * Tests that users info can be updated. Using request PUT on user/{id}
+     * 
+     * @desc tests that users info can be updated
+     * 
+     * @task ?
+     * 
+     * @story ?
+     * 
+     * @epic ETS-830
+     */
     @Test
     public void updateUser() {
         login(ADMIN_CREDENTIALS);
@@ -332,6 +422,15 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(Role.DRIVER, user.getRole());
     }
 
+    /**
+     * Tests the functionality of changing a user's password.
+     * 
+     * @desc Test that users can change their password.
+     * 
+     * @task ETS-1310
+     * 
+     * @story ETS-739
+     */
     @Test
     public void changeUserPassword() {
         login(TEST_CREDENTIALS);
@@ -340,6 +439,15 @@ public class UserResourceTest extends BaseResourceTest {
         checkChangeCredentials(TEST_CREDENTIALS, newPassword);
     }
 
+    /**
+     * Tests the changing password to one that does not meet requirements results in a DataAccessException.
+     * 
+     * @desc Test that users cannot change their password to one that does not meet requirements.
+     * 
+     * @task ETS-1310
+     * 
+     * @story ETS-739
+     */
     @Test(expected = DataAccessException.class)
     public void changeUserInvalidNewPassword() {
         login(TEST_CREDENTIALS);
@@ -348,6 +456,15 @@ public class UserResourceTest extends BaseResourceTest {
         checkChangeCredentials(TEST_CREDENTIALS, newPassword);
     }
 
+    /**
+     * Tests the changing password without the correct old credentials results in a DataAccessException.
+     * 
+     * @desc Test that users cannot change their password if the old credentials do not match.
+     * 
+     * @task ETS-1310
+     * 
+     * @story ETS-739
+     */
     @Test(expected = DataAccessException.class)
     public void changeUserInvalidOldPassword() {
         login(TEST_CREDENTIALS);

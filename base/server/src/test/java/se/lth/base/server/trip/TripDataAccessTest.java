@@ -49,6 +49,12 @@ public class TripDataAccessTest extends BaseDataAccessTest {
      * parameters given parameters. 3. Validates the ID of the retrieved trip and checks the size of the list. 4.
      * Retrieves available trips with new parameters. 5. Goes through the list and checks the locations for each trip.
      * 6. Checks if the sum of all trip-ids are correct.
+     * 
+     * @desc Test retrieving available trips from the database.
+     * 
+     * @task ETS-895
+     * 
+     * @story ETS-610
      */
 
     @Test
@@ -102,7 +108,7 @@ public class TripDataAccessTest extends BaseDataAccessTest {
      * 
      * @task ETS-1306
      * 
-     * @story ETS-27
+     * @story ETS-723
      */
 
     @Test
@@ -123,7 +129,7 @@ public class TripDataAccessTest extends BaseDataAccessTest {
      * 
      * @task ETS-1306
      * 
-     * @story ETS-27
+     * @story ETS-723
      */
 
     @Test
