@@ -52,7 +52,7 @@ public class CreateSchema {
      *            The path to the CSV file containing location data.
      */
     public void insertLocations(String path) {
-        String insertDataQuery = "INSERT INTO locations (municipality, name, longitude, latitude) VALUES (?, ?, ?, ?);";
+        String insertDataQuery = "INSERT INTO locations (municipality, name, latitude, longitude) VALUES (?, ?, ?, ?);";
 
         try (Connection conn = new DataAccess<>(driverUrl, null).getConnection()) {
             try (PreparedStatement insertDataStmt = conn.prepareStatement(insertDataQuery);
