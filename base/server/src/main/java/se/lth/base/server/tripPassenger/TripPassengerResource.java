@@ -1,6 +1,8 @@
 package se.lth.base.server.tripPassenger;
 
 import se.lth.base.server.Config;
+import se.lth.base.server.database.DataAccessException;
+import se.lth.base.server.database.ErrorType;
 import se.lth.base.server.user.*;
 import se.lth.base.server.trip.*;
 
@@ -54,7 +56,7 @@ public class TripPassengerResource {
                 tripPassenger = tripPassengerDao.bookTrip(tripId, user.getId());
             }
         } catch (IllegalArgumentException e) {
-            throw new WebApplicationException("Driver cannot book his own trip", Response.Status.FORBIDDEN);
+            throw new DataAccessException("Driver cannot book own trip", ErrorType.BAD_MAPPING);
         }
         return Response.ok(tripPassenger).build();
     }
