@@ -7,20 +7,72 @@ var base = base || {};
 // the scripts are loaded in.
 
 base.driverTripController = function () {
-  "use strict";
+  "use strict"; // add this to avoid some potential bugs
 
+  let model = [];
   let locations = [];
+  let currentUser = {};
+
+  /**
+   * Simple function to parse trip and add to table
+   * @param  _trip trip to render
+   */
+  const MyTripsViewModel = function (_trip) {
+    this.trip = _trip;
+    const viewModel = this;
+
+    this.render = function (requestedTemplate) {
+      let template;
+      template = requestedTemplate;
+      this.update(template.content.querySelector("tr"));
+      const clone = document.importNode(template.content, true);
+      template.parentElement.appendChild(clone);
+    };
+    // Update a single table row to display a trip
+    this.update = function (trElement) {
+      const td = trElement.children;
+      let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
+      let tolocation = controller.getLocationFromId(viewModel.trip.toLocationId);
+      td[0].textContent = fromlocation.name + ", " + fromlocation.municipality;
+      td[1].textContent = tolocation.name + ", " + tolocation.municipality;
+      const start = viewModel.trip.startTime;
+      td[2].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
+      const end = viewModel.trip.endTime;
+      td[3].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
+      const duration = new Date(end - start).toLocaleTimeString();
+      td[4].textContent = duration;
+      // td[5] should have our button
+      let button = view.createAddDriverButton(viewModel.trip.id);
+      td[5].children[0] ? td[5].children[0].replaceWith(button) : td[5].appendChild(button);
+    };
+  };
 
   const view = {
-    // Opens the modal/dialog when trip is registered
-    render: function () {
+    // Opens the modal/dialog
+    renderModal: function () {
       const myModal = new bootstrap.Modal(document.getElementById("driverModal"));
       myModal.show();
+    },
+    render: function () {
+      const rt = this.requestedTemplate();
+      model.forEach((d) => d.render(rt));
+      controller.loadButtons();
+    },
+    requestedTemplate: function () {
+      return document.getElementById("requested-trips-template");
+    },
+    createAddDriverButton: function (id) {
+      let button = document.createElement("button");
+      button.innerHTML = "Add me as driver";
+      button.id = id;
+      button.classList.add("btn", "btn-success");
+      return button;
     },
   };
 
   const controller = {
     load: function () {
+      // FUNCTIONALITY FOR REGISTER TRIP FORM
       document.getElementById("driver-form").onsubmit = function (event) {
         event.preventDefault();
         // Before submitting, needs to check if locations exists, otherwise mark the input invalid.
@@ -49,11 +101,28 @@ base.driverTripController = function () {
         event.preventDefault();
         base.changeLocation("#/my-trips");
       };
-      // Loads all locations from the server through the REST API, see rest.js for definition.
+      // Loads all locations from the server through the REST API, see res.js for definition.
+      // It will replace the model with the trips, and then render them through the view.
       base.rest.getLocations().then(function (l) {
         locations = l;
         controller.setLocations("from", l);
         controller.setLocations("to", l);
+      });
+
+      // FUNCTIONALITY FOR REQUEST TRIPS TABLE
+      let userPromise = base.rest.getUser();
+      let locationPromise = base.rest.getLocations();
+      Promise.all([userPromise, locationPromise]).then(function (array) {
+        currentUser = array[0];
+        locations = array[1];
+        let role = currentUser.role.name;
+        //Admin gets all trips, should not be possible to book yourself as passenger if you are a driver, therefore no duplicates
+        if (role == "DRIVER" || role == "ADMIN") {
+          base.rest.getDriverlessTrips().then(function (trips) {
+            model = trips.map((f) => new MyTripsViewModel(f));
+            view.render();
+          });
+        }
       });
     },
     getLocationId: function (value) {
@@ -81,7 +150,6 @@ base.driverTripController = function () {
       document.getElementById(id).value = location.innerHTML.trim();
       document.getElementById("dropdown-" + id).classList.toggle("show");
     },
-    // Filters the locations in dropdown
     filterFunction: function (id) {
       var input, filter, citys, i;
       input = document.getElementById(id);
@@ -127,8 +195,42 @@ base.driverTripController = function () {
         document.getElementById("from").classList.remove("is-invalid");
         document.getElementById("to").classList.remove("is-invalid");
         document.getElementById("driver-form").reset();
-        view.render();
+        view.renderModal();
       });
+    },
+    loadButtons: function () {
+      const addDriverButtons = document.getElementById("requestedtrips").querySelectorAll("button");
+      addDriverButtons.forEach(
+        (b) =>
+          (b.onclick = function (event) {
+            let seats = document.getElementById("seats").value;
+            if (!seats) seats = 3;
+            base.rest
+              .addDriverToDriverlessTrip(event.target.id, seats)
+              .then(function (trip) {
+                let fromlocation = controller.getLocationFromId(trip.fromLocationId);
+                let tolocation = controller.getLocationFromId(trip.toLocationId);
+
+                document.getElementById("registeredTripsModal").textContent =
+                  "TripID: #" +
+                  trip.id +
+                  " Departing from: " +
+                  fromlocation.name +
+                  ", " +
+                  fromlocation.municipality +
+                  " Destination: " +
+                  tolocation.name +
+                  ", " +
+                  tolocation.municipality +
+                  " Date: " +
+                  new Date(trip.startTime).toLocaleDateString();
+                view.renderModal();
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }),
+      );
     },
   };
 

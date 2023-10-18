@@ -54,6 +54,35 @@
       <button id="registerbtn" type="submit" class="btn btn-primary">Register</button>
   </div>
   </form>
+  
+  <div id="requestedtrips">
+    <h2 class="pt-3">Upcoming trips</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">From</th>
+          <th scope="col">To</th>
+          <th scope="col">Time of Departure</th>
+          <th scope="col">Expected Time of Arrival</th>
+          <th scope="col">Duration</th>
+          <th scope="col">Add yourself as driver</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template id="requested-trips-template">
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </template>
+      </tbody>
+    </table>
+  </div>
+
 
   <div class="modal fade" id="driverModal" tabindex="-1" aria-labelledby="driverModal">
     <div class="modal-dialog">
