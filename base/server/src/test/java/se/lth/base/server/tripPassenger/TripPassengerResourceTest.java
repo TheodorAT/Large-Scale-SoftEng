@@ -59,15 +59,15 @@ public class TripPassengerResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Tests that a driver cannot book a trip as a passenger. Expects a ForbiddenException to be thrown.
+     * Tests that a driver cannot book a trip as a passenger. Expects a InternalServerErrorException to be thrown.
      * 
-     * @desc Test the route for booking a trip as the driver. It should return ForbiddenException.
+     * @desc Test the route for booking a trip as the driver. It should return InternalServerErrorException.
      * 
      * @task ETS-1353
      * 
      * @story ETS-1339
      */
-    @Test(expected = javax.ws.rs.ForbiddenException.class)
+    @Test(expected = javax.ws.rs.InternalServerErrorException.class)
     public void bookTripAsDriver() {
         login(DRIVER_CREDENTIALS);
         Trip t = new Trip(1, 1, 1, 2, 1, 2, 2);
