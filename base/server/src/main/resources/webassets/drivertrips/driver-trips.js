@@ -246,7 +246,7 @@ base.driverTripController = function () {
       buttons.forEach((button) => {
         button.innerHTML = `Add me as driver with ${seatCount} seats`;
       });
-    }
+    },
   };
 
   return controller;
