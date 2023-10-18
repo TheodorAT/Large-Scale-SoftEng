@@ -76,10 +76,10 @@ public class TripPassengerResource {
      * 
      * @return int Number of available seats.
      */
-    @Path("/availableSeats")
-    @POST
+    @Path("/availableSeats/{tripId}")
+    @GET
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public int getAvailableSeats(int tripId) {
+    public int getAvailableSeats(@PathParam("tripId") int tripId) {
         return tripPassengerDao.getAvailableSeats(tripId);
     }
 
