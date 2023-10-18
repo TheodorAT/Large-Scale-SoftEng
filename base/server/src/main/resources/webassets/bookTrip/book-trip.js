@@ -192,9 +192,13 @@ base.searchTripController = function () {
                 );
               })
               .catch((error) => {
+                console.log(error.name);
                 let msg = "Something went wrong, try again later.";
                 if (error.message == "DUPLICATE") {
                   msg = "You have already booked this trip, try another trip";
+                }
+                if (error.message == "BAD_MAPPING") {
+                  msg = "You cannot book a seat on your own trip.";
                 }
                 if (error.message == "UNKNOWN") {
                   msg = "You were unable to book this trip, since there are no available seats.";
