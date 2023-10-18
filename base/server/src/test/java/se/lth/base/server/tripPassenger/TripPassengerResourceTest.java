@@ -78,6 +78,15 @@ public class TripPassengerResourceTest extends BaseResourceTest {
         target("tripPassenger").request().post(tripId, TripPassenger.class);
     }
 
+    /**
+     * Tests that a passenger can cancel a trip they have booked.
+     * 
+     * @desc Test the route for cancelling a trip as a passenger.
+     * 
+     * @task ETS-1296
+     * 
+     * @story ETS-731
+     */
     @Test
     public void cancelPassengerTrip() {
         logout();

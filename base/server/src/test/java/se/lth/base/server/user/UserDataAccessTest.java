@@ -108,11 +108,17 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         assertTrue(userDao.getUsers().stream().noneMatch(u -> u.getName().equals("Sven")));
     }
 
+    /**
+     * Test case for authenticating a user that does not exist. Should throw DataAccessException.
+     */
     @Test(expected = DataAccessException.class)
     public void authenticateNoUser() {
         userDao.authenticate(new Credentials("Waldo", "?", Role.NONE, "User", "User", "user@user4.se", "+4600000001"));
     }
 
+    /**
+     * Test case for authenticating a user that is created.
+     */
     @Test
     public void authenticateNewUser() {
         userDao.addUser(new Credentials("Pelle", "!2", Role.USER, "User", "User", "user@user5.se", "+4600000001"));
@@ -121,6 +127,9 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         assertNotNull(pellesSession.getSessionId());
     }
 
+    /**
+     * Tests the authentication of the same user twice. The two sessions should have different session ids.
+     */
     @Test
     public void authenticateNewUserTwice() {
         userDao.addUser(new Credentials("Elin", "password", Role.USER, "User", "User", "user@user7.se", "+4600000001"));
@@ -135,11 +144,18 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         assertNotEquals(authenticated.getSessionId(), authenticatedAgain.getSessionId());
     }
 
+    /**
+     * Test case for removing a session that does not exist. Should return false.
+     */
     @Test
     public void removeNoSession() {
         assertFalse(userDao.removeSession(UUID.randomUUID()));
     }
 
+    /**
+     * Test case for removing a valid session, should return true. Also tests that subsequent removals of the same
+     * return false.
+     */
     @Test
     public void removeSession() {
         userDao.addUser(
@@ -150,6 +166,9 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         assertFalse(userDao.removeSession(session.getSessionId()));
     }
 
+    /**
+     * Test case for authenticating a user with incorrect credentials. Should throw DataAccessException.
+     */
     @Test(expected = DataAccessException.class)
     public void failedAuthenticate() {
         userDao.addUser(new Credentials("steffe", "kittylover1996!", Role.USER, "User", "User", "user@user11.se",
@@ -158,6 +177,9 @@ public class UserDataAccessTest extends BaseDataAccessTest {
                 "user@user12.se", "+4600000001"));
     }
 
+    /**
+     * Test case for checking a session.
+     */
     @Test
     public void checkSession() {
         userDao.addUser(new Credentials("uffe", "genius programmer", Role.ADMIN, "User", "User", "user@user13.se",
@@ -168,6 +190,10 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         assertEquals(session.getSessionId(), checked.getSessionId());
     }
 
+    /**
+     * Test case for checking a session that does not exist. Should throw DataAccessException. Exception is caught in
+     * test.
+     */
     @Test
     public void checkRemovedSession() {
         userDao.addUser(new Credentials("lisa", "y", Role.ADMIN, "User", "User", "user@user15.se", "+4600000001"));
@@ -182,23 +208,59 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         }
     }
 
+    /**
+     * Test for getting a user by id
+     * 
+     * @desc test for getting a user by id
+     * 
+     * @task ?
+     * 
+     * @story ?
+     */
     @Test
     public void getUser() {
         User user = userDao.getUser(1);
         assertEquals(1, user.getId());
     }
 
+    /**
+     * Test for getting a user by id that does not exist. Should throw DataAccessException.
+     * 
+     * @desc test for getting an invalid user by id
+     * 
+     * @task ?
+     * 
+     * @story ?
+     */
     @Test(expected = DataAccessException.class)
     public void getMissingUser() {
         userDao.getUser(-1);
     }
 
+    /**
+     * Test for updating an invalid user. Should throw DataAccessException.
+     * 
+     * @desc test for updating an invalid user.
+     * 
+     * @task ?
+     * 
+     * @story ?
+     */
     @Test(expected = DataAccessException.class)
     public void updateMissingUser() {
         userDao.updateUser(10,
                 new Credentials("admin", "password", Role.ADMIN, "User", "User", "user@user17.se", "+4600000001"));
     }
 
+    /**
+     * Test for updating a user.
+     * 
+     * @desc test for updating a user.
+     * 
+     * @task ?
+     * 
+     * @story ?
+     */
     @Test
     public void updateUser() {
         User user = userDao.updateUser(2,
@@ -208,6 +270,15 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         assertEquals(Role.USER, user.getRole());
     }
 
+    /**
+     * Test for updating a user without changing the password.
+     * 
+     * @desc test for updating a user without a password.
+     * 
+     * @task ?
+     * 
+     * @story ?
+     */
     @Test
     public void updateWithoutPassword() {
         Session session1 = userDao.authenticate(new Credentials("Test", "password", Role.USER));
@@ -217,6 +288,15 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         System.out.println(session2);
     }
 
+    /**
+     * Test that the role of a user can be changed.
+     * 
+     * @desc Test that the role of a user can be changed.
+     * 
+     * @task ETS-1283
+     * 
+     * @story ETS-738
+     */
     @Test
     public void updateUserRole() {
         userDao.updateUserRole(2, Role.ADMIN);
@@ -238,11 +318,8 @@ public class UserDataAccessTest extends BaseDataAccessTest {
     public void changePassword() {
         Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se",
                 "+4600000001");
-        User user = userDao.addUser(oldCredentials);
-        Session session1 = userDao.authenticate(new Credentials("Sven", "password", Role.USER));
-        Credentials newCredentials = new Credentials("Sven", "newPassword123123", Role.USER);
-        userDao.updateUserPassword(user.getId(), oldCredentials, newCredentials);
-        Session session2 = userDao.authenticate(newCredentials);
+        User user = getAuthenticatedUser(oldCredentials);
+        checkPasswordChange(user, oldCredentials, "newPassword123123");
     }
 
     /**
@@ -260,13 +337,11 @@ public class UserDataAccessTest extends BaseDataAccessTest {
     public void changePasswordIncorrectOldCredentials() {
         Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se",
                 "+4600000001");
-        User user = userDao.addUser(oldCredentials);
-        Session session1 = userDao.authenticate(new Credentials("Sven", "password", Role.USER));
+
+        User user = getAuthenticatedUser(oldCredentials);
         Credentials incorrectOldCredentials = new Credentials("Sven", "wrongPassword", Role.USER, "User", "User",
                 "user@user3.se", "+4600000001");
-        Credentials newCredentials = new Credentials("Sven", "newPassword123123", Role.USER);
-        userDao.updateUserPassword(user.getId(), incorrectOldCredentials, newCredentials);
-        Session session2 = userDao.authenticate(newCredentials);
+        checkPasswordChange(user, incorrectOldCredentials, "newPassword123123");
     }
 
     /**
@@ -284,10 +359,37 @@ public class UserDataAccessTest extends BaseDataAccessTest {
     public void changeInvalidPassword() {
         Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se",
                 "+4600000001");
-        User user = userDao.addUser(oldCredentials);
-        Session session1 = userDao.authenticate(new Credentials("Sven", "password", Role.USER));
-        Credentials newCredentials = new Credentials("Sven", "pass", Role.USER);
+        User user = getAuthenticatedUser(oldCredentials);
+        checkPasswordChange(user, oldCredentials, "pass");
+    }
+
+    /**
+     * Adds a new user with the given credentials to the database and authenticates them.
+     * 
+     * @param credentials
+     *            the user's login credentials
+     * 
+     * @return the authenticated user
+     */
+    private User getAuthenticatedUser(Credentials credentials) {
+        User user = userDao.addUser(credentials);
+        userDao.authenticate(credentials);
+        return user;
+    }
+
+    /**
+     * Helper method to check if a user's password can be changed successfully.
+     * 
+     * @param user
+     *            the user whose password will be changed
+     * @param oldCredentials
+     *            the user's old credentials
+     * @param newPassword
+     *            the new password to be set
+     */
+    private void checkPasswordChange(User user, Credentials oldCredentials, String newPassword) {
+        Credentials newCredentials = new Credentials("Sven", newPassword, Role.USER);
         userDao.updateUserPassword(user.getId(), oldCredentials, newCredentials);
-        Session session2 = userDao.authenticate(newCredentials);
+        userDao.authenticate(newCredentials);
     }
 }

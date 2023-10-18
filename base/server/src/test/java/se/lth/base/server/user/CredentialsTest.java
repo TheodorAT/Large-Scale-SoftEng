@@ -10,6 +10,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 public class CredentialsTest {
+    /**
+     * Tests if salt is applied correctly when generating password hashes.
+     * 
+     * @desc Tests if salt works correctly.
+     */
     @Test
     public void saltApplied() {
         Credentials a = new Credentials("a", "123", Role.NONE, "User", "User", "user@user1.se", "+4600000001");
