@@ -12,9 +12,10 @@ base.myTripsController = function () {
   let locations = [];
   let currentUser = {};
 
-  const MyTripsViewModel = function (_trip, _seats) {
+  const MyTripsViewModel = function (_trip, _seats, _driver) {
     this.trip = _trip;
     this.seats = _seats;
+    this.driver = _driver;
     const viewModel = this;
 
     this.render = function (pastTemplate, updomingTemplate) {
@@ -42,7 +43,10 @@ base.myTripsController = function () {
       const duration = new Date(end - start).toLocaleTimeString();
       td[4].textContent = duration;
       td[5].textContent = this.seats + " / " + viewModel.trip.seatCapacity;
-      td[6].textContent = viewModel.trip.driverId == 0 ? "Requested" : viewModel.trip.driverId;
+      td[6].textContent =
+        viewModel.trip.driverId == 0
+          ? "Requested"
+          : this.driver.first_name + " " + this.driver.last_name + ", " + this.driver.phone_number;
       td[6].id = viewModel.trip.driverId;
       let button = view.createStatus(viewModel.trip);
       td[7].children[0] ? td[7].children[0].replaceWith(button) : td[7].appendChild(button);
@@ -62,6 +66,7 @@ base.myTripsController = function () {
     upcomingTemplate: function () {
       return document.getElementById("upcoming-trips-template");
     },
+
     createStatus: function (trip) {
       let button;
       let now = new Date().getTime();
@@ -138,14 +143,23 @@ base.myTripsController = function () {
     renderTrips: function (trips) {
       // Collect all trip IDs
       const tripIds = trips.map((trip) => trip.id);
+      // Collect all driver IDs
+      const driverIds = trips.map((trip) => trip.driverId);
+      // Filter out driverIDs that are not equal to 0
+      const filteredDriverIds = driverIds.filter((driverId) => driverId !== 0);
       // Fetch available seats for all trips
       Promise.all(tripIds.map(base.rest.getAvailableSeats)).then((seats) => {
-        // Update MyTripsViewModel instances with available seats
-        model = trips.map((trip, index) => {
-          const availableSeats = seats[index];
-          return new MyTripsViewModel(trip, availableSeats);
+        // Fetch driver for all driver IDs
+        Promise.all(filteredDriverIds.map(base.rest.getDriver)).then((users) => {
+          model = trips.map((trip, index) => {
+            const availableSeats = seats[index];
+            // If driverId is 0, set driver to null
+            const driver = driverIds[index] !== 0 ? users.shift() : null;
+            return new MyTripsViewModel(trip, availableSeats, driver);
+          });
+
+          view.render();
         });
-        view.render();
       });
     },
     getLocationFromId: function (id) {

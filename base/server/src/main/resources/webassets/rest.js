@@ -83,6 +83,18 @@ base.rest = (function () {
     },
 
     /*
+     * Fetches a driver with driverID
+     * id: id of driver
+     *
+     * example: const me = base.rest.getDriver(1);
+     */
+    getDriver: function (id) {
+      return baseFetch("/rest/user/" + id)
+        .then((response) => response.json())
+        .then((u) => new User(u));
+    },
+
+    /*
      * Login with given credentials.
      * username: name of the user
      * password: password in plaintext
