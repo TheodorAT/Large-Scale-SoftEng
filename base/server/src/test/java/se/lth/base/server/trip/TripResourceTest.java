@@ -75,12 +75,7 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of available trips based on location parameters.
-     * 
-     * Test procedure: 1. Creating trips and performing HTTP POST request to add new trips to the database. 2.
-     * Performing a HTTP GET request to retrieve the available trips matching the given parameteters. 3. Check the list
-     * is not null or empty. 4. Validates the size of the list. 5. Validates the fromLocation and destination of the
-     * first trip in the list. 6. TOOD - more tests to validate
+     * Test method to validate the retrieval of available trips based on location parameters. 
      * 
      * @desc validate the retrieval of available trips based on location parameters
      * 
@@ -416,6 +411,16 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(ADMIN.getId(), updatedTrip.getDriverId());
     }
 
+    /**
+     * Tests the getTripsWithoutDriver method of the TripResource class. Creates sample of driverless trips,
+     * and checks if the request retrieved the same and only trips.
+     * 
+     * @desc Test retrieving trips without driver
+     * 
+     * @task ETS-1347
+     * 
+     * @story ETS-1339
+     */
     @Test
     public void getTripsWithoutDriver() {
         createSampleTrip("trip/passenger/request", TEST_CREDENTIALS);

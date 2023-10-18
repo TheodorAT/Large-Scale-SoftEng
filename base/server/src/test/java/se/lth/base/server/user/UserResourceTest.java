@@ -289,6 +289,16 @@ public class UserResourceTest extends BaseResourceTest {
         assertEquals(Role.DRIVER, user.getRole());
     }
 
+    /**
+     * Tests the method updatePassword in UserResource class. The test method creates a current credential and a new credential for the updatePassword method, 
+     * then checks if User can login with new password.
+     * 
+     * @desc Test changing password of User.
+     * 
+     * @task ETS-1310
+     * 
+     * @story ETS-739
+     */
     @Test
     public void changeUserPassword() {
         login(TEST_CREDENTIALS);
@@ -304,6 +314,16 @@ public class UserResourceTest extends BaseResourceTest {
         login(newPassword);
     }
 
+    /**
+     * Tests the method updatePassword in UserResource class. The test method creates a current credential and a new credential wtih invalid password
+     * for the updatePassword method, then checks if User can login with new password. Expects DataAccessException.
+     * 
+     * @desc Test changing password of User to an invalid password.
+     * 
+     * @task ETS-1310
+     * 
+     * @story ETS-739
+     */
     @Test(expected = DataAccessException.class)
     public void changeUserInvalidNewPassword() {
         login(TEST_CREDENTIALS);
@@ -318,6 +338,16 @@ public class UserResourceTest extends BaseResourceTest {
         login(newPassword);
     }
 
+    /**
+     * Tests the method updatePassword in UserResource class. The test method creates a current credential with incorrect password and a new credential
+     * for the updatePassword method, then checks if User can login with new password. Expects DataAccessException.
+     * 
+     * @desc Test changing password of User with invalid current credentials.
+     * 
+     * @task ETS-1310
+     * 
+     * @story ETS-739
+     */
     @Test(expected = DataAccessException.class)
     public void changeUserInvalidOldPassword() {
         login(TEST_CREDENTIALS);

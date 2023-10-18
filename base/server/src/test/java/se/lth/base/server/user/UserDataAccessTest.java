@@ -224,6 +224,18 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         assertEquals(Role.ADMIN, user.getRole());
     }
 
+
+
+     /**
+     * Tests the updateUserPassword method in the UserDataAccess class. It creates a credential and adds it to the database, 
+     * then tries the method chaging password and authenticating with new password. 
+     * 
+     * @desc Test changing password of User in database.
+     * 
+     * @task ETS-1310
+     * 
+     * @story ETS-739
+     */
     @Test
     public void changePassword() {
         Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se",
@@ -235,6 +247,16 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         Session session2 = userDao.authenticate(newCredentials);
     }
 
+    /**
+     * Tests the updateUserPassword method in the UserDataAccess class. It creates a credential and adds it to the database, 
+     * then tries the method chaging password with wrong current credential and tries authenticating with new password. Expects DataAccessException.
+     * 
+     * @desc Test changing password of User in database using wrong current credentials.
+     * 
+     * @task ETS-1310
+     * 
+     * @story ETS-739
+     */
     @Test(expected = DataAccessException.class)
     public void changePasswordIncorrectOldCredentials() {
         Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se",
@@ -248,6 +270,16 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         Session session2 = userDao.authenticate(newCredentials);
     }
 
+    /**
+     * Tests the updateUserPassword method in the UserDataAccess class. It creates a credential and adds it to the database, 
+     * then tries the method chaging password with wrong too short password and tries authenticating with new password. Expects DataAccessException.
+     * 
+     * @desc Test changing password of User to an invalid password in database.
+     * 
+     * @task ETS-1310
+     * 
+     * @story ETS-739
+     */
     @Test(expected = DataAccessException.class)
     public void changeInvalidPassword() {
         Credentials oldCredentials = new Credentials("Sven", "password", Role.USER, "User", "User", "user@user3.se",
