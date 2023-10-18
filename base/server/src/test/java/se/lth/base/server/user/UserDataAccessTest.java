@@ -224,11 +224,9 @@ public class UserDataAccessTest extends BaseDataAccessTest {
         assertEquals(Role.ADMIN, user.getRole());
     }
 
-
-
-     /**
-     * Tests the updateUserPassword method in the UserDataAccess class. It creates a credential and adds it to the database, 
-     * then tries the method chaging password and authenticating with new password. 
+    /**
+     * Tests the updateUserPassword method in the UserDataAccess class. It creates a credential and adds it to the
+     * database, then tries the method chaging password and authenticating with new password.
      * 
      * @desc Test changing password of User in database.
      * 
@@ -248,8 +246,9 @@ public class UserDataAccessTest extends BaseDataAccessTest {
     }
 
     /**
-     * Tests the updateUserPassword method in the UserDataAccess class. It creates a credential and adds it to the database, 
-     * then tries the method chaging password with wrong current credential and tries authenticating with new password. Expects DataAccessException.
+     * Tests the updateUserPassword method in the UserDataAccess class. It creates a credential and adds it to the
+     * database, then tries the method chaging password with wrong current credential and tries authenticating with new
+     * password. Expects DataAccessException.
      * 
      * @desc Test changing password of User in database using wrong current credentials.
      * 
@@ -271,8 +270,9 @@ public class UserDataAccessTest extends BaseDataAccessTest {
     }
 
     /**
-     * Tests the updateUserPassword method in the UserDataAccess class. It creates a credential and adds it to the database, 
-     * then tries the method chaging password with wrong too short password and tries authenticating with new password. Expects DataAccessException.
+     * Tests the updateUserPassword method in the UserDataAccess class. It creates a credential and adds it to the
+     * database, then tries the method chaging password with wrong too short password and tries authenticating with new
+     * password. Expects DataAccessException.
      * 
      * @desc Test changing password of User to an invalid password in database.
      * 

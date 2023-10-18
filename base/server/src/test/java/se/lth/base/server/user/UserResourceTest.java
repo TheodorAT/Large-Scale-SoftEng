@@ -290,8 +290,8 @@ public class UserResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Tests the method updatePassword in UserResource class. The test method creates a current credential and a new credential for the updatePassword method, 
-     * then checks if User can login with new password.
+     * Tests the method updatePassword in UserResource class. The test method creates a current credential and a new
+     * credential for the updatePassword method, then checks if User can login with new password.
      * 
      * @desc Test changing password of User.
      * 
@@ -315,8 +315,9 @@ public class UserResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Tests the method updatePassword in UserResource class. The test method creates a current credential and a new credential wtih invalid password
-     * for the updatePassword method, then checks if User can login with new password. Expects DataAccessException.
+     * Tests the method updatePassword in UserResource class. The test method creates a current credential and a new
+     * credential wtih invalid password for the updatePassword method, then checks if User can login with new password.
+     * Expects DataAccessException.
      * 
      * @desc Test changing password of User to an invalid password.
      * 
@@ -339,8 +340,9 @@ public class UserResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Tests the method updatePassword in UserResource class. The test method creates a current credential with incorrect password and a new credential
-     * for the updatePassword method, then checks if User can login with new password. Expects DataAccessException.
+     * Tests the method updatePassword in UserResource class. The test method creates a current credential with
+     * incorrect password and a new credential for the updatePassword method, then checks if User can login with new
+     * password. Expects DataAccessException.
      * 
      * @desc Test changing password of User with invalid current credentials.
      * 

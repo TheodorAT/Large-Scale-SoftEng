@@ -42,12 +42,9 @@ public class TripDataAccessTest extends BaseDataAccessTest {
         assertEquals(5, data.getSeatCapacity());
     }
 
-
-
-
     /**
-     * Test method for retrieving available trips from the database. It tests if the available trips received
-     * from the database match the ones added by checking if locations and ids are correct.
+     * Test method for retrieving available trips from the database. It tests if the available trips received from the
+     * database match the ones added by checking if locations and ids are correct.
      * 
      * @desc Test receiving trips from the database.
      * 

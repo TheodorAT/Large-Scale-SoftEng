@@ -75,7 +75,7 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Test method to validate the retrieval of available trips based on location parameters. 
+     * Test method to validate the retrieval of available trips based on location parameters.
      * 
      * @desc validate the retrieval of available trips based on location parameters
      * 
@@ -412,8 +412,8 @@ public class TripResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Tests the getTripsWithoutDriver method of the TripResource class. Creates sample of driverless trips,
-     * and checks if the request retrieved the same and only trips.
+     * Tests the getTripsWithoutDriver method of the TripResource class. Creates sample of driverless trips, and checks
+     * if the request retrieved the same and only trips.
      * 
      * @desc Test retrieving trips without driver
      * 
