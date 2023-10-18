@@ -87,9 +87,8 @@ base.searchTripController = function () {
         return false;
       };
       let date = new Date();
-      document
-        .getElementById("datetime")
-        .setAttribute("min", date.toLocaleDateString() + "T" + date.getHours() + ":" + date.getMinutes());
+      let time = date.toLocaleTimeString().split(":").slice(0, 2).join(":");
+      document.getElementById("datetime").setAttribute("min", date.toLocaleDateString() + "T" + time);
 
       document.getElementById("from").onkeyup = function (event) {
         controller.filterFunction("from");
