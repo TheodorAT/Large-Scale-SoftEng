@@ -14,6 +14,10 @@ public class CredentialsTest {
      * Tests if salt is applied correctly when generating password hashes.
      * 
      * @desc Tests if salt works correctly.
+     *
+     * @task ETS-974
+     * 
+     * @story ETS-740
      */
     @Test
     public void saltApplied() {

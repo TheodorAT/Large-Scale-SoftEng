@@ -213,9 +213,9 @@ public class UserDataAccessTest extends BaseDataAccessTest {
      * 
      * @desc test for getting a user by id
      * 
-     * @task ?
+     * @task ETS-1406
      * 
-     * @story ?
+     * @story ETS-1404
      */
     @Test
     public void getUser() {
@@ -228,9 +228,9 @@ public class UserDataAccessTest extends BaseDataAccessTest {
      * 
      * @desc test for getting an invalid user by id
      * 
-     * @task ?
+     * @task ETS-1406
      * 
-     * @story ?
+     * @story ETS-1404
      */
     @Test(expected = DataAccessException.class)
     public void getMissingUser() {
@@ -241,10 +241,10 @@ public class UserDataAccessTest extends BaseDataAccessTest {
      * Test for updating an invalid user. Should throw DataAccessException.
      * 
      * @desc test for updating an invalid user.
+     *
+     * @task ETS-1406
      * 
-     * @task ?
-     * 
-     * @story ?
+     * @story ETS-1404
      */
     @Test(expected = DataAccessException.class)
     public void updateMissingUser() {
@@ -257,9 +257,9 @@ public class UserDataAccessTest extends BaseDataAccessTest {
      * 
      * @desc test for updating a user.
      * 
-     * @task ?
+     * @task ETS-1406
      * 
-     * @story ?
+     * @story ETS-1404
      */
     @Test
     public void updateUser() {
@@ -275,9 +275,9 @@ public class UserDataAccessTest extends BaseDataAccessTest {
      * 
      * @desc test for updating a user without a password.
      * 
-     * @task ?
+     * @task ETS-1406
      * 
-     * @story ?
+     * @story ETS-1404
      */
     @Test
     public void updateWithoutPassword() {

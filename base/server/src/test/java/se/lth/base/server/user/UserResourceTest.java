@@ -105,11 +105,9 @@ public class UserResourceTest extends BaseResourceTest {
      * 
      * @desc Test that all users can not be retrieved by a user.
      * 
-     * @task ?
+     * @task ETS-974
      * 
-     * @story ?
-     * 
-     * @epic ETS-830
+     * @story ETS-740
      */
     @Test(expected = ForbiddenException.class)
     public void getAllUsersAsUser() {
@@ -123,11 +121,9 @@ public class UserResourceTest extends BaseResourceTest {
      * 
      * @desc Test that a user can not be retrieved by a user. Using path user/{id}
      * 
-     * @task ?
+     * @task ETS-974
      * 
-     * @story ?
-     * 
-     * @epic ETS-830
+     * @story ETS-740
      */
     @Test(expected = ForbiddenException.class)
     public void getUserAsUser() {
@@ -177,11 +173,9 @@ public class UserResourceTest extends BaseResourceTest {
      * 
      * @desc Test that all users can be retrieved by an admin.
      * 
-     * @task ?
+     * @task ETS-1406
      * 
-     * @story ?
-     * 
-     * @epic ETS-830
+     * @story ETS-1404
      */
     @Test
     public void getAllUsers() {
@@ -196,11 +190,9 @@ public class UserResourceTest extends BaseResourceTest {
      * 
      * @desc Test that all roles can be retrieved by an admin.
      * 
-     * @task ?
+     * @task ETS-1406
      * 
-     * @story ?
-     * 
-     * @epic ETS-830
+     * @story ETS-1404
      */
     @Test
     public void getRoles() {
@@ -239,11 +231,9 @@ public class UserResourceTest extends BaseResourceTest {
      * 
      * @desc Test that a user can be retrieved by id.
      * 
-     * @task ?
+     * @task ETS-1406
      * 
-     * @story ?
-     * 
-     * @epic ETS-830
+     * @story ETS-1404
      */
     @Test
     public void getUser() {
@@ -305,11 +295,9 @@ public class UserResourceTest extends BaseResourceTest {
      * 
      * @desc test updating a non-existing user
      * 
-     * @task ?
+     * @task ETS-1406
      * 
-     * @story ?
-     * 
-     * @epic ETS-830
+     * @story ETS-1404
      */
     @Test(expected = NotFoundException.class)
     public void updateMissing() {
@@ -322,11 +310,9 @@ public class UserResourceTest extends BaseResourceTest {
      * 
      * @desc test that admin cannot demote themselves
      * 
-     * @task ?
+     * @task ETS-1406
      * 
-     * @story ?
-     * 
-     * @epic ETS-830
+     * @story ETS-1404
      */
     @Test(expected = WebApplicationException.class)
     public void dontDemoteYourself() {
@@ -341,11 +327,9 @@ public class UserResourceTest extends BaseResourceTest {
      * 
      * @desc tests that users info can be updated
      * 
-     * @task ?
+     * @task ETS-1406
      * 
-     * @story ?
-     * 
-     * @epic ETS-830
+     * @story ETS-1404
      */
     @Test
     public void updateUser() {
