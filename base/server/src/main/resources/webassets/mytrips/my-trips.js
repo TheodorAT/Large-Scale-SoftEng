@@ -45,7 +45,7 @@ base.myTripsController = function () {
       td[5].textContent = this.seats + " / " + viewModel.trip.seatCapacity;
       td[6].textContent =
         viewModel.trip.driverId == 0
-          ? "Requested"
+          ? "Waiting for a driver"
           : this.driver.first_name + " " + this.driver.last_name + ", " + this.driver.phone_number;
       td[6].id = viewModel.trip.driverId;
       let button = view.createStatus(viewModel.trip);
