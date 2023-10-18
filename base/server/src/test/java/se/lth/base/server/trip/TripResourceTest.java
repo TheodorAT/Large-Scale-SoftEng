@@ -51,9 +51,8 @@ public class TripResourceTest extends BaseResourceTest {
         assertEquals(DRIVER.getId(), trip.getDriverId());
         assertEquals(10200, trip.getStartTime());
 
-        // Between Axelstorp and Boarp it is approximately 4.54 km (as the crow flies)
-        // so the end time should be 627094 ms (10 min 27.094 s) later than the start
-        // time.
+        // Between Axelstorp and Boarp it is approximately 4.54 km so the end time should be 627094 ms (10 min 27.094 s)
+        // later than the start time.
         assertEquals(637294, trip.getEndTime());
     }
 
