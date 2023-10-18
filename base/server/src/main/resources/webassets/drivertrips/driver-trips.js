@@ -9,6 +9,7 @@ var base = base || {};
 base.driverTripController = function () {
   "use strict"; // add this to avoid some potential bugs
 
+  const DEFAULT_SEATS = 3;
   let model = [];
   let locations = [];
   let currentUser = {};
@@ -108,6 +109,9 @@ base.driverTripController = function () {
         controller.setLocations("from", l);
         controller.setLocations("to", l);
       });
+
+      // default seats
+      document.getElementById("seats").value = DEFAULT_SEATS;
 
       // FUNCTIONALITY FOR REQUEST TRIPS TABLE
       let userPromise = base.rest.getUser();
