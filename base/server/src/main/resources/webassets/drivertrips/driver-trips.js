@@ -64,7 +64,8 @@ base.driverTripController = function () {
     },
     createAddDriverButton: function (id) {
       let button = document.createElement("button");
-      button.innerHTML = "Add me as driver";
+      let current_seats = document.getElementById("seats").value;
+      button.innerHTML = "Add me as driver with " + current_seats + " seats";
       button.id = id;
       button.classList.add("btn", "btn-success");
       return button;
