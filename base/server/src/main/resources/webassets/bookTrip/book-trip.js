@@ -192,7 +192,6 @@ base.searchTripController = function () {
                 );
               })
               .catch((error) => {
-                console.log(error.name);
                 let msg = "Something went wrong, try again later.";
                 if (error.message == "DUPLICATE") {
                   msg = "You have already booked this trip, try another trip";
