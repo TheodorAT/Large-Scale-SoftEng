@@ -58,6 +58,16 @@ public class TripPassengerDataAccessTest extends BaseDataAccessTest {
         tripPassengerDao.bookTrip(trip.getId(), TEST.getId());
     }
 
+    /**
+     * Tests that a passenger can cancel a trip they have booked. Also tests that a passenger cannot cancel a trip they
+     * have not booked.
+     * 
+     * @desc Test the cancelling of a trip as a passenger.
+     * 
+     * @task ETS-1296
+     * 
+     * @story ETS-731
+     */
     @Test
     public void cancelPassengerTrips() {
         Trip trip = new Trip(1, 1, 1, 2, 1, 2, 2);

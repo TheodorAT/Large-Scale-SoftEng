@@ -43,14 +43,20 @@ public class TripDataAccessTest extends BaseDataAccessTest {
     }
 
     /**
-     * Test method for retrieving available trips from the database.
+     * Test method for retrieving available trips from the database. It tests if the available trips received from the
+     * database match the ones added by checking if locations and ids are correct.
      * 
      * Test procedure: 1. Creates sample of trips and add them to the database. 2. Retrieves available trips with
      * parameters given parameters. 3. Validates the ID of the retrieved trip and checks the size of the list. 4.
      * Retrieves available trips with new parameters. 5. Goes through the list and checks the locations for each trip.
      * 6. Checks if the sum of all trip-ids are correct.
+     * 
+     * @desc Test retrieving available trips from the database.
+     * 
+     * @task ETS-895
+     * 
+     * @story ETS-610
      */
-
     @Test
     public void availableTrips() {
         Trip trip1 = tripDao.addTrip(TEST.getId(), new Trip(-1, -1, 1, 2, 10000, 10400, 5));
@@ -102,7 +108,7 @@ public class TripDataAccessTest extends BaseDataAccessTest {
      * 
      * @task ETS-1306
      * 
-     * @story ETS-27
+     * @story ETS-723
      */
 
     @Test
@@ -123,7 +129,7 @@ public class TripDataAccessTest extends BaseDataAccessTest {
      * 
      * @task ETS-1306
      * 
-     * @story ETS-27
+     * @story ETS-723
      */
 
     @Test
@@ -204,6 +210,16 @@ public class TripDataAccessTest extends BaseDataAccessTest {
         assertEquals(TripStatus.ACTIVE.getTripStatus(), trip.getStatus());
     }
 
+    /**
+     * Tests the getTripsWithoutDriver method of the TripDataAccess class. Adds three driverless trip to the database,
+     * and checks if the method retrieved the same and only trips.
+     * 
+     * @desc Test retrieving trips without driver from database
+     * 
+     * @task ETS-1347
+     * 
+     * @story ETS-1339
+     */
     @Test
     public void getTripsWithoutDriver() {
         Trip reqeustTrip1 = tripDao.addTrip(0, new Trip(0, 0, 1, 2, 1000, 3000, 4));
