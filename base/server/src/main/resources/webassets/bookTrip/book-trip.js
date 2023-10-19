@@ -41,6 +41,7 @@ base.searchTripController = function () {
       td[4].textContent = formattedTime;
       td[5].textContent = this.seats + " / " + viewModel.trip.seatCapacity;
       td[6].textContent = this.driverName;
+      td[6].id = viewModel.trip.driverId;
       // Book Button //
       //If button already has already been added, it needs to be replaced
       if (td[7].children[0]) {
@@ -189,7 +190,7 @@ base.searchTripController = function () {
             base.rest
               .bookTrip(tripId)
               .then((bookedTrip) => {
-                base.rest.getDriver(tr.children[7].innerText).then((driver) => {
+                base.rest.getDriver(tr.children[7].id).then((driver) => {
                   document.getElementById("available-trips").hidden = true;
                   let from = tr.children[1].innerText;
                   let to = tr.children[2].innerText;
