@@ -307,7 +307,7 @@ public class UserResourceTest extends BaseResourceTest {
      * Tests the GET request for user/driver/{id}. Should return the first and last name of the driver corresponding to
      * the id.
      * 
-     * @desc Test that first and last name can be retrieved of driver.
+     * @desc Tests that first and last name can be retrieved of driver.
      * 
      * @task ETS-1425
      * 
