@@ -150,7 +150,7 @@ public class UserResource {
         throw new WebApplicationException("Mising permission to fetch user/driver info", Response.Status.FORBIDDEN);
     }
 
-        /**
+    /**
      * Returns a user object belonging to the userId
      * 
      * @param userId

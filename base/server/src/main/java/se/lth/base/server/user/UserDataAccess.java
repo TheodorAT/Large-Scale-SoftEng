@@ -112,7 +112,7 @@ public class UserDataAccess extends DataAccess<User> {
                 userId);
     }
 
-        /**
+    /**
      * Retrieve a user's information by their unique identifier.
      *
      * This method retrieves the user information, including their role, username, first name, last name, email, and
