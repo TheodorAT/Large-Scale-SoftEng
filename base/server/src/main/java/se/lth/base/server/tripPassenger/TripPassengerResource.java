@@ -1,6 +1,8 @@
 package se.lth.base.server.tripPassenger;
 
 import se.lth.base.server.Config;
+import se.lth.base.server.database.DataAccessException;
+import se.lth.base.server.database.ErrorType;
 import se.lth.base.server.user.*;
 import se.lth.base.server.trip.*;
 
@@ -11,6 +13,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import se.lth.base.server.providers.JsonExceptionMapper;
 
 /**
  * Used to interact with the TripPassengerDataAccess class through HTTP calls.
@@ -23,6 +26,7 @@ public class TripPassengerResource {
     private final User user;
     private final TripPassengerDataAccess tripPassengerDao = new TripPassengerDataAccess(
             Config.instance().getDatabaseDriver());
+    private final TripDataAccess tripDao = new TripDataAccess(Config.instance().getDatabaseDriver());
 
     public TripPassengerResource(@Context ContainerRequestContext context) {
         this.user = (User) context.getProperty(User.class.getSimpleName());
@@ -30,8 +34,8 @@ public class TripPassengerResource {
 
     /**
      * Calls on the bookTrip function from TripPassengerDataAccess using HTTP, which inserts a TripPassenger object in
-     * to the database, with current userId as passengerId. If the driver tries to book his own trip, a
-     * ForbiddenException is thrown.
+     * to the database, with current userId as passengerId. If there are no available seats, a WebApplicationException
+     * is thrown. A WebApplicationException is also thrown if a driver tries to book their own trip.
      * 
      * @param tripId
      * 
@@ -42,14 +46,19 @@ public class TripPassengerResource {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public TripPassenger createTripPassenger(int tripId) {
+    public Response createTripPassenger(int tripId) {
         TripPassenger tripPassenger;
         try {
-            tripPassenger = tripPassengerDao.bookTrip(tripId, user.getId());
+            Trip trip = tripDao.getTrip(tripId);
+            if (tripPassengerDao.getAvailableSeats(tripId) == 0 && trip.getSeatCapacity() > 0) {
+                throw new WebApplicationException("Trip is fully booked", Response.Status.BAD_REQUEST);
+            } else {
+                tripPassenger = tripPassengerDao.bookTrip(tripId, user.getId());
+            }
         } catch (IllegalArgumentException e) {
-            throw new WebApplicationException("Driver cannot book his own trip", Response.Status.FORBIDDEN);
+            throw new DataAccessException("Driver cannot book own trip", ErrorType.BAD_MAPPING);
         }
-        return tripPassenger;
+        return Response.ok(tripPassenger).build();
     }
 
     /**
