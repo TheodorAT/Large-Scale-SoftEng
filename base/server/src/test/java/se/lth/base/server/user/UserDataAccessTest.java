@@ -273,6 +273,22 @@ public class UserDataAccessTest extends BaseDataAccessTest {
     }
 
     /**
+     * Test for getting first and last name of user by id.
+     * 
+     * @desc Test for getting first and last name of user by id.
+     * 
+     * @task ETS-1425
+     * 
+     * @story ETS-723
+     */
+
+    @Test
+    public void getDriverName() {
+        String name = userDao.getDriverName(DRIVER.getId());
+        assertEquals(name, DRIVER.getFirst_Name() + " " + DRIVER.getLast_Name());
+    }
+
+    /**
      * Test for getting a user by id that does not exist. Should throw DataAccessException.
      * 
      * @desc test for getting an invalid user by id

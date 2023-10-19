@@ -83,7 +83,7 @@ base.rest = (function () {
     },
 
     /*
-     * Fetches a driver with driverID
+     * Fetches a driver with driverID (only passengers and drivers on the trip allowed and admins)
      * id: id of driver
      *
      * example: const me = base.rest.getDriver(1);
@@ -92,6 +92,16 @@ base.rest = (function () {
       return baseFetch("/rest/user/" + id)
         .then((response) => response.json())
         .then((u) => new User(u));
+    },
+
+    /*
+     * Fetches a drivername with driverID
+     * id: id of driver
+     * returns a string (the name of the driver)
+     * example: const name = base.rest.getDriverName(1);
+     */
+    getDriverName: function (id) {
+      return baseFetch("/rest/user/driver/" + id).then((response) => response.text());
     },
 
     /*
@@ -377,6 +387,12 @@ base.rest = (function () {
         .then((trips) => trips.map((f) => new Trip(f)));
     },
 
+    /*
+     * Gets all request trips without driver
+     * returns: an array of Trips
+     *
+     * example: const trips = base.rest.getDriverlessTrips(1,2);
+     */
     getDriverlessTrips: function () {
       return baseFetch("/rest/trip/requests", {
         method: "GET",
@@ -385,24 +401,12 @@ base.rest = (function () {
         .then((trips) => trips.map((f) => new Trip(f)));
     },
 
-    addDriverToDriverlessTrip: function (id, seats) {
-      return baseFetch("/rest/trip/" + id, {
-        method: "PUT",
-        body: JSON.stringify(seats),
-        headers: jsonHeader,
-      })
-        .then((res) => res.json())
-        .then((trip) => new Trip(trip));
-    },
-
-    getDriverlessTrips: function () {
-      return baseFetch("/rest/trip/requests", {
-        method: "GET",
-      })
-        .then((res) => res.json())
-        .then((trips) => trips.map((f) => new Trip(f)));
-    },
-
+    /*
+     * Add a driver to a requested trips
+     * returns: a Trip
+     *
+     * example: const trip = base.rest.addDriverToDriverlessTrip(1,2);
+     */
     addDriverToDriverlessTrip: function (id, seats) {
       return baseFetch("/rest/trip/" + id, {
         method: "PUT",

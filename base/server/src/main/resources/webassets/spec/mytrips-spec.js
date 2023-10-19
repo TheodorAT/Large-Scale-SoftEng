@@ -60,6 +60,7 @@ describe("myTripsController", function () {
   let tripDriverPromise;
   let tripPassengerPromise;
   let availableSeatsPromise;
+  let driverInfoPromise;
 
   // Creates the controller by loading the my-trip.html and put it in the node variable
   // Loads all the trips for admin
@@ -83,10 +84,12 @@ describe("myTripsController", function () {
         spyOn(base.rest, "getPassengerTrips").and.returnValue(tripPassengerPromise);
         availableSeatsPromise = Promise.resolve(1);
         spyOn(base.rest, "getAvailableSeats").and.returnValue(availableSeatsPromise);
+        driverInfoPromise = Promise.resolve(1);
+        spyOn(base.rest, "getDriver").and.returnValue(driverInfoPromise);
         controller.load();
         return Promise.all([adminPromise, locationPromise]).then(function () {
           return Promise.all([tripDriverPromise, tripPassengerPromise]).then(function () {
-            return Promise.all([availableSeatsPromise]);
+            return Promise.all([availableSeatsPromise, driverInfoPromise]);
           });
         });
       })

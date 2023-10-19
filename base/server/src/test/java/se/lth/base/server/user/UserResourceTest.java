@@ -304,6 +304,24 @@ public class UserResourceTest extends BaseResourceTest {
     }
 
     /**
+     * Tests the GET request for user/driver/{id}. Should return the first and last name of the driver corresponding to
+     * the id.
+     * 
+     * @desc Tests that first and last name can be retrieved of driver.
+     * 
+     * @task ETS-1425
+     * 
+     * @story ETS-723
+     */
+
+    @Test
+    public void getDriverName() {
+        login(TEST_CREDENTIALS);
+        String name = target("user").path("driver/" + Integer.toString(DRIVER.getId())).request().get(String.class);
+        assertEquals(DRIVER.getFirst_Name() + " " + DRIVER.getLast_Name(), name);
+    }
+
+    /**
      * Test deleting yourself as admin
      * 
      * @desc test deleting yourself as admin, expect exception
