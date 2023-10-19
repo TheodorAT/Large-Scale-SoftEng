@@ -1,6 +1,10 @@
 package se.lth.base.server.user;
 
 import se.lth.base.server.Config;
+import se.lth.base.server.database.DataAccessException;
+import se.lth.base.server.database.ErrorType;
+import se.lth.base.server.trip.Trip;
+import se.lth.base.server.trip.TripDataAccess;
 import se.lth.base.server.user.*;
 
 import javax.annotation.security.PermitAll;
@@ -26,6 +30,7 @@ public class UserResource {
     private final User user;
     private final Session session;
     private final UserDataAccess userDao = new UserDataAccess(Config.instance().getDatabaseDriver());
+    private final TripDataAccess tripDao = new TripDataAccess(Config.instance().getDatabaseDriver());
 
     public UserResource(@Context ContainerRequestContext context) {
         this.context = context;
@@ -113,10 +118,22 @@ public class UserResource {
 
     @Path("{id}")
     @GET
-    @RolesAllowed(Role.Names.ADMIN)
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public User getUser(@PathParam("id") int userId) {
-        return userDao.getUser(userId);
+    public Response getUser(@PathParam("id") int userId) {
+        if (user.getRole() == Role.ADMIN) {
+            return Response.ok(userDao.getUser(userId)).build();
+        }
+
+        List<Trip> trips = tripDao.getTripsAsPassenger(user.getId());
+        Trip trip;  
+        for (int i = 0; i < trips.size(); i++) {
+            trip = trips.get(i);
+            if (userId == trip.getDriverId()) {
+                return Response.ok(userDao.getUser(userId)).build();
+            }
+        }
+
+        throw new WebApplicationException("Mising permission to fetch user/driver info", Response.Status.FORBIDDEN);
     }
 
     @Path("{id}")
