@@ -190,11 +190,11 @@ base.searchTripController = function () {
             base.rest
               .bookTrip(tripId)
               .then((bookedTrip) => {
-                base.rest.getDriver(tr.children[7].id).then((driver) => {
+                base.rest.getDriver(tr.children[6].id).then((driver) => {
                   document.getElementById("available-trips").hidden = true;
-                  let from = tr.children[1].innerText;
-                  let to = tr.children[2].innerText;
-                  let start = tr.children[3].innerText;
+                  let from = tr.children[0].innerText;
+                  let to = tr.children[1].innerText;
+                  let start = tr.children[2].innerText;
                   document.getElementById("driverInfo").textContent =
                     "Name: " +
                     driver.first_name +
