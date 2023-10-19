@@ -78,6 +78,10 @@
               <label for="input-email">Email address</label>
               <input type="email" class="form-control" id="input-email" aria-describedby="emailHelp" required>
             </div>
+            <div class="mb-2">
+              <label for="input-phone">Phone number</label>
+              <input type="tel" class="form-control" id="input-phone" pattern="[0-9\+\-]*" title="Please enter a valid phone number containing only numbers, plus signs, or hyphens." required />
+            </div>
             <div>
               <label for="input-password">Password</label>
               <input type="password" class="form-control" id="input-password" placeholder="Minimum 8 characters" required minlength="8">
