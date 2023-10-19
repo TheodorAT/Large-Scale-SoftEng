@@ -50,7 +50,7 @@ base.registerController = (function () {
 
       //Checks if the username is valid.
       function isValidUsername(username) {
-        return username.length >= 3;
+        return username.length > 3;
       }
 
       //Checks if the password is valid.
