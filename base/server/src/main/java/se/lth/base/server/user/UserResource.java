@@ -116,6 +116,16 @@ public class UserResource {
         return userDao.getUsers();
     }
 
+    /**
+     * Returns a user object belonging to the userId
+     * 
+     * @param userId
+     * 
+     * @return User object corresponding to the userId
+     * 
+     * @throws WebApplicationException
+     *             if the logged in user is not an admin, or does not have a trip booked where the userId is the driver.
+     */
     @Path("{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
