@@ -133,7 +133,9 @@ public class UserResource {
         if (user.getRole() == Role.ADMIN) {
             return userDao.getUser(userId);
         }
-
+        if (user.getId() == userId) {
+            return userDao.getUser(userId);
+        }
         List<Trip> trips = tripDao.getTripsAsPassenger(user.getId());
         Trip trip;
         for (int i = 0; i < trips.size(); i++) {
