@@ -125,7 +125,7 @@ public class UserResource {
         }
 
         List<Trip> trips = tripDao.getTripsAsPassenger(user.getId());
-        Trip trip;  
+        Trip trip;
         for (int i = 0; i < trips.size(); i++) {
             trip = trips.get(i);
             if (userId == trip.getDriverId()) {
