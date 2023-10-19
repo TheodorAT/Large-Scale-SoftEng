@@ -100,6 +100,7 @@ base.userAdminController = function () {
         const vm = new UserViewModel(user);
         model.push(vm); // append the user to the end of the model array
         vm.render(view.template()); // append the user to the table
+        document.getElementById("addForm").reset();
       });
     },
   };
