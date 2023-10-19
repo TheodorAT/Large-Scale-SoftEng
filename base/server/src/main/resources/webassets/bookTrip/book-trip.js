@@ -10,9 +10,10 @@ base.searchTripController = function () {
   let model = [];
   let locations = [];
 
-  const TripViewModel = function (_trip, _seats) {
+  const TripViewModel = function (_trip, _seats, _driverName) {
     this.trip = _trip;
     this.seats = _seats;
+    this.driverName = _driverName;
     const viewModel = this;
 
     this.render = function (template) {
@@ -40,7 +41,7 @@ base.searchTripController = function () {
       const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
       td[5].textContent = formattedTime;
       td[6].textContent = this.seats + " / " + viewModel.trip.seatCapacity;
-      td[7].textContent = viewModel.trip.driverId;
+      td[7].textContent = this.driverName;
       // Book Button //
       //If button already has already been added, it needs to be replaced
       if (td[8].children[0]) {
@@ -228,14 +229,18 @@ base.searchTripController = function () {
       );
     },
     renderTrips: function (trips) {
-      // Collect all trip IDs
+      // Collect all trip IDs and driver IDS
       const tripIds = trips.map((trip) => trip.id);
-      // Fetch available seats for all trips
-      Promise.all(tripIds.map(base.rest.getAvailableSeats)).then((seats) => {
-        // Update TripViewModel instances with available seats
+      const driverIds = trips.map((trip) => trip.driverId);
+      // Fetch available seats and driverNames for all trips
+      const availableSeatsPromise = Promise.all(tripIds.map(base.rest.getAvailableSeats));
+      const driverNamesPromise = Promise.all(driverIds.map(base.rest.getDriverName));
+
+      Promise.all([availableSeatsPromise, driverNamesPromise]).then(([seats, driverNames]) => {
         model = trips.map((trip, index) => {
           const availableSeats = seats[index];
-          return new TripViewModel(trip, availableSeats);
+          const driverName = driverNames[index];
+          return new TripViewModel(trip, availableSeats, driverName);
         });
         view.render();
       });
