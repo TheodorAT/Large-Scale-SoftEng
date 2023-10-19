@@ -83,6 +83,18 @@ base.rest = (function () {
     },
 
     /*
+     * Fetches a driver with driverID
+     * id: id of driver
+     *
+     * example: const me = base.rest.getDriver(1);
+     */
+    getDriver: function (id) {
+      return baseFetch("/rest/user/" + id)
+        .then((response) => response.json())
+        .then((u) => new User(u));
+    },
+
+    /*
      * Login with given credentials.
      * username: name of the user
      * password: password in plaintext
@@ -383,11 +395,33 @@ base.rest = (function () {
         .then((trip) => new Trip(trip));
     },
 
-    getAvailableSeats: function (tripId) {
-      return baseFetch("rest/tripPassenger/availableSeats", {
-        method: "POST",
-        body: JSON.stringify(tripId),
+    getDriverlessTrips: function () {
+      return baseFetch("/rest/trip/requests", {
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
+    },
+
+    addDriverToDriverlessTrip: function (id, seats) {
+      return baseFetch("/rest/trip/" + id, {
+        method: "PUT",
+        body: JSON.stringify(seats),
         headers: jsonHeader,
+      })
+        .then((res) => res.json())
+        .then((trip) => new Trip(trip));
+    },
+
+    /*
+     * Fetches the amount of available seats
+     * returns: an int of how many available seats
+     *
+     * example: const availableSeats = base.rest.getAvailableSeats(1);
+     */
+    getAvailableSeats: function (tripId) {
+      return baseFetch("rest/tripPassenger/availableSeats/" + tripId, {
+        method: "GET",
       }).then((response) => response.json());
     },
   };
