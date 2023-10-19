@@ -16,10 +16,12 @@ base.changePasswordController = function () {
           return;
         }
         //Checks if the password is valid.
-        if (newPassword.length >= 8 &&  /\d/.test(newPassword) && /[a-zA-Z]/.test(newPassword)){
-        }
-        else{
-          showMessage("Password must be at least 8 characters long and contain at least one letter and one number!", "text-danger");
+        if (newPassword.length >= 8 && /\d/.test(newPassword) && /[a-zA-Z]/.test(newPassword)) {
+        } else {
+          showMessage(
+            "Password must be at least 8 characters long and contain at least one letter and one number!",
+            "text-danger",
+          );
           return;
         }
         base.rest
