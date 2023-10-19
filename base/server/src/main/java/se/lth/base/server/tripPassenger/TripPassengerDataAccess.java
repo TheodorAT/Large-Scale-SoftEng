@@ -44,12 +44,12 @@ public class TripPassengerDataAccess extends DataAccess<TripPassenger> {
      * @return TripPassenger This returns the TripPassenger object.
      * 
      * @throws IllegalArgumentException
-     *             If the driver tries to book his own trip.
+     *             If the driver tries to book their own trip.
      */
     public TripPassenger bookTrip(int tripId, int passengerId) {
         Trip trip = tripDao.getTrip(tripId);
         if (trip.getDriverId() == passengerId) {
-            throw new IllegalArgumentException("Driver cannot book his own trip");
+            throw new IllegalArgumentException("Driver cannot book their own trip");
         }
         insert("INSERT INTO trip_passengers (trip_id, user_id) VALUES (?, ?)", tripId, passengerId);
         return new TripPassenger(tripId, passengerId);

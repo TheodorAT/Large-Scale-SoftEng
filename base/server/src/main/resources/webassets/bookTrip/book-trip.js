@@ -216,6 +216,12 @@ base.searchTripController = function () {
                 if (error.message == "DUPLICATE") {
                   msg = "You have already booked this trip, try another trip";
                 }
+                if (error.message == "BAD_MAPPING") {
+                  msg = "You cannot book a seat on your own trip.";
+                }
+                if (error.message == "UNKNOWN") {
+                  msg = "You were unable to book this trip, since there are no available seats.";
+                }
                 controller.updateModal("Unfortunately, no trip was booked!", msg, false);
               });
           }),
