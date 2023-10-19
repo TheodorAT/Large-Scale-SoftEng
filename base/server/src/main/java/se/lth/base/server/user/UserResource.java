@@ -133,9 +133,11 @@ public class UserResource {
         if (user.getRole() == Role.ADMIN) {
             return userDao.getUser(userId);
         }
+
         if (user.getId() == userId) {
             return userDao.getUser(userId);
         }
+
         List<Trip> trips = tripDao.getTripsAsPassenger(user.getId());
         Trip trip;
         for (int i = 0; i < trips.size(); i++) {
@@ -149,14 +151,12 @@ public class UserResource {
     }
 
     /**
-     * Returns a user object belonging to the userId
+     * Returns the first and last name of driver by id.
      * 
      * @param userId
      * 
-     * @return User object corresponding to the userId
+     * @return String with first and last name of driver.
      * 
-     * @throws WebApplicationException
-     *             if the logged in user is not an admin, or does not have a trip booked where the userId is the driver.
      */
     @Path("driver/{id}")
     @GET

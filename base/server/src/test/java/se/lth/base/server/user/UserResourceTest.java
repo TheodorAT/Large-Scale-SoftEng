@@ -304,20 +304,22 @@ public class UserResourceTest extends BaseResourceTest {
     }
 
     /**
-     * Tests the GET request for user/{id}. Should return the user with the id {id}.
+     * Tests the GET request for user/driver/{id}. Should return the first and last name of the driver corresponding to
+     * the id.
      * 
-     * @desc Test that a user can be retrieved by id.
+     * @desc Tests that first and last name can be retrieved of driver.
      * 
-     * @task ETS-1406
+     * @task ETS-1425
      * 
-     * @story ETS-1404
+     * @story ETS-723
      */
-    /*
-     * @Test public void getDriverName() { login(TEST_CREDENTIALS); String name = target("user").path("driver/" +
-     * Integer.toString(DRIVER.getId())).request().get(String.class);
-     * 
-     * assertEquals("DRIVER.getName()" + " " + DRIVER.getLast_Name(), name); }
-     */
+
+    @Test
+    public void getDriverName() {
+        login(TEST_CREDENTIALS);
+        String name = target("user").path("driver/" + Integer.toString(DRIVER.getId())).request().get(String.class);
+        assertEquals(DRIVER.getFirst_Name() + " " + DRIVER.getLast_Name(), name);
+    }
 
     /**
      * Test deleting yourself as admin

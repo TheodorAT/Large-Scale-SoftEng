@@ -113,15 +113,13 @@ public class UserDataAccess extends DataAccess<User> {
     }
 
     /**
-     * Retrieve a user's information by their unique identifier.
+     * Retrieve a user's first and last name by their unique identifier.
      *
-     * This method retrieves the user information, including their role, username, first name, last name, email, and
-     * phone number, based on the provided unique user identifier (ID).
      *
      * @param userId
      *            The unique identifier of the user to retrieve.
      * 
-     * @return The user object containing the user's information.
+     * @return String containing first and last name.
      */
 
     public String getDriverName(int userId) {
