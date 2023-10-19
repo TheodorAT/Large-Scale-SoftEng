@@ -18,7 +18,7 @@ describe("driverTripController", function () {
   beforeEach(function (done) {
     controller = base.driverTripController();
     specHelper
-      .fetchHtml("drivertrips/driver-trips.html", document.body)
+      .fetchHtml("driverTrips/driver-trips.html", document.body)
       .then(function (n) {
         node = n;
       })
