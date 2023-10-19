@@ -42,7 +42,7 @@ public class TripPassengerResource {
      * @return TripPassenger This returns the TripPassenger objects.
      * 
      * @exception WebApplicationException
-     *                A forbidden exception is thrown if the driver tries to book his own trip.
+     *                A forbidden exception is thrown if the driver tries to book their own trip.
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
