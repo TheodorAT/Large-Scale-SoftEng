@@ -25,33 +25,32 @@ base.searchTripController = function () {
     this.update = function (template) {
       const trElement = template.content.querySelector("tr");
       const td = trElement.children;
-      td[0].textContent = viewModel.trip.id;
       let fromlocation = controller.getLocationFromId(viewModel.trip.fromLocationId);
       let tolocation = controller.getLocationFromId(viewModel.trip.toLocationId);
-      td[1].textContent = fromlocation.name + ", " + fromlocation.municipality;
-      td[2].textContent = tolocation.name + ", " + tolocation.municipality;
+      td[0].textContent = fromlocation.name + ", " + fromlocation.municipality;
+      td[1].textContent = tolocation.name + ", " + tolocation.municipality;
       const start = viewModel.trip.startTime;
-      td[3].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
+      td[2].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
       const end = viewModel.trip.endTime;
-      td[4].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
+      td[3].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
       const totalMilliseconds = new Date(end).getTime() - new Date(start).getTime();
       const hours = Math.floor(totalMilliseconds / 3600000); // Extract hours
       const minutes = Math.floor((totalMilliseconds % 3600000) / 60000); // Extract minutes
       // Format the hours and minutes as "HH:mm"
       const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
-      td[5].textContent = formattedTime;
-      td[6].textContent = this.seats + " / " + viewModel.trip.seatCapacity;
-      td[7].textContent = this.driverName;
+      td[4].textContent = formattedTime;
+      td[5].textContent = this.seats + " / " + viewModel.trip.seatCapacity;
+      td[6].textContent = this.driverName;
       // Book Button //
       //If button already has already been added, it needs to be replaced
-      if (td[8].children[0]) {
-        td[8].children[0].remove();
+      if (td[7].children[0]) {
+        td[7].children[0].remove();
       }
       let button1 = document.createElement("button");
       button1.innerHTML = "Book";
       button1.id = viewModel.trip.id;
       button1.classList.add("btn", "btn-danger");
-      td[8].appendChild(button1);
+      td[7].appendChild(button1);
     };
   };
 
