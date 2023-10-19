@@ -174,9 +174,17 @@ describe("myTripsController", function () {
       const row = rows[i];
       const trip = trips[i];
       const durationCell = row.querySelector("td:nth-child(5)");
-      expect(durationCell.textContent).toContain(new Date(trip.endTime - trip.startTime).toLocaleTimeString());
+
+      // Calculate the expected duration in HH:mm format
+      const totalMilliseconds = new Date(trip.endTime) - new Date(trip.startTime);
+      const hours = Math.floor(totalMilliseconds / 3600000); // Extract hours
+      const minutes = Math.floor((totalMilliseconds % 3600000) / 60000); // Extract minutes
+      const expectedDuration = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+
+      expect(durationCell.textContent).toBe(expectedDuration);
     }
   });
+
   /**
    * @desc Test that the number of available seats is displayed correctly for each trip in the table.
    * @task ETS-1337

@@ -33,8 +33,12 @@ base.searchTripController = function () {
       td[3].textContent = start.toLocaleDateString() + " " + start.toLocaleTimeString();
       const end = viewModel.trip.endTime;
       td[4].textContent = end.toLocaleDateString() + " " + end.toLocaleTimeString();
-      const duration = new Date(end - start).toLocaleTimeString();
-      td[5].textContent = duration;
+      const totalMilliseconds = new Date(end).getTime() - new Date(start).getTime();
+      const hours = Math.floor(totalMilliseconds / 3600000); // Extract hours
+      const minutes = Math.floor((totalMilliseconds % 3600000) / 60000); // Extract minutes
+      // Format the hours and minutes as "HH:mm"
+      const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+      td[5].textContent = formattedTime;
       td[6].textContent = this.seats + " / " + viewModel.trip.seatCapacity;
       td[7].textContent = viewModel.trip.driverId;
       // Book Button //
@@ -199,6 +203,12 @@ base.searchTripController = function () {
                 let msg = "Something went wrong, try again later.";
                 if (error.message == "DUPLICATE") {
                   msg = "You have already booked this trip, try another trip";
+                }
+                if (error.message == "BAD_MAPPING") {
+                  msg = "You cannot book a seat on your own trip.";
+                }
+                if (error.message == "UNKNOWN") {
+                  msg = "You were unable to book this trip, since there are no available seats.";
                 }
                 controller.updateModal("Unfortunately, no trip was booked!", msg, false);
               });
