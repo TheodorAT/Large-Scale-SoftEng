@@ -13,7 +13,7 @@ base.mainController = (function () {
       controller: base.searchTripController,
     },
     "driver-trips": {
-      partial: "driverTrips/driver-trips.html",
+      partial: "drivertrips/driver-trips.html",
       controller: base.driverTripController,
     },
     admin: {
