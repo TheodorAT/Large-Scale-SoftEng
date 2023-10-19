@@ -119,9 +119,9 @@ public class UserResource {
     @Path("{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response getUser(@PathParam("id") int userId) {
+    public User getUser(@PathParam("id") int userId) {
         if (user.getRole() == Role.ADMIN) {
-            return Response.ok(userDao.getUser(userId)).build();
+            return userDao.getUser(userId);
         }
 
         List<Trip> trips = tripDao.getTripsAsPassenger(user.getId());
@@ -129,7 +129,7 @@ public class UserResource {
         for (int i = 0; i < trips.size(); i++) {
             trip = trips.get(i);
             if (userId == trip.getDriverId()) {
-                return Response.ok(userDao.getUser(userId)).build();
+                return userDao.getUser(userId);
             }
         }
 
