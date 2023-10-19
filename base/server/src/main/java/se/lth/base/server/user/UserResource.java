@@ -151,14 +151,12 @@ public class UserResource {
     }
 
     /**
-     * Returns a user object belonging to the userId
+     * Returns the first and last name of driver by id.
      * 
      * @param userId
      * 
-     * @return User object corresponding to the userId
+     * @return String with first and last name of driver.
      * 
-     * @throws WebApplicationException
-     *             if the logged in user is not an admin, or does not have a trip booked where the userId is the driver.
      */
     @Path("driver/{id}")
     @GET
