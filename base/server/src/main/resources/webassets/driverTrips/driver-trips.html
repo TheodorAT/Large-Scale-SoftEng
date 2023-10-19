@@ -1,0 +1,75 @@
+<!--
+  -- This is a partial HTML file, meaning that it will be loaded dynamically and added to another HTML file.
+  -- Author: Bianca Widstam, Amanda Nystedt
+  -->
+<div class="container-fluid">
+  <h2 class="">Register trip as driver</h2>
+
+  <form class="row row-cols-lg-auto g-3 align-items-center pt-4" id="driver-form">
+    <div>
+      <label for="from">From</label>
+      <div class="dropdown">
+        <input
+          required
+          type="text"
+          placeholder="Search origin.."
+          id="from"
+          class="form-control"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          dropdown-toggle
+          autocomplete="off"
+        />
+        <ul class="dropdown-menu" id="dropdown-from">
+        </ul>
+      </div>
+    </div>
+    <div>
+      <label for="to">To</label>
+      <div class="dropdown">
+        <input
+          type="text"
+          required
+          placeholder="Search destination.."
+          id="to"
+          class="form-control"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          dropdown-toggle
+          autocomplete="off"
+        />
+        <ul class="dropdown-menu" id="dropdown-to">
+        </ul>
+      </div>
+    </div>
+    <div>
+      <label for="seats">Seats available</label>
+      <input required min="1" type="number" class="form-control" id="seats" />
+    </div>
+    <div>
+      <label for="startTime">Start date & time</label>
+      <input required type="datetime-local" class="form-control" id="startTime" name="startTime" />
+    </div>
+    <div class="form-group pt-4">
+      <button id="registerbtn" type="submit" class="btn btn-primary">Register</button>
+  </div>
+  </form>
+
+  <div class="modal fade" id="driverModal" tabindex="-1" aria-labelledby="driverModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="driverModalTitle">Your trip is registered!</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="registeredTripsModal"></p>
+        </div>
+        <div class="modal-footer">
+          <button id="mytrips" type="button" class="btn btn-primary" data-bs-dismiss="modal">Take me to <b>My Trips</b></button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
