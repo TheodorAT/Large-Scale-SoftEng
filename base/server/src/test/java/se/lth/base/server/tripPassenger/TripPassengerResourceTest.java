@@ -155,7 +155,8 @@ public class TripPassengerResourceTest extends BaseResourceTest {
         int tripId = trip.getId();
         Entity<Integer> t = Entity.entity(tripId, MediaType.APPLICATION_JSON);
 
-        int availableSeats = target("tripPassenger/availableSeats").request().post(t, Integer.class);
+        int availableSeats = target("tripPassenger/availableSeats/").path(Integer.toString(tripId)).request()
+                .get(Integer.class);
         assertEquals(2, availableSeats);
 
         logout();
@@ -163,7 +164,8 @@ public class TripPassengerResourceTest extends BaseResourceTest {
 
         target("tripPassenger").request().post(t, TripPassenger.class);
 
-        availableSeats = target("tripPassenger/availableSeats").request().post(t, Integer.class);
+        availableSeats = target("tripPassenger/availableSeats/").path(Integer.toString(tripId)).request()
+                .get(Integer.class);
         assertEquals(1, availableSeats);
 
     }

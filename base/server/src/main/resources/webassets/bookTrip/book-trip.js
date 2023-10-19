@@ -189,17 +189,29 @@ base.searchTripController = function () {
             base.rest
               .bookTrip(tripId)
               .then((bookedTrip) => {
-                document.getElementById("available-trips").hidden = true;
-                let from = tr.children[1].innerText;
-                let to = tr.children[2].innerText;
-                let start = tr.children[3].innerText;
-                controller.updateModal(
-                  "The trip was booked successfully!",
-                  "From: " + from + ". To: " + to + ". Date & time: " + start + ".",
-                  true,
-                );
+                base.rest.getDriver(tr.children[7].innerText).then((driver) => {
+                  document.getElementById("available-trips").hidden = true;
+                  let from = tr.children[1].innerText;
+                  let to = tr.children[2].innerText;
+                  let start = tr.children[3].innerText;
+                  document.getElementById("driverInfo").textContent =
+                    "Name: " +
+                    driver.first_name +
+                    " " +
+                    driver.last_name +
+                    ". Tel: " +
+                    driver.phone_number +
+                    ". Email: " +
+                    driver.email;
+                  controller.updateModal(
+                    "The trip was booked successfully!",
+                    "Id: " + tripId + ". From: " + from + ". To: " + to + ". Date & time: " + start + ".",
+                    true,
+                  );
+                });
               })
               .catch((error) => {
+                document.getElementById("driverInfo").textContent = "";
                 let msg = "Something went wrong, try again later.";
                 if (error.message == "DUPLICATE") {
                   msg = "You have already booked this trip, try another trip";

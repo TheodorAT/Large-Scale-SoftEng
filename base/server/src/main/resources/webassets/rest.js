@@ -395,11 +395,33 @@ base.rest = (function () {
         .then((trip) => new Trip(trip));
     },
 
-    getAvailableSeats: function (tripId) {
-      return baseFetch("rest/tripPassenger/availableSeats", {
-        method: "POST",
-        body: JSON.stringify(tripId),
+    getDriverlessTrips: function () {
+      return baseFetch("/rest/trip/requests", {
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((trips) => trips.map((f) => new Trip(f)));
+    },
+
+    addDriverToDriverlessTrip: function (id, seats) {
+      return baseFetch("/rest/trip/" + id, {
+        method: "PUT",
+        body: JSON.stringify(seats),
         headers: jsonHeader,
+      })
+        .then((res) => res.json())
+        .then((trip) => new Trip(trip));
+    },
+
+    /*
+     * Fetches the amount of available seats
+     * returns: an int of how many available seats
+     *
+     * example: const availableSeats = base.rest.getAvailableSeats(1);
+     */
+    getAvailableSeats: function (tripId) {
+      return baseFetch("rest/tripPassenger/availableSeats/" + tripId, {
+        method: "GET",
       }).then((response) => response.json());
     },
   };
