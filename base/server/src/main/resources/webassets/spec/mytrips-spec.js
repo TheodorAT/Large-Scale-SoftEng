@@ -147,7 +147,7 @@ describe("myTripsController", function () {
       const row = rows[i];
       const trip = trips[i];
       const startTimeCell = row.querySelector("td:nth-child(3)");
-      expect(startTimeCell.textContent).toContain(new Date(trip.startTime).toLocaleString());
+      expect(startTimeCell.textContent).toContain(new Date(trip.startTime).toLocaleString("sv-SE"));
     }
   });
 
@@ -162,7 +162,7 @@ describe("myTripsController", function () {
       const row = rows[i];
       const trip = trips[i];
       const endTimeCell = row.querySelector("td:nth-child(4)");
-      expect(endTimeCell.textContent).toContain(new Date(trip.endTime).toLocaleString());
+      expect(endTimeCell.textContent).toContain(new Date(trip.endTime).toLocaleString("sv-SE"));
     }
   });
 
