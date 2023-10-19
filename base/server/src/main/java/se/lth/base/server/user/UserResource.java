@@ -148,6 +148,23 @@ public class UserResource {
         throw new WebApplicationException("Mising permission to fetch user/driver info", Response.Status.FORBIDDEN);
     }
 
+    /**
+     * Returns a user object belonging to the userId
+     * 
+     * @param userId
+     * 
+     * @return User object corresponding to the userId
+     * 
+     * @throws WebApplicationException
+     *             if the logged in user is not an admin, or does not have a trip booked where the userId is the driver.
+     */
+    @Path("driver/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public String getDriverName(@PathParam("id") int userId) {
+        return userDao.getDriverName(userId);
+    }
+
     @Path("{id}")
     @RolesAllowed(Role.Names.ADMIN)
     @PUT

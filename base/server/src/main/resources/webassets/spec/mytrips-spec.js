@@ -89,7 +89,7 @@ describe("myTripsController", function () {
         controller.load();
         return Promise.all([adminPromise, locationPromise]).then(function () {
           return Promise.all([tripDriverPromise, tripPassengerPromise]).then(function () {
-            return Promise.all([availableSeatsPromise,driverInfoPromise]);
+            return Promise.all([availableSeatsPromise, driverInfoPromise]);
           });
         });
       })

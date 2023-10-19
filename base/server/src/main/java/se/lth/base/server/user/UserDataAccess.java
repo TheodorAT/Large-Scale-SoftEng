@@ -113,6 +113,27 @@ public class UserDataAccess extends DataAccess<User> {
     }
 
     /**
+     * Retrieve a user's information by their unique identifier.
+     *
+     * This method retrieves the user information, including their role, username, first name, last name, email, and
+     * phone number, based on the provided unique user identifier (ID).
+     *
+     * @param userId
+     *            The unique identifier of the user to retrieve.
+     * 
+     * @return The user object containing the user's information.
+     */
+
+    public String getDriverName(int userId) {
+        User driver = queryFirst(
+                "SELECT user_id, role, username, first_name, last_name, email, phone_number FROM users, user_role "
+                        + "WHERE users.user_id = ? AND users.role_id = user_role.role_id",
+                userId);
+        String name = driver.getFirst_Name() + " " + driver.getLast_Name();
+        return name;
+    }
+
+    /**
      * Delete a user by their unique identifier.
      * 
      * This method deletes a user account from the database based on the provided unique user identifier (ID).

@@ -101,7 +101,7 @@ base.rest = (function () {
      * example: const name = base.rest.getDriverName(1);
      */
     getDriverName: function (id) {
-      return baseFetch("/rest/user/driver/" + id).then((response) => response.json());
+      return baseFetch("/rest/user/driver/" + id).then((response) => response.text());
     },
 
     /*
