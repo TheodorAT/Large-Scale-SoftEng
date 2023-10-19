@@ -3,6 +3,8 @@ package se.lth.base.server.user;
 import org.junit.Test;
 import se.lth.base.server.BaseResourceTest;
 import se.lth.base.server.database.DataAccessException;
+import se.lth.base.server.trip.Trip;
+import se.lth.base.server.tripPassenger.TripPassenger;
 import se.lth.base.server.user.Credentials;
 import se.lth.base.server.user.Role;
 import se.lth.base.server.user.User;
@@ -15,6 +17,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import java.util.HashMap;
@@ -143,6 +146,32 @@ public class UserResourceTest extends BaseResourceTest {
     public void getAllUsersAsUser() {
         login(TEST_CREDENTIALS);
         target("user").path("all").request().get(USER_LIST);
+    }
+
+    /**
+     * Tests the GET request for user/{id}, when fetching the information of the driver of a trip as a passenger.
+     * 
+     * @desc Test that driver info can be retrieved as a passenger booked on a trip.
+     * 
+     * @task ETS-1425
+     * 
+     * @story ETS-723
+     */
+    public void getDriverAsPassenger() {
+        logout();
+        login(DRIVER_CREDENTIALS);
+        Trip t = new Trip(1, DRIVER.getId(), 1, 2, 1, 2, 2);
+        Entity<Trip> e = Entity.entity(t, MediaType.APPLICATION_JSON);
+        target("trip").request().post(e, Trip.class);
+
+        logout();
+        login(TEST_CREDENTIALS);
+        int tripId = t.getId();
+        Entity<Integer> ti = Entity.entity(tripId, MediaType.APPLICATION_JSON);
+        target("tripPassenger").request().post(ti, TripPassenger.class);
+
+        User driver = target("user").path(Integer.toString(DRIVER.getId())).request().get(User.class);
+        assertEquals(driver.getId(), DRIVER.getId());
     }
 
     /**
