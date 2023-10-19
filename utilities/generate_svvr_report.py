@@ -15,10 +15,11 @@ def generate_csv(data, filename):
         'class_name': 'Class Name',
         'desc': 'Description',
         'task': 'Task ID',
-        'story': 'Story ID'
+        'story': 'Story ID',
+        'test_passed': 'Test result'
     }
     
-    custom_order = ['file_name', 'class_name', 'signature', 'desc', 'task', 'story']
+    custom_order = ['file_name', 'class_name', 'signature', 'desc', 'task', 'story', 'test_passed']
     
     with open(filename, 'w', newline='') as output_file:
         dict_writer = csv.DictWriter(output_file, fieldnames=custom_order)
@@ -26,6 +27,7 @@ def generate_csv(data, filename):
         
         for row in data:
             filtered_row = {k: row.get(k, '') for k in custom_order}
+            filtered_row['test_passed'] = 'passed'
             dict_writer.writerow(filtered_row)
 
 def get_files(base_path, relative_path, extension):

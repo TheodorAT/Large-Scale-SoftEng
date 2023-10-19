@@ -2,6 +2,7 @@ package se.lth.base.server.trip;
 
 import se.lth.base.server.database.DataAccess;
 import se.lth.base.server.database.Mapper;
+import se.lth.base.server.location.LocationDataAccess;
 
 import java.util.*;
 import java.sql.ResultSet;
@@ -24,6 +25,8 @@ import java.util.Date;
  */
 public class TripDataAccess extends DataAccess<Trip> {
 
+    private LocationDataAccess locationDataAccess;
+
     private static class TripMapper implements Mapper<Trip> {
         @Override
         public Trip map(ResultSet resultSet) throws SQLException {
@@ -37,6 +40,7 @@ public class TripDataAccess extends DataAccess<Trip> {
 
     public TripDataAccess(String driverUrl) {
         super(driverUrl, new TripMapper());
+        locationDataAccess = new LocationDataAccess(driverUrl);
     }
 
     /**
@@ -53,8 +57,19 @@ public class TripDataAccess extends DataAccess<Trip> {
     public Trip addTrip(int driverId, Trip trip) {
         String sql = "INSERT INTO trips (driver_id, from_location_id, to_location_id, start_time, end_time, seat_capacity, status_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        // Right now it is just the starttime + 1 hour (3600000 ms)
-        long end_time = trip.getStartTime() + 3600000;
+        // Get distance in km between locations and calculate end time
+        double distance = locationDataAccess.calculateDistance(trip.getFromLocationId(), trip.getToLocationId());
+
+        // This is set lower than the actual speed limit to account for traffic due to the distance being the flight
+        // distance between the locations not the actual road distance.
+        double speed = 50; // km/h
+
+        // Add a 5 minute startup time to the trip to account for the driver getting ready and getting on the road.
+        long startupTime = 5 * 60000; // 5 minutes in milliseconds
+
+        long delta = (long) (distance / speed * 3600000) + startupTime;
+        System.out.println(delta + " milliseconds");
+        long end_time = trip.getStartTime() + delta;
 
         Object[] params = { driverId, trip.getFromLocationId(), trip.getToLocationId(),
                 new Timestamp(trip.getStartTime()), new Timestamp(end_time), trip.getSeatCapacity(), trip.getStatus() };

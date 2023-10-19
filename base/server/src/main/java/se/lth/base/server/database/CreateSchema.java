@@ -29,7 +29,6 @@ public class CreateSchema {
         CreateSchema cs = new CreateSchema(Config.instance().getDatabaseDriver());
         cs.dropAll();
         cs.createSchema();
-        cs.insertLocations("dataleverans/areas.csv");
     }
 
     public void dropAll() {
@@ -39,6 +38,7 @@ public class CreateSchema {
     public void createSchema() {
         try (Connection conn = new DataAccess<>(driverUrl, null).getConnection()) {
             runScript(conn);
+            // Insert location data into database
             insertLocations("dataleverans/areas.csv");
         } catch (SQLException e) {
             throw new DataAccessException(e, ErrorType.UNKNOWN);
@@ -52,7 +52,7 @@ public class CreateSchema {
      *            The path to the CSV file containing location data.
      */
     public void insertLocations(String path) {
-        String insertDataQuery = "INSERT INTO locations (municipality, name, longitude, latitude) VALUES (?, ?, ?, ?);";
+        String insertDataQuery = "INSERT INTO locations (municipality, name, latitude, longitude) VALUES (?, ?, ?, ?);";
 
         try (Connection conn = new DataAccess<>(driverUrl, null).getConnection()) {
             try (PreparedStatement insertDataStmt = conn.prepareStatement(insertDataQuery);
