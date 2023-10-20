@@ -85,6 +85,7 @@ base.userAdminController = function () {
       const firstName = document.getElementById("input-firstname").value;
       const lastName = document.getElementById("input-lastname").value;
       const email = document.getElementById("input-email").value;
+      const phoneNumber = document.getElementById("input-phone").value;
 
       const userData = {
         username: username,
@@ -94,12 +95,14 @@ base.userAdminController = function () {
         first_name: firstName,
         last_name: lastName,
         email: email,
+        phone_number: phoneNumber,
       };
       //Calls REST API to add user with the inputed values of the form
       base.rest.addUser(userData).then(function (user) {
         const vm = new UserViewModel(user);
         model.push(vm); // append the user to the end of the model array
         vm.render(view.template()); // append the user to the table
+        document.getElementById("addForm").reset();
       });
     },
   };

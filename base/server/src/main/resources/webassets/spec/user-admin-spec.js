@@ -70,6 +70,7 @@ describe("user specs", function () {
         first_name: "Adminfirst",
         last_name: "Adminlast",
         email: "admin@email.com",
+        phone_number: "076034234",
       };
       const newUser = new base.User({
         username: userData.username,
@@ -77,6 +78,7 @@ describe("user specs", function () {
         first_name: userData.first_name,
         last_name: userData.last_name,
         email: userData.email,
+        phone_number: userData.phone_number,
         id: 3,
       });
       const userPromise = Promise.resolve(newUser);
@@ -87,6 +89,7 @@ describe("user specs", function () {
         document.getElementById("input-username").value = userData.username;
         document.getElementById("input-password").value = userData.password;
         document.getElementById("input-email").value = userData.email;
+        document.getElementById("input-phone").value = userData.phone_number;
         spyOn(base.rest, "addUser").and.returnValue(userPromise);
       });
       /**
