@@ -44,7 +44,7 @@ base.settingsController = function () {
         };
       });
       document.getElementById("changePassword").onclick = function (event) {
-        alert("TODO: changePassword");
+        window.location.hash = "#/change-password";
       };
       document.getElementById("downgradeBtn").onclick = function (event) {
         let selected = document.getElementById("select-role");
